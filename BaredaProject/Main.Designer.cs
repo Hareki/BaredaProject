@@ -31,8 +31,6 @@ namespace BaredaProject
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            this.gridControl1 = new DevExpress.XtraGrid.GridControl();
-            this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.btnBackup = new DevExpress.XtraBars.BarButtonItem();
@@ -75,8 +73,17 @@ namespace BaredaProject
             this.database_backupsTableAdapter = new BaredaProject.MyDataSetTableAdapters.database_backupsTableAdapter();
             this.backup_devicesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.backup_devicesTableAdapter = new BaredaProject.MyDataSetTableAdapters.backup_devicesTableAdapter();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
+            this.gcDBList = new DevExpress.XtraGrid.GridControl();
+            this.gvDBList = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.colname = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.coldatabase_id = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gcBackups = new DevExpress.XtraGrid.GridControl();
+            this.gvBackups = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cardView2 = new DevExpress.XtraGrid.Views.Card.CardView();
+            this.colposition = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colbackup_start_date = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.coluser_name = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.coldescription = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.backupMenu)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.restoreMenu)).BeginInit();
@@ -88,25 +95,12 @@ namespace BaredaProject
             ((System.ComponentModel.ISupportInitialize)(this.databases_listBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.database_backupsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.backup_devicesBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gcDBList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvDBList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gcBackups)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvBackups)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cardView2)).BeginInit();
             this.SuspendLayout();
-            // 
-            // gridControl1
-            // 
-            this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(231);
-            this.gridControl1.Location = new System.Drawing.Point(881, 5492);
-            this.gridControl1.MainView = this.gridView1;
-            this.gridControl1.Margin = new System.Windows.Forms.Padding(231);
-            this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(27731, 13856);
-            this.gridControl1.TabIndex = 0;
-            this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridView1});
-            // 
-            // gridView1
-            // 
-            this.gridView1.DetailHeight = 20000;
-            this.gridView1.GridControl = this.gridControl1;
-            this.gridView1.Name = "gridView1";
             // 
             // barManager1
             // 
@@ -317,15 +311,15 @@ namespace BaredaProject
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
             this.barDockControlTop.Manager = this.barManager1;
-            this.barDockControlTop.Size = new System.Drawing.Size(28612, 63);
+            this.barDockControlTop.Size = new System.Drawing.Size(1283, 63);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 19348);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 490);
             this.barDockControlBottom.Manager = this.barManager1;
-            this.barDockControlBottom.Size = new System.Drawing.Size(28612, 37);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1283, 37);
             // 
             // barDockControlLeft
             // 
@@ -333,15 +327,15 @@ namespace BaredaProject
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 63);
             this.barDockControlLeft.Manager = this.barManager1;
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 19285);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 427);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(28612, 63);
+            this.barDockControlRight.Location = new System.Drawing.Point(1283, 63);
             this.barDockControlRight.Manager = this.barManager1;
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 19285);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 427);
             // 
             // barButtonItem1
             // 
@@ -489,13 +483,236 @@ namespace BaredaProject
             // 
             this.backup_devicesTableAdapter.ClearBeforeFill = true;
             // 
+            // gcDBList
+            // 
+            this.gcDBList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.gcDBList.DataSource = this.databases_listBindingSource;
+            this.gcDBList.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gcDBList.Location = new System.Drawing.Point(39, 96);
+            this.gcDBList.MainView = this.gvDBList;
+            this.gcDBList.Margin = new System.Windows.Forms.Padding(30, 30, 20, 30);
+            this.gcDBList.Name = "gcDBList";
+            this.gcDBList.Size = new System.Drawing.Size(417, 361);
+            this.gcDBList.TabIndex = 13;
+            this.gcDBList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gvDBList});
+            // 
+            // gvDBList
+            // 
+            this.gvDBList.Appearance.EvenRow.BackColor = System.Drawing.Color.White;
+            this.gvDBList.Appearance.EvenRow.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
+            this.gvDBList.Appearance.EvenRow.Options.UseBackColor = true;
+            this.gvDBList.Appearance.EvenRow.Options.UseForeColor = true;
+            this.gvDBList.Appearance.FocusedCell.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
+            this.gvDBList.Appearance.FocusedCell.Options.UseBackColor = true;
+            this.gvDBList.Appearance.FocusedRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
+            this.gvDBList.Appearance.FocusedRow.Options.UseBackColor = true;
+            this.gvDBList.Appearance.GroupRow.Font = new System.Drawing.Font("Baloo 2", 10.2F);
+            this.gvDBList.Appearance.GroupRow.Options.UseFont = true;
+            this.gvDBList.Appearance.HeaderPanel.Font = new System.Drawing.Font("Baloo 2", 12F, System.Drawing.FontStyle.Bold);
+            this.gvDBList.Appearance.HeaderPanel.Options.UseFont = true;
+            this.gvDBList.Appearance.HideSelectionRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
+            this.gvDBList.Appearance.HideSelectionRow.Options.UseBackColor = true;
+            this.gvDBList.Appearance.OddRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.gvDBList.Appearance.OddRow.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
+            this.gvDBList.Appearance.OddRow.Options.UseBackColor = true;
+            this.gvDBList.Appearance.OddRow.Options.UseForeColor = true;
+            this.gvDBList.Appearance.Preview.Font = new System.Drawing.Font("Baloo 2", 10.2F);
+            this.gvDBList.Appearance.Preview.Options.UseFont = true;
+            this.gvDBList.Appearance.Row.Font = new System.Drawing.Font("Baloo 2", 12F);
+            this.gvDBList.Appearance.Row.Options.UseFont = true;
+            this.gvDBList.Appearance.SelectedRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
+            this.gvDBList.Appearance.SelectedRow.Font = new System.Drawing.Font("Baloo 2", 12F);
+            this.gvDBList.Appearance.SelectedRow.Options.UseBackColor = true;
+            this.gvDBList.Appearance.SelectedRow.Options.UseFont = true;
+            this.gvDBList.Appearance.TopNewRow.Font = new System.Drawing.Font("Baloo 2", 10.2F);
+            this.gvDBList.Appearance.TopNewRow.Options.UseFont = true;
+            this.gvDBList.Appearance.ViewCaption.Font = new System.Drawing.Font("Baloo 2", 13.8F, System.Drawing.FontStyle.Bold);
+            this.gvDBList.Appearance.ViewCaption.Options.UseFont = true;
+            this.gvDBList.AppearancePrint.OddRow.BackColor = System.Drawing.Color.DimGray;
+            this.gvDBList.AppearancePrint.OddRow.Options.UseBackColor = true;
+            this.gvDBList.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.colname,
+            this.coldatabase_id});
+            this.gvDBList.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gvDBList.GridControl = this.gcDBList;
+            this.gvDBList.Name = "gvDBList";
+            this.gvDBList.OptionsBehavior.Editable = false;
+            this.gvDBList.OptionsBehavior.ReadOnly = true;
+            this.gvDBList.OptionsCustomization.AllowRowSizing = true;
+            this.gvDBList.OptionsDetail.EnableMasterViewMode = false;
+            this.gvDBList.OptionsPrint.EnableAppearanceOddRow = true;
+            this.gvDBList.OptionsScrollAnnotations.ShowFocusedRow = DevExpress.Utils.DefaultBoolean.True;
+            this.gvDBList.OptionsView.EnableAppearanceOddRow = true;
+            this.gvDBList.OptionsView.ShowGroupPanel = false;
+            this.gvDBList.OptionsView.ShowIndicator = false;
+            this.gvDBList.OptionsView.ShowViewCaption = true;
+            this.gvDBList.ViewCaption = "Danh sách CSDL";
+            // 
+            // colname
+            // 
+            this.colname.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(164)))), ((int)(((byte)(236)))));
+            this.colname.AppearanceHeader.Options.UseBackColor = true;
+            this.colname.Caption = "Tên";
+            this.colname.FieldName = "name";
+            this.colname.MinWidth = 25;
+            this.colname.Name = "colname";
+            this.colname.Visible = true;
+            this.colname.VisibleIndex = 1;
+            this.colname.Width = 94;
+            // 
+            // coldatabase_id
+            // 
+            this.coldatabase_id.AppearanceCell.Options.UseTextOptions = true;
+            this.coldatabase_id.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.coldatabase_id.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(164)))), ((int)(((byte)(236)))));
+            this.coldatabase_id.AppearanceHeader.Options.UseBackColor = true;
+            this.coldatabase_id.AppearanceHeader.Options.UseTextOptions = true;
+            this.coldatabase_id.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.coldatabase_id.Caption = "Mã";
+            this.coldatabase_id.FieldName = "database_id";
+            this.coldatabase_id.MaxWidth = 100;
+            this.coldatabase_id.MinWidth = 100;
+            this.coldatabase_id.Name = "coldatabase_id";
+            this.coldatabase_id.OptionsColumn.FixedWidth = true;
+            this.coldatabase_id.Visible = true;
+            this.coldatabase_id.VisibleIndex = 0;
+            this.coldatabase_id.Width = 100;
+            // 
+            // gcBackups
+            // 
+            this.gcBackups.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gcBackups.DataSource = this.database_backupsBindingSource;
+            this.gcBackups.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gcBackups.Location = new System.Drawing.Point(496, 96);
+            this.gcBackups.MainView = this.gvBackups;
+            this.gcBackups.Margin = new System.Windows.Forms.Padding(20, 30, 30, 30);
+            this.gcBackups.Name = "gcBackups";
+            this.gcBackups.Size = new System.Drawing.Size(748, 361);
+            this.gcBackups.TabIndex = 14;
+            this.gcBackups.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gvBackups,
+            this.cardView2});
+            // 
+            // gvBackups
+            // 
+            this.gvBackups.Appearance.EvenRow.BackColor = System.Drawing.Color.White;
+            this.gvBackups.Appearance.EvenRow.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
+            this.gvBackups.Appearance.EvenRow.Options.UseBackColor = true;
+            this.gvBackups.Appearance.EvenRow.Options.UseForeColor = true;
+            this.gvBackups.Appearance.FocusedCell.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
+            this.gvBackups.Appearance.FocusedCell.Options.UseBackColor = true;
+            this.gvBackups.Appearance.FocusedRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
+            this.gvBackups.Appearance.FocusedRow.Options.UseBackColor = true;
+            this.gvBackups.Appearance.GroupRow.Font = new System.Drawing.Font("Baloo 2", 10.2F);
+            this.gvBackups.Appearance.GroupRow.Options.UseFont = true;
+            this.gvBackups.Appearance.HeaderPanel.Font = new System.Drawing.Font("Baloo 2", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gvBackups.Appearance.HeaderPanel.Options.UseFont = true;
+            this.gvBackups.Appearance.HideSelectionRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
+            this.gvBackups.Appearance.HideSelectionRow.Options.UseBackColor = true;
+            this.gvBackups.Appearance.OddRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.gvBackups.Appearance.OddRow.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
+            this.gvBackups.Appearance.OddRow.Options.UseBackColor = true;
+            this.gvBackups.Appearance.OddRow.Options.UseForeColor = true;
+            this.gvBackups.Appearance.Preview.Font = new System.Drawing.Font("Baloo 2", 10.2F);
+            this.gvBackups.Appearance.Preview.Options.UseFont = true;
+            this.gvBackups.Appearance.Row.Font = new System.Drawing.Font("Baloo 2", 12F);
+            this.gvBackups.Appearance.Row.Options.UseFont = true;
+            this.gvBackups.Appearance.SelectedRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
+            this.gvBackups.Appearance.SelectedRow.Font = new System.Drawing.Font("Baloo 2", 12F);
+            this.gvBackups.Appearance.SelectedRow.Options.UseBackColor = true;
+            this.gvBackups.Appearance.SelectedRow.Options.UseFont = true;
+            this.gvBackups.Appearance.TopNewRow.Font = new System.Drawing.Font("Baloo 2", 10.2F);
+            this.gvBackups.Appearance.TopNewRow.Options.UseFont = true;
+            this.gvBackups.Appearance.ViewCaption.Font = new System.Drawing.Font("Baloo 2", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gvBackups.Appearance.ViewCaption.Options.UseFont = true;
+            this.gvBackups.AppearancePrint.OddRow.BackColor = System.Drawing.Color.DimGray;
+            this.gvBackups.AppearancePrint.OddRow.Options.UseBackColor = true;
+            this.gvBackups.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.colposition,
+            this.colbackup_start_date,
+            this.coluser_name,
+            this.coldescription});
+            this.gvBackups.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gvBackups.GridControl = this.gcBackups;
+            this.gvBackups.Name = "gvBackups";
+            this.gvBackups.OptionsBehavior.Editable = false;
+            this.gvBackups.OptionsBehavior.ReadOnly = true;
+            this.gvBackups.OptionsCustomization.AllowRowSizing = true;
+            this.gvBackups.OptionsDetail.EnableMasterViewMode = false;
+            this.gvBackups.OptionsPrint.EnableAppearanceOddRow = true;
+            this.gvBackups.OptionsScrollAnnotations.ShowFocusedRow = DevExpress.Utils.DefaultBoolean.True;
+            this.gvBackups.OptionsView.EnableAppearanceOddRow = true;
+            this.gvBackups.OptionsView.ShowGroupPanel = false;
+            this.gvBackups.OptionsView.ShowIndicator = false;
+            this.gvBackups.OptionsView.ShowViewCaption = true;
+            this.gvBackups.ViewCaption = "Danh sách bản sao lưu theo BikeStores";
+            // 
+            // cardView2
+            // 
+            this.cardView2.GridControl = this.gcBackups;
+            this.cardView2.Name = "cardView2";
+            this.cardView2.VertScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Auto;
+            // 
+            // colposition
+            // 
+            this.colposition.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(164)))), ((int)(((byte)(236)))));
+            this.colposition.AppearanceHeader.Options.UseBackColor = true;
+            this.colposition.Caption = "Thứ tự";
+            this.colposition.FieldName = "position";
+            this.colposition.MinWidth = 25;
+            this.colposition.Name = "colposition";
+            this.colposition.Visible = true;
+            this.colposition.VisibleIndex = 0;
+            this.colposition.Width = 94;
+            // 
+            // colbackup_start_date
+            // 
+            this.colbackup_start_date.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(164)))), ((int)(((byte)(236)))));
+            this.colbackup_start_date.AppearanceHeader.Options.UseBackColor = true;
+            this.colbackup_start_date.Caption = "Ngày sao lưu";
+            this.colbackup_start_date.FieldName = "backup_start_date";
+            this.colbackup_start_date.MinWidth = 25;
+            this.colbackup_start_date.Name = "colbackup_start_date";
+            this.colbackup_start_date.Visible = true;
+            this.colbackup_start_date.VisibleIndex = 1;
+            this.colbackup_start_date.Width = 94;
+            // 
+            // coluser_name
+            // 
+            this.coluser_name.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(164)))), ((int)(((byte)(236)))));
+            this.coluser_name.AppearanceHeader.Options.UseBackColor = true;
+            this.coluser_name.Caption = "User sao lưu";
+            this.coluser_name.FieldName = "user_name";
+            this.coluser_name.MinWidth = 25;
+            this.coluser_name.Name = "coluser_name";
+            this.coluser_name.Visible = true;
+            this.coluser_name.VisibleIndex = 2;
+            this.coluser_name.Width = 94;
+            // 
+            // coldescription
+            // 
+            this.coldescription.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(164)))), ((int)(((byte)(236)))));
+            this.coldescription.AppearanceHeader.Options.UseBackColor = true;
+            this.coldescription.Caption = "Mô tả";
+            this.coldescription.FieldName = "description";
+            this.coldescription.MinWidth = 25;
+            this.coldescription.Name = "coldescription";
+            this.coldescription.Visible = true;
+            this.coldescription.VisibleIndex = 3;
+            this.coldescription.Width = 94;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1924, 1055);
-            this.Controls.Add(this.gridControl1);
+            this.ClientSize = new System.Drawing.Size(1283, 527);
+            this.Controls.Add(this.gcBackups);
+            this.Controls.Add(this.gcDBList);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
@@ -505,8 +722,6 @@ namespace BaredaProject
             this.Text = "Bareda Project";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Main_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.backupMenu)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.restoreMenu)).EndInit();
@@ -518,15 +733,17 @@ namespace BaredaProject
             ((System.ComponentModel.ISupportInitialize)(this.databases_listBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.database_backupsBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.backup_devicesBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gcDBList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvDBList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gcBackups)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvBackups)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cardView2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private DevExpress.XtraGrid.GridControl gridControl1;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
         private DevExpress.XtraBars.BarManager barManager1;
         private DevExpress.XtraBars.Bar bar2;
         private DevExpress.XtraBars.BarButtonItem barButtonItem1;
@@ -569,6 +786,17 @@ namespace BaredaProject
         private MyDataSetTableAdapters.database_backupsTableAdapter database_backupsTableAdapter;
         private System.Windows.Forms.BindingSource backup_devicesBindingSource;
         private MyDataSetTableAdapters.backup_devicesTableAdapter backup_devicesTableAdapter;
+        private DevExpress.XtraGrid.GridControl gcDBList;
+        private DevExpress.XtraGrid.Views.Grid.GridView gvDBList;
+        private DevExpress.XtraGrid.GridControl gcBackups;
+        private DevExpress.XtraGrid.Views.Grid.GridView gvBackups;
+        private DevExpress.XtraGrid.Views.Card.CardView cardView2;
+        private DevExpress.XtraGrid.Columns.GridColumn colname;
+        private DevExpress.XtraGrid.Columns.GridColumn coldatabase_id;
+        private DevExpress.XtraGrid.Columns.GridColumn colposition;
+        private DevExpress.XtraGrid.Columns.GridColumn colbackup_start_date;
+        private DevExpress.XtraGrid.Columns.GridColumn coluser_name;
+        private DevExpress.XtraGrid.Columns.GridColumn coldescription;
     }
 }
 

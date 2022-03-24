@@ -32,17 +32,5 @@ namespace BaredaProject
 
         }
 
-        private void fillToolStripButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                this.database_backupsTableAdapter.Fill(this.myDataSet.database_backups, dBNAMEToolStripTextBox.Text);
-            }
-            catch (System.Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show(ex.Message);
-            }
-
-        }
     }
 }
