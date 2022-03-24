@@ -32,14 +32,14 @@ namespace BaredaProject
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
             this.panel1 = new System.Windows.Forms.Panel();
-            this.textServerName = new Guna.UI2.WinForms.Guna2TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnLogin = new System.Windows.Forms.Button();
+            this.textServerName = new Guna.UI2.WinForms.Guna2TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.textUser = new Guna.UI2.WinForms.Guna2TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.textPassword = new Guna.UI2.WinForms.Guna2TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.userEP = new System.Windows.Forms.ErrorProvider(this.components);
             this.passwordEP = new System.Windows.Forms.ErrorProvider(this.components);
             this.serverNameEP = new System.Windows.Forms.ErrorProvider(this.components);
@@ -65,62 +65,6 @@ namespace BaredaProject
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(485, 547);
             this.panel1.TabIndex = 20;
-            // 
-            // textServerName
-            // 
-            this.textServerName.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.textServerName.BorderThickness = 2;
-            this.textServerName.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.textServerName.DefaultText = "";
-            this.textServerName.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.textServerName.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.textServerName.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.textServerName.DisabledState.Parent = this.textServerName;
-            this.textServerName.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.textServerName.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.textServerName.FocusedState.Parent = this.textServerName;
-            this.textServerName.Font = new System.Drawing.Font("Baloo 2", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textServerName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
-            this.textServerName.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(168)))), ((int)(((byte)(255)))));
-            this.textServerName.HoverState.Parent = this.textServerName;
-            this.textServerName.IconLeftOffset = new System.Drawing.Point(0, -5);
-            this.textServerName.IconLeftSize = new System.Drawing.Size(35, 35);
-            this.textServerName.IconRightOffset = new System.Drawing.Point(0, -3);
-            this.textServerName.IconRightSize = new System.Drawing.Size(35, 35);
-            this.textServerName.Location = new System.Drawing.Point(49, 198);
-            this.textServerName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 0);
-            this.textServerName.Name = "textServerName";
-            this.textServerName.PasswordChar = '\0';
-            this.textServerName.PlaceholderText = "";
-            this.textServerName.SelectedText = "";
-            this.textServerName.ShadowDecoration.Parent = this.textServerName;
-            this.textServerName.Size = new System.Drawing.Size(391, 49);
-            this.textServerName.TabIndex = 43;
-            this.textServerName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextEnter_KeyDown);
-            // 
-            // label3
-            // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label3.Font = new System.Drawing.Font("Baloo 2", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(115)))), ((int)(((byte)(115)))), ((int)(((byte)(115)))));
-            this.label3.Location = new System.Drawing.Point(161, 47);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(229, 91);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "Sao lưu - Phục hồi cơ sở dữ liệu";
-            // 
-            // label1
-            // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Baloo 2", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.AppWorkspace;
-            this.label1.Location = new System.Drawing.Point(44, 159);
-            this.label1.Margin = new System.Windows.Forms.Padding(3, 0, 10, 5);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(97, 30);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Tên server";
             // 
             // btnClose
             // 
@@ -154,6 +98,38 @@ namespace BaredaProject
             this.btnLogin.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnLogin.UseVisualStyleBackColor = true;
             this.btnLogin.Click += new System.EventHandler(this.BtnLogin_Click);
+            // 
+            // textServerName
+            // 
+            this.textServerName.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.textServerName.BorderThickness = 2;
+            this.textServerName.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.textServerName.DefaultText = "";
+            this.textServerName.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.textServerName.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.textServerName.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.textServerName.DisabledState.Parent = this.textServerName;
+            this.textServerName.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.textServerName.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.textServerName.FocusedState.Parent = this.textServerName;
+            this.textServerName.Font = new System.Drawing.Font("Baloo 2", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textServerName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
+            this.textServerName.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(168)))), ((int)(((byte)(255)))));
+            this.textServerName.HoverState.Parent = this.textServerName;
+            this.textServerName.IconLeftOffset = new System.Drawing.Point(0, -5);
+            this.textServerName.IconLeftSize = new System.Drawing.Size(35, 35);
+            this.textServerName.IconRightOffset = new System.Drawing.Point(0, -3);
+            this.textServerName.IconRightSize = new System.Drawing.Size(35, 35);
+            this.textServerName.Location = new System.Drawing.Point(49, 198);
+            this.textServerName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 0);
+            this.textServerName.Name = "textServerName";
+            this.textServerName.PasswordChar = '\0';
+            this.textServerName.PlaceholderText = "";
+            this.textServerName.SelectedText = "";
+            this.textServerName.ShadowDecoration.Parent = this.textServerName;
+            this.textServerName.Size = new System.Drawing.Size(391, 49);
+            this.textServerName.TabIndex = 43;
+            this.textServerName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextEnter_KeyDown);
             // 
             // pictureBox1
             // 
@@ -200,6 +176,17 @@ namespace BaredaProject
             this.textUser.TabIndex = 13;
             this.textUser.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextEnter_KeyDown);
             // 
+            // label3
+            // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label3.Font = new System.Drawing.Font("Baloo 2", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(115)))), ((int)(((byte)(115)))), ((int)(((byte)(115)))));
+            this.label3.Location = new System.Drawing.Point(161, 47);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(229, 91);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Sao lưu - Phục hồi cơ sở dữ liệu";
+            // 
             // textPassword
             // 
             this.textPassword.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -238,6 +225,19 @@ namespace BaredaProject
             this.textPassword.IconRightClick += new System.EventHandler(this.TextPassword_IconRightClick);
             this.textPassword.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextEnter_KeyDown);
             // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Baloo 2", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.AppWorkspace;
+            this.label1.Location = new System.Drawing.Point(44, 159);
+            this.label1.Margin = new System.Windows.Forms.Padding(3, 0, 10, 5);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(97, 30);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Tên server";
+            // 
             // userEP
             // 
             this.userEP.ContainerControl = this;
@@ -265,6 +265,7 @@ namespace BaredaProject
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Login";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Bareda Project";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

@@ -1,4 +1,5 @@
-﻿using Guna.UI2.WinForms;
+﻿using BaredaProject.Project;
+using Guna.UI2.WinForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -40,7 +41,7 @@ namespace BaredaProject
             }
         }
 
-        private void RequestLogin()
+        private bool IsInputValid()
         {
             bool test1 = IsLoginInfoValid(textPassword, passwordEP);
             bool test2 = IsLoginInfoValid(textUser, userEP);
@@ -48,10 +49,23 @@ namespace BaredaProject
 
             if (!(test1 && test2 && test3))
             {
-                MessageBox.Show("Vui lòng điền đầy đủ thông tin", "Lỗi đăng nhập",
-                         MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                Utils.ShowInfoMessage("Lỗi đăng nhập", "Vui lòng điền đầy đủ thông tin", Utils.MessageType.Error);
+                return false;
             }
+            return true;
+        }
+        private void RequestLogin()
+        {
+            if (!IsInputValid()) return;
+
+            String serverName = textServerName.Text.Trim();
+            String userName = textUser.Text.Trim();
+            String password = textPassword.Text.Trim();
+
+            MyConnection.connect(serverName, userName, password);
+
+
+
         }
 
         private void BtnClose_Click(object sender, EventArgs e)
@@ -77,7 +91,7 @@ namespace BaredaProject
 
         private bool IsLoginInfoValid(Guna2TextBox textBox, ErrorProvider loginEP)
         {
-            if (string.IsNullOrEmpty(textBox.Text))
+            if (string.IsNullOrEmpty(textBox.Text.Trim()))
             {
                 loginEP.SetError(textBox, "Vui lòng không bỏ trống thông tin đăng nhập");
                 SetBorderState(textBox, true);
@@ -94,7 +108,7 @@ namespace BaredaProject
 
         private bool IsServerNameValid()
         {
-            if (string.IsNullOrEmpty(textServerName.Text))
+            if (string.IsNullOrEmpty(textServerName.Text.Trim()))
             {
                 serverNameEP.SetError(textServerName, "Vui lòng không bỏ trống tên server");
                 textServerName.BorderColor = Color.FromArgb(236, 65, 52);
