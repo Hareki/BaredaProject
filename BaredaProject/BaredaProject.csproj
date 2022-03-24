@@ -226,5 +226,8 @@
   <ItemGroup>
     <None Include="Resources\refresh%281%29.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eye_512px.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
