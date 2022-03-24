@@ -32,10 +32,11 @@ namespace BaredaProject
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TimeInput));
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.dateEdit1 = new DevExpress.XtraEditors.DateEdit();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties)).BeginInit();
@@ -46,6 +47,19 @@ namespace BaredaProject
             this.toolTip1.ShowAlways = true;
             this.toolTip1.ToolTipTitle = "Lưu ý";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.pictureBox1.Image = global::BaredaProject.Properties.Resources.warning_shield_25px;
+            this.pictureBox1.Location = new System.Drawing.Point(441, 78);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(43, 39);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox1.TabIndex = 19;
+            this.pictureBox1.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBox1, "Thời điểm nhập vào phải thỏa các điều kiện sau:\r\n  - Sau thời điểm trên bản sao l" +
+        "ưu đã chọn.\r\n  - Trước thời điểm hiện tại ít nhất 1 phút.");
+            // 
             // button1
             // 
             this.button1.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -53,7 +67,7 @@ namespace BaredaProject
             this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
             this.button1.Image = global::BaredaProject.Properties.Resources.cancel_30px;
             this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button1.Location = new System.Drawing.Point(250, 111);
+            this.button1.Location = new System.Drawing.Point(275, 140);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(160, 55);
             this.button1.TabIndex = 22;
@@ -68,7 +82,7 @@ namespace BaredaProject
             this.button2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
             this.button2.Image = global::BaredaProject.Properties.Resources.clock_30px;
             this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button2.Location = new System.Drawing.Point(37, 111);
+            this.button2.Location = new System.Drawing.Point(62, 140);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(160, 55);
             this.button2.TabIndex = 21;
@@ -76,24 +90,11 @@ namespace BaredaProject
             this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.pictureBox1.Image = global::BaredaProject.Properties.Resources.warning_shield_25px;
-            this.pictureBox1.Location = new System.Drawing.Point(416, 49);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(43, 39);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox1.TabIndex = 19;
-            this.pictureBox1.TabStop = false;
-            this.toolTip1.SetToolTip(this.pictureBox1, "Thời điểm nhập vào phải thỏa các điều kiện sau:\r\n  - Sau thời điểm trên bản sao l" +
-        "ưu đã chọn.\r\n  - Trước thời điểm hiện tại ít nhất 1 phút.");
-            // 
             // dateEdit1
             // 
             this.dateEdit1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.dateEdit1.EditValue = null;
-            this.dateEdit1.Location = new System.Drawing.Point(37, 46);
+            this.dateEdit1.Location = new System.Drawing.Point(62, 75);
             this.dateEdit1.Name = "dateEdit1";
             this.dateEdit1.Properties.Appearance.Font = new System.Drawing.Font("Baloo 2", 13F);
             this.dateEdit1.Properties.Appearance.Options.UseFont = true;
@@ -115,11 +116,24 @@ namespace BaredaProject
             this.dateEdit1.Size = new System.Drawing.Size(373, 42);
             this.dateEdit1.TabIndex = 18;
             // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Baloo 2", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
+            this.label1.Location = new System.Drawing.Point(56, 25);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(235, 35);
+            this.label1.TabIndex = 23;
+            this.label1.Text = "Nhập thời gian phục hồi";
+            // 
             // TimeInput
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(499, 213);
+            this.ClientSize = new System.Drawing.Size(540, 238);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.pictureBox1);
@@ -129,11 +143,12 @@ namespace BaredaProject
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "TimeInput";
-            this.Text = "Nhập thời gian phục hồi";
+            this.Text = "Phục hồi theo thời gian";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -143,5 +158,6 @@ namespace BaredaProject
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label1;
     }
 }
