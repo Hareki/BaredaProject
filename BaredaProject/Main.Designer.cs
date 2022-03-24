@@ -67,10 +67,14 @@ namespace BaredaProject
             this.barCheckItem2 = new DevExpress.XtraBars.BarCheckItem();
             this.barButtonItem5 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem6 = new DevExpress.XtraBars.BarButtonItem();
-            this.tblDBList = new DevExpress.XtraGrid.GridControl();
-            this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.tblBackupList = new DevExpress.XtraGrid.GridControl();
-            this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.myDataSet = new BaredaProject.MyDataSet();
+            this.databases_listBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.databases_listTableAdapter = new BaredaProject.MyDataSetTableAdapters.databases_listTableAdapter();
+            this.tableAdapterManager = new BaredaProject.MyDataSetTableAdapters.TableAdapterManager();
+            this.database_backupsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.database_backupsTableAdapter = new BaredaProject.MyDataSetTableAdapters.database_backupsTableAdapter();
+            this.backup_devicesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.backup_devicesTableAdapter = new BaredaProject.MyDataSetTableAdapters.backup_devicesTableAdapter();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
@@ -80,10 +84,10 @@ namespace BaredaProject
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemDateEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemDateEdit1.CalendarTimeProperties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tblDBList)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tblBackupList)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.myDataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.databases_listBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.database_backupsBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.backup_devicesBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // gridControl1
@@ -313,15 +317,15 @@ namespace BaredaProject
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
             this.barDockControlTop.Manager = this.barManager1;
-            this.barDockControlTop.Size = new System.Drawing.Size(1202, 63);
+            this.barDockControlTop.Size = new System.Drawing.Size(28612, 63);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 500);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 19348);
             this.barDockControlBottom.Manager = this.barManager1;
-            this.barDockControlBottom.Size = new System.Drawing.Size(1202, 37);
+            this.barDockControlBottom.Size = new System.Drawing.Size(28612, 37);
             // 
             // barDockControlLeft
             // 
@@ -329,15 +333,15 @@ namespace BaredaProject
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 63);
             this.barDockControlLeft.Manager = this.barManager1;
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 437);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 19285);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1202, 63);
+            this.barDockControlRight.Location = new System.Drawing.Point(28612, 63);
             this.barDockControlRight.Manager = this.barManager1;
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 437);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 19285);
             // 
             // barButtonItem1
             // 
@@ -447,56 +451,50 @@ namespace BaredaProject
             this.barButtonItem6.ItemAppearance.Normal.Options.UseFont = true;
             this.barButtonItem6.Name = "barButtonItem6";
             // 
-            // tblDBList
+            // myDataSet
             // 
-            this.tblDBList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.tblDBList.Location = new System.Drawing.Point(39, 96);
-            this.tblDBList.MainView = this.gridView2;
-            this.tblDBList.Margin = new System.Windows.Forms.Padding(30);
-            this.tblDBList.MenuManager = this.barManager1;
-            this.tblDBList.Name = "tblDBList";
-            this.tblDBList.Size = new System.Drawing.Size(269, 371);
-            this.tblDBList.TabIndex = 5;
-            this.tblDBList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridView2});
+            this.myDataSet.DataSetName = "MyDataSet";
+            this.myDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
-            // gridView2
+            // databases_listBindingSource
             // 
-            this.gridView2.GridControl = this.tblDBList;
-            this.gridView2.Name = "gridView2";
-            this.gridView2.OptionsView.ShowGroupPanel = false;
-            this.gridView2.OptionsView.ShowIndicator = false;
+            this.databases_listBindingSource.DataMember = "databases_list";
+            this.databases_listBindingSource.DataSource = this.myDataSet;
             // 
-            // tblBackupList
+            // databases_listTableAdapter
             // 
-            this.tblBackupList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tblBackupList.Location = new System.Drawing.Point(353, 96);
-            this.tblBackupList.MainView = this.gridView3;
-            this.tblBackupList.Margin = new System.Windows.Forms.Padding(30);
-            this.tblBackupList.MenuManager = this.barManager1;
-            this.tblBackupList.Name = "tblBackupList";
-            this.tblBackupList.Size = new System.Drawing.Size(810, 371);
-            this.tblBackupList.TabIndex = 10;
-            this.tblBackupList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridView3});
+            this.databases_listTableAdapter.ClearBeforeFill = true;
             // 
-            // gridView3
+            // tableAdapterManager
             // 
-            this.gridView3.GridControl = this.tblBackupList;
-            this.gridView3.Name = "gridView3";
-            this.gridView3.OptionsView.ShowGroupPanel = false;
-            this.gridView3.OptionsView.ShowIndicator = false;
+            this.tableAdapterManager.BackupDataSetBeforeUpdate = false;
+            this.tableAdapterManager.Connection = null;
+            this.tableAdapterManager.UpdateOrder = BaredaProject.MyDataSetTableAdapters.TableAdapterManager.UpdateOrderOption.InsertUpdateDelete;
+            // 
+            // database_backupsBindingSource
+            // 
+            this.database_backupsBindingSource.DataMember = "database_backups";
+            this.database_backupsBindingSource.DataSource = this.myDataSet;
+            // 
+            // database_backupsTableAdapter
+            // 
+            this.database_backupsTableAdapter.ClearBeforeFill = true;
+            // 
+            // backup_devicesBindingSource
+            // 
+            this.backup_devicesBindingSource.DataMember = "backup_devices";
+            this.backup_devicesBindingSource.DataSource = this.myDataSet;
+            // 
+            // backup_devicesTableAdapter
+            // 
+            this.backup_devicesTableAdapter.ClearBeforeFill = true;
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(1202, 537);
-            this.Controls.Add(this.tblBackupList);
-            this.Controls.Add(this.tblDBList);
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(1924, 1055);
             this.Controls.Add(this.gridControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
@@ -506,6 +504,7 @@ namespace BaredaProject
             this.Name = "Main";
             this.Text = "Bareda Project";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.Main_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
@@ -515,10 +514,10 @@ namespace BaredaProject
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemDateEdit1.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemDateEdit1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tblDBList)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tblBackupList)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.myDataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.databases_listBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.database_backupsBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.backup_devicesBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -554,8 +553,6 @@ namespace BaredaProject
         private DevExpress.XtraBars.BarCheckItem barCheckItem1;
         private DevExpress.XtraBars.BarButtonItem barButtonItem8;
         private DevExpress.XtraBars.BarButtonItem btnDelBackup;
-        private DevExpress.XtraGrid.GridControl tblDBList;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
         private DevExpress.XtraBars.BarCheckItem barCheckItem2;
         private DevExpress.XtraBars.PopupMenu restoreMenu;
         private DevExpress.XtraBars.BarButtonItem barBtnSR;
@@ -563,9 +560,15 @@ namespace BaredaProject
         private DevExpress.XtraBars.PopupMenu backupMenu;
         private DevExpress.XtraBars.BarButtonItem barBtnDeB;
         private DevExpress.XtraBars.BarButtonItem barBtnRB;
-        private DevExpress.XtraGrid.GridControl tblBackupList;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView3;
         private DevExpress.XtraBars.BarButtonItem barButtonItem3;
+        private System.Windows.Forms.BindingSource databases_listBindingSource;
+        private MyDataSet myDataSet;
+        private MyDataSetTableAdapters.databases_listTableAdapter databases_listTableAdapter;
+        private MyDataSetTableAdapters.TableAdapterManager tableAdapterManager;
+        private System.Windows.Forms.BindingSource database_backupsBindingSource;
+        private MyDataSetTableAdapters.database_backupsTableAdapter database_backupsTableAdapter;
+        private System.Windows.Forms.BindingSource backup_devicesBindingSource;
+        private MyDataSetTableAdapters.backup_devicesTableAdapter backup_devicesTableAdapter;
     }
 }
 
