@@ -79,7 +79,6 @@ namespace BaredaProject
             this.coldatabase_id = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gcBackups = new DevExpress.XtraGrid.GridControl();
             this.gvBackups = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.cardView2 = new DevExpress.XtraGrid.Views.Card.CardView();
             this.colposition = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colbackup_start_date = new DevExpress.XtraGrid.Columns.GridColumn();
             this.coluser_name = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -99,7 +98,6 @@ namespace BaredaProject
             ((System.ComponentModel.ISupportInitialize)(this.gvDBList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gcBackups)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvBackups)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cardView2)).BeginInit();
             this.SuspendLayout();
             // 
             // barManager1
@@ -554,7 +552,7 @@ namespace BaredaProject
             // 
             this.colname.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(164)))), ((int)(((byte)(236)))));
             this.colname.AppearanceHeader.Options.UseBackColor = true;
-            this.colname.Caption = "Tên";
+            this.colname.Caption = " Tên";
             this.colname.FieldName = "name";
             this.colname.MinWidth = 25;
             this.colname.Name = "colname";
@@ -594,8 +592,7 @@ namespace BaredaProject
             this.gcBackups.Size = new System.Drawing.Size(748, 361);
             this.gcBackups.TabIndex = 14;
             this.gcBackups.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gvBackups,
-            this.cardView2});
+            this.gvBackups});
             // 
             // gvBackups
             // 
@@ -609,7 +606,7 @@ namespace BaredaProject
             this.gvBackups.Appearance.FocusedRow.Options.UseBackColor = true;
             this.gvBackups.Appearance.GroupRow.Font = new System.Drawing.Font("Baloo 2", 10.2F);
             this.gvBackups.Appearance.GroupRow.Options.UseFont = true;
-            this.gvBackups.Appearance.HeaderPanel.Font = new System.Drawing.Font("Baloo 2", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gvBackups.Appearance.HeaderPanel.Font = new System.Drawing.Font("Baloo 2", 12F, System.Drawing.FontStyle.Bold);
             this.gvBackups.Appearance.HeaderPanel.Options.UseFont = true;
             this.gvBackups.Appearance.HideSelectionRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
             this.gvBackups.Appearance.HideSelectionRow.Options.UseBackColor = true;
@@ -627,7 +624,7 @@ namespace BaredaProject
             this.gvBackups.Appearance.SelectedRow.Options.UseFont = true;
             this.gvBackups.Appearance.TopNewRow.Font = new System.Drawing.Font("Baloo 2", 10.2F);
             this.gvBackups.Appearance.TopNewRow.Options.UseFont = true;
-            this.gvBackups.Appearance.ViewCaption.Font = new System.Drawing.Font("Baloo 2", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gvBackups.Appearance.ViewCaption.Font = new System.Drawing.Font("Baloo 2", 13.8F, System.Drawing.FontStyle.Bold);
             this.gvBackups.Appearance.ViewCaption.Options.UseFont = true;
             this.gvBackups.AppearancePrint.OddRow.BackColor = System.Drawing.Color.DimGray;
             this.gvBackups.AppearancePrint.OddRow.Options.UseBackColor = true;
@@ -649,61 +646,65 @@ namespace BaredaProject
             this.gvBackups.OptionsView.ShowGroupPanel = false;
             this.gvBackups.OptionsView.ShowIndicator = false;
             this.gvBackups.OptionsView.ShowViewCaption = true;
+            this.gvBackups.SortInfo.AddRange(new DevExpress.XtraGrid.Columns.GridColumnSortInfo[] {
+            new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.colbackup_start_date, DevExpress.Data.ColumnSortOrder.Ascending)});
             this.gvBackups.ViewCaption = "Danh sách bản sao lưu theo BikeStores";
-            // 
-            // cardView2
-            // 
-            this.cardView2.GridControl = this.gcBackups;
-            this.cardView2.Name = "cardView2";
-            this.cardView2.VertScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Auto;
             // 
             // colposition
             // 
+            this.colposition.AppearanceCell.Options.UseTextOptions = true;
+            this.colposition.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.colposition.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(164)))), ((int)(((byte)(236)))));
             this.colposition.AppearanceHeader.Options.UseBackColor = true;
+            this.colposition.AppearanceHeader.Options.UseTextOptions = true;
+            this.colposition.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.colposition.Caption = "Thứ tự";
             this.colposition.FieldName = "position";
-            this.colposition.MinWidth = 25;
+            this.colposition.MaxWidth = 150;
+            this.colposition.MinWidth = 150;
             this.colposition.Name = "colposition";
+            this.colposition.OptionsColumn.FixedWidth = true;
             this.colposition.Visible = true;
             this.colposition.VisibleIndex = 0;
-            this.colposition.Width = 94;
+            this.colposition.Width = 150;
             // 
             // colbackup_start_date
             // 
             this.colbackup_start_date.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(164)))), ((int)(((byte)(236)))));
             this.colbackup_start_date.AppearanceHeader.Options.UseBackColor = true;
-            this.colbackup_start_date.Caption = "Ngày sao lưu";
+            this.colbackup_start_date.Caption = " Ngày sao lưu";
             this.colbackup_start_date.FieldName = "backup_start_date";
-            this.colbackup_start_date.MinWidth = 25;
+            this.colbackup_start_date.MaxWidth = 250;
+            this.colbackup_start_date.MinWidth = 250;
             this.colbackup_start_date.Name = "colbackup_start_date";
             this.colbackup_start_date.Visible = true;
-            this.colbackup_start_date.VisibleIndex = 1;
-            this.colbackup_start_date.Width = 94;
+            this.colbackup_start_date.VisibleIndex = 2;
+            this.colbackup_start_date.Width = 250;
             // 
             // coluser_name
             // 
             this.coluser_name.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(164)))), ((int)(((byte)(236)))));
             this.coluser_name.AppearanceHeader.Options.UseBackColor = true;
-            this.coluser_name.Caption = "User sao lưu";
+            this.coluser_name.Caption = " User sao lưu";
             this.coluser_name.FieldName = "user_name";
-            this.coluser_name.MinWidth = 25;
+            this.coluser_name.MaxWidth = 250;
+            this.coluser_name.MinWidth = 150;
             this.coluser_name.Name = "coluser_name";
             this.coluser_name.Visible = true;
-            this.coluser_name.VisibleIndex = 2;
-            this.coluser_name.Width = 94;
+            this.coluser_name.VisibleIndex = 3;
+            this.coluser_name.Width = 150;
             // 
             // coldescription
             // 
             this.coldescription.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(164)))), ((int)(((byte)(236)))));
             this.coldescription.AppearanceHeader.Options.UseBackColor = true;
-            this.coldescription.Caption = "Mô tả";
+            this.coldescription.Caption = " Mô tả";
             this.coldescription.FieldName = "description";
-            this.coldescription.MinWidth = 25;
+            this.coldescription.MinWidth = 250;
             this.coldescription.Name = "coldescription";
             this.coldescription.Visible = true;
-            this.coldescription.VisibleIndex = 3;
-            this.coldescription.Width = 94;
+            this.coldescription.VisibleIndex = 1;
+            this.coldescription.Width = 250;
             // 
             // Main
             // 
@@ -737,7 +738,6 @@ namespace BaredaProject
             ((System.ComponentModel.ISupportInitialize)(this.gvDBList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gcBackups)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvBackups)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cardView2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -790,7 +790,6 @@ namespace BaredaProject
         private DevExpress.XtraGrid.Views.Grid.GridView gvDBList;
         private DevExpress.XtraGrid.GridControl gcBackups;
         private DevExpress.XtraGrid.Views.Grid.GridView gvBackups;
-        private DevExpress.XtraGrid.Views.Card.CardView cardView2;
         private DevExpress.XtraGrid.Columns.GridColumn colname;
         private DevExpress.XtraGrid.Columns.GridColumn coldatabase_id;
         private DevExpress.XtraGrid.Columns.GridColumn colposition;

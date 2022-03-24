@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.XtraEditors.Repository;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,12 +16,23 @@ namespace BaredaProject
         public Main()
         {
             InitializeComponent();
+            CustomCellPadding();
         }
 
         private void barBtnSR_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             TimeInput input = new TimeInput();
             input.ShowDialog();
+        }
+
+        private void CustomCellPadding()
+        {
+            RepositoryItemTextEdit edit = new RepositoryItemTextEdit();
+            edit.Padding = new Padding(5, 2, 2, 2);
+            gvDBList.Columns[1].ColumnEdit =
+            gvBackups.Columns[1].ColumnEdit =
+            gvBackups.Columns[2].ColumnEdit =
+            gvBackups.Columns[3].ColumnEdit = edit;
         }
 
         private void Main_Load(object sender, EventArgs e)
