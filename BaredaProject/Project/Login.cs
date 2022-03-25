@@ -74,7 +74,7 @@ namespace BaredaProject
         private void ShowMainForm(String userName)
         {
             Program.MainInstance = new Main();
-            Program.MainInstance.barLblUser.Caption = "Tài khoản: " + userName;
+            Program.MainInstance.stripUserName.Text = "Tài khoản: " + userName;
             this.Hide();
             Program.MainInstance.Show();
         }

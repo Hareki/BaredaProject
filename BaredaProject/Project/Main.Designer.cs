@@ -42,8 +42,8 @@ namespace BaredaProject
             this.restoreMenu = new DevExpress.XtraBars.PopupMenu(this.components);
             this.barBtnDR = new DevExpress.XtraBars.BarButtonItem();
             this.barBtnSR = new DevExpress.XtraBars.BarButtonItem();
-            this.barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
-            this.btnDevice = new DevExpress.XtraBars.BarButtonItem();
+            this.btnRefresh = new DevExpress.XtraBars.BarButtonItem();
+            this.btnCreateDevice = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -56,13 +56,9 @@ namespace BaredaProject
             this.repositoryItemTextEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.textTime = new DevExpress.XtraBars.BarEditItem();
             this.repositoryItemDateEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
-            this.barStaticItem1 = new DevExpress.XtraBars.BarStaticItem();
-            this.barStaticItem2 = new DevExpress.XtraBars.BarStaticItem();
-            this.barStaticItem3 = new DevExpress.XtraBars.BarStaticItem();
             this.barButtonItem8 = new DevExpress.XtraBars.BarButtonItem();
             this.barCheckItem1 = new DevExpress.XtraBars.BarCheckItem();
             this.barCheckItem2 = new DevExpress.XtraBars.BarCheckItem();
-            this.barLblUser = new DevExpress.XtraBars.BarStaticItem();
             this.barButtonItem5 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem6 = new DevExpress.XtraBars.BarButtonItem();
             this.myDataSet = new BaredaProject.MyDataSet();
@@ -84,8 +80,9 @@ namespace BaredaProject
             this.coluser_name = new DevExpress.XtraGrid.Columns.GridColumn();
             this.coldescription = new DevExpress.XtraGrid.Columns.GridColumn();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.stripUserName = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.separatorControl1 = new DevExpress.XtraEditors.SeparatorControl();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.backupMenu)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.restoreMenu)).BeginInit();
@@ -102,6 +99,7 @@ namespace BaredaProject
             ((System.ComponentModel.ISupportInitialize)(this.gcBackups)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvBackups)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).BeginInit();
             this.SuspendLayout();
             // 
             // barManager1
@@ -121,10 +119,6 @@ namespace BaredaProject
             this.textTime,
             this.btnBackup,
             this.btnRestore,
-            this.btnDevice,
-            this.barStaticItem1,
-            this.barStaticItem2,
-            this.barStaticItem3,
             this.barButtonItem8,
             this.barCheckItem1,
             this.btnDelBackup,
@@ -133,10 +127,10 @@ namespace BaredaProject
             this.barBtnDR,
             this.barBtnDeB,
             this.barBtnRB,
-            this.barButtonItem3,
-            this.barLblUser});
+            this.btnRefresh,
+            this.btnCreateDevice});
             this.barManager1.MainMenu = this.bar2;
-            this.barManager1.MaxItemId = 22;
+            this.barManager1.MaxItemId = 23;
             this.barManager1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemTextEdit1,
             this.repositoryItemTextEdit2,
@@ -144,6 +138,8 @@ namespace BaredaProject
             // 
             // bar2
             // 
+            this.bar2.BarAppearance.Normal.BorderColor = System.Drawing.Color.Black;
+            this.bar2.BarAppearance.Normal.Options.UseBorderColor = true;
             this.bar2.BarName = "Main menu";
             this.bar2.DockCol = 0;
             this.bar2.DockRow = 0;
@@ -152,10 +148,10 @@ namespace BaredaProject
             new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnBackup, "", true, true, true, 0, null, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
             new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnDelBackup, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
             new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnRestore, "", true, true, true, 0, null, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
-            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.barButtonItem3, "", true, true, true, 0, null, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
-            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnDevice, "", true, true, true, 0, null, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph)});
+            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnRefresh, "", true, true, true, 0, null, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
+            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnCreateDevice, "", true, true, true, 0, null, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph)});
             this.bar2.OptionsBar.AllowQuickCustomization = false;
-            this.bar2.OptionsBar.DrawBorder = false;
+            this.bar2.OptionsBar.DrawDragBorder = false;
             this.bar2.OptionsBar.UseWholeRow = true;
             this.bar2.Text = "Main menu";
             // 
@@ -248,26 +244,28 @@ namespace BaredaProject
             this.barBtnSR.Name = "barBtnSR";
             this.barBtnSR.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barBtnSR_ItemClick);
             // 
-            // barButtonItem3
+            // btnRefresh
             // 
-            this.barButtonItem3.Caption = "  Làm mới ";
-            this.barButtonItem3.Id = 20;
-            this.barButtonItem3.ImageOptions.Image = global::BaredaProject.Properties.Resources.refresh_1_;
-            this.barButtonItem3.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2 Medium", 14F, System.Drawing.FontStyle.Bold);
-            this.barButtonItem3.ItemAppearance.Normal.Options.UseFont = true;
-            this.barButtonItem3.Name = "barButtonItem3";
+            this.btnRefresh.Caption = "  Làm mới ";
+            this.btnRefresh.Id = 20;
+            this.btnRefresh.ImageOptions.Image = global::BaredaProject.Properties.Resources.refresh_1_;
+            this.btnRefresh.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2 Medium", 14F, System.Drawing.FontStyle.Bold);
+            this.btnRefresh.ItemAppearance.Normal.Options.UseFont = true;
+            this.btnRefresh.Name = "btnRefresh";
             // 
-            // btnDevice
+            // btnCreateDevice
             // 
-            this.btnDevice.Caption = "  Tạo device  ";
-            this.btnDevice.Id = 8;
-            this.btnDevice.ImageOptions.Image = global::BaredaProject.Properties.Resources.data_warehouse;
-            this.btnDevice.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2 Medium", 14F, System.Drawing.FontStyle.Bold);
-            this.btnDevice.ItemAppearance.Normal.Options.UseFont = true;
-            this.btnDevice.Name = "btnDevice";
+            this.btnCreateDevice.Caption = " Tạo device";
+            this.btnCreateDevice.Id = 22;
+            this.btnCreateDevice.ImageOptions.Image = global::BaredaProject.Properties.Resources.data_warehouse;
+            this.btnCreateDevice.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2 Medium", 14F, System.Drawing.FontStyle.Bold);
+            this.btnCreateDevice.ItemAppearance.Normal.Options.UseFont = true;
+            this.btnCreateDevice.Name = "btnCreateDevice";
             // 
             // barDockControlTop
             // 
+            this.barDockControlTop.Appearance.BorderColor = System.Drawing.Color.Red;
+            this.barDockControlTop.Appearance.Options.UseBorderColor = true;
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
@@ -370,30 +368,6 @@ namespace BaredaProject
             this.repositoryItemDateEdit1.Name = "repositoryItemDateEdit1";
             this.repositoryItemDateEdit1.VistaDisplayMode = DevExpress.Utils.DefaultBoolean.True;
             // 
-            // barStaticItem1
-            // 
-            this.barStaticItem1.Caption = " Nguyễn Ngọc Minh Tú ";
-            this.barStaticItem1.Id = 9;
-            this.barStaticItem1.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.barStaticItem1.ItemAppearance.Normal.Options.UseFont = true;
-            this.barStaticItem1.Name = "barStaticItem1";
-            // 
-            // barStaticItem2
-            // 
-            this.barStaticItem2.Caption = " N18DCCN192 ";
-            this.barStaticItem2.Id = 10;
-            this.barStaticItem2.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.barStaticItem2.ItemAppearance.Normal.Options.UseFont = true;
-            this.barStaticItem2.Name = "barStaticItem2";
-            // 
-            // barStaticItem3
-            // 
-            this.barStaticItem3.Caption = " Đồ án sao lưu - phục hồi cơ sở dữ liệu trong SQL Server ";
-            this.barStaticItem3.Id = 11;
-            this.barStaticItem3.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.barStaticItem3.ItemAppearance.Normal.Options.UseFont = true;
-            this.barStaticItem3.Name = "barStaticItem3";
-            // 
             // barButtonItem8
             // 
             this.barButtonItem8.Caption = "barButtonItem8";
@@ -413,17 +387,6 @@ namespace BaredaProject
             this.barCheckItem2.CheckBoxVisibility = DevExpress.XtraBars.CheckBoxVisibility.AfterText;
             this.barCheckItem2.Id = 15;
             this.barCheckItem2.Name = "barCheckItem2";
-            // 
-            // barLblUser
-            // 
-            this.barLblUser.Caption = "Tài khoản: sa";
-            this.barLblUser.Id = 21;
-            this.barLblUser.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2 SemiBold", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.barLblUser.ItemAppearance.Normal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(164)))), ((int)(((byte)(236)))));
-            this.barLblUser.ItemAppearance.Normal.Options.UseFont = true;
-            this.barLblUser.ItemAppearance.Normal.Options.UseForeColor = true;
-            this.barLblUser.Name = "barLblUser";
-            this.barLblUser.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
             // 
             // barButtonItem5
             // 
@@ -485,11 +448,11 @@ namespace BaredaProject
             | System.Windows.Forms.AnchorStyles.Left)));
             this.gcDBList.DataSource = this.databases_listBindingSource;
             this.gcDBList.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gcDBList.Location = new System.Drawing.Point(39, 96);
+            this.gcDBList.Location = new System.Drawing.Point(39, 106);
             this.gcDBList.MainView = this.gvDBList;
-            this.gcDBList.Margin = new System.Windows.Forms.Padding(30, 30, 20, 30);
+            this.gcDBList.Margin = new System.Windows.Forms.Padding(40, 40, 20, 40);
             this.gcDBList.Name = "gcDBList";
-            this.gcDBList.Size = new System.Drawing.Size(417, 361);
+            this.gcDBList.Size = new System.Drawing.Size(417, 341);
             this.gcDBList.TabIndex = 13;
             this.gcDBList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvDBList});
@@ -583,11 +546,11 @@ namespace BaredaProject
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gcBackups.DataSource = this.database_backupsBindingSource;
             this.gcBackups.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gcBackups.Location = new System.Drawing.Point(496, 96);
+            this.gcBackups.Location = new System.Drawing.Point(496, 106);
             this.gcBackups.MainView = this.gvBackups;
-            this.gcBackups.Margin = new System.Windows.Forms.Padding(20, 30, 30, 30);
+            this.gcBackups.Margin = new System.Windows.Forms.Padding(20, 40, 40, 40);
             this.gcBackups.Name = "gcBackups";
-            this.gcBackups.Size = new System.Drawing.Size(769, 361);
+            this.gcBackups.Size = new System.Drawing.Size(738, 341);
             this.gcBackups.TabIndex = 14;
             this.gcBackups.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvBackups});
@@ -708,31 +671,42 @@ namespace BaredaProject
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1,
+            this.stripUserName,
             this.toolStripStatusLabel2});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 489);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 487);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1283, 38);
+            this.statusStrip1.Size = new System.Drawing.Size(1283, 40);
             this.statusStrip1.TabIndex = 19;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // toolStripStatusLabel1
+            // stripUserName
             // 
-            this.toolStripStatusLabel1.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
-            this.toolStripStatusLabel1.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
-            this.toolStripStatusLabel1.Font = new System.Drawing.Font("Baloo 2 Medium", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripStatusLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(164)))), ((int)(((byte)(236)))));
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(120, 32);
-            this.toolStripStatusLabel1.Text = "Tài khoản: sa ";
+            this.stripUserName.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
+            this.stripUserName.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
+            this.stripUserName.Font = new System.Drawing.Font("Baloo 2 Medium", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stripUserName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(164)))), ((int)(((byte)(236)))));
+            this.stripUserName.Name = "stripUserName";
+            this.stripUserName.Size = new System.Drawing.Size(133, 34);
+            this.stripUserName.Text = " Tài khoản: sa ";
             // 
             // toolStripStatusLabel2
             // 
             this.toolStripStatusLabel2.Font = new System.Drawing.Font("Baloo 2", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripStatusLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(304, 32);
-            this.toolStripStatusLabel2.Text = " Đồ án sao lưu - phục hồi cơ sở dữ liệu";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(459, 34);
+            this.toolStripStatusLabel2.Text = " Đồ án sao lưu - phục hồi cơ sở dữ liệu trong SQL Server";
+            // 
+            // separatorControl1
+            // 
+            this.separatorControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.separatorControl1.BackColor = System.Drawing.SystemColors.Control;
+            this.separatorControl1.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.separatorControl1.Location = new System.Drawing.Point(0, 57);
+            this.separatorControl1.Name = "separatorControl1";
+            this.separatorControl1.Size = new System.Drawing.Size(1283, 19);
+            this.separatorControl1.TabIndex = 24;
             // 
             // Main
             // 
@@ -741,6 +715,7 @@ namespace BaredaProject
             this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1283, 527);
+            this.Controls.Add(this.separatorControl1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.gcBackups);
             this.Controls.Add(this.gcDBList);
@@ -772,6 +747,7 @@ namespace BaredaProject
             ((System.ComponentModel.ISupportInitialize)(this.gvBackups)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -796,10 +772,6 @@ namespace BaredaProject
         private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repositoryItemTextEdit2;
         private DevExpress.XtraBars.BarButtonItem barButtonItem5;
         private DevExpress.XtraBars.BarButtonItem barButtonItem6;
-        private DevExpress.XtraBars.BarButtonItem btnDevice;
-        private DevExpress.XtraBars.BarStaticItem barStaticItem1;
-        private DevExpress.XtraBars.BarStaticItem barStaticItem2;
-        private DevExpress.XtraBars.BarStaticItem barStaticItem3;
         private DevExpress.XtraBars.BarCheckItem barCheckItem1;
         private DevExpress.XtraBars.BarButtonItem barButtonItem8;
         private DevExpress.XtraBars.BarButtonItem btnDelBackup;
@@ -810,7 +782,7 @@ namespace BaredaProject
         private DevExpress.XtraBars.PopupMenu backupMenu;
         private DevExpress.XtraBars.BarButtonItem barBtnDeB;
         private DevExpress.XtraBars.BarButtonItem barBtnRB;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem3;
+        private DevExpress.XtraBars.BarButtonItem btnRefresh;
         private System.Windows.Forms.BindingSource databases_listBindingSource;
         private MyDataSet myDataSet;
         private MyDataSetTableAdapters.databases_listTableAdapter databases_listTableAdapter;
@@ -829,10 +801,11 @@ namespace BaredaProject
         private DevExpress.XtraGrid.Columns.GridColumn colbackup_start_date;
         private DevExpress.XtraGrid.Columns.GridColumn coluser_name;
         private DevExpress.XtraGrid.Columns.GridColumn coldescription;
-        public DevExpress.XtraBars.BarStaticItem barLblUser;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+        public System.Windows.Forms.ToolStripStatusLabel stripUserName;
+        private DevExpress.XtraEditors.SeparatorControl separatorControl1;
+        private DevExpress.XtraBars.BarButtonItem btnCreateDevice;
     }
 }
 
