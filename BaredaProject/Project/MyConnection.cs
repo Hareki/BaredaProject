@@ -35,11 +35,13 @@ namespace BaredaProject
             {
                 ServerConnection.ConnectionString = _connectionString;
                 ServerConnection.Open();
+                Console.WriteLine("Connection String: " + _connectionString);
                 return true;
             }
 
             catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
                 return false;
             }
 

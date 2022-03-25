@@ -8,6 +8,8 @@ namespace BaredaProject
 {
     static class Program
     {
+        public static Main MainInstance;
+        public static Login LoginInstance;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -16,7 +18,8 @@ namespace BaredaProject
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Login());
+            LoginInstance = new Login();
+            Application.Run(LoginInstance);
         }
     }
 }

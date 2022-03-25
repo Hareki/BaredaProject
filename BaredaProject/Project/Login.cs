@@ -62,10 +62,21 @@ namespace BaredaProject
             String userName = textUser.Text.Trim();
             String password = textPassword.Text.Trim();
 
-            MyConnection.connect(serverName, userName, password);
+            if(!MyConnection.connect(serverName, userName, password))
+            {
+                Utils.ShowInfoMessage("Lỗi đăng nhập", "Tài khoản, mật khẩu hoặc tên server không chính xác", Utils.MessageType.Error);
+                return;
+            }
 
+            ShowMainForm(userName);
+        }
 
-
+        private void ShowMainForm(String userName)
+        {
+            Program.MainInstance = new Main();
+            Program.MainInstance.barLblUser.Caption = "Tài khoản: " + userName;
+            this.Hide();
+            Program.MainInstance.Show();
         }
 
         private void BtnClose_Click(object sender, EventArgs e)
