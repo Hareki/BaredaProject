@@ -1987,13 +1987,9 @@ namespace BaredaProject.MyDataSetTableAdapters {
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = @"SELECT position, description, backup_start_date, user_name
-FROM     msdb.dbo.backupset
-WHERE  (database_name = @DBNAME) AND (type = 'D') AND (backup_set_id >=
-                      (SELECT MAX(backup_set_id) AS Expr1
-                       FROM      msdb.dbo.backupset AS backupset_1
-                       WHERE   (database_name = @DBNAME) AND (type = 'D') AND (position = 1)))
-ORDER BY position DESC";
+            this._commandCollection[0].CommandText = "SELECT position, description, backup_start_date, user_name\r\nFROM     msdb.dbo.bac" +
+                "kupset\r\nWHERE  (database_name = @DBNAME) AND (type = \'D\')\r\nORDER BY position DES" +
+                "C";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[0].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DBNAME", global::System.Data.SqlDbType.NVarChar, 128, global::System.Data.ParameterDirection.Input, 0, 0, "database_name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }

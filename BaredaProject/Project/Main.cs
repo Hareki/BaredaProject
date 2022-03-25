@@ -138,7 +138,7 @@ namespace BaredaProject
             if (input.Continue)
             {
                 string description = input.Description;
-                if (MyConnection.BackupDB(dbName, description, false))
+                if (MyConnection.BackupDB(dbName, description, init))
                 {
                     Utils.ShowInfoMessage("Thông báo", "Tạo bản sao lưu thành công", Utils.MessageType.Information);
                 }
@@ -178,6 +178,22 @@ namespace BaredaProject
                 ReloadGvBackups(getSelectedDBName());
             }
 
+        }
+
+        private int GetSelectedBackupPos()
+        {
+            string text = Utils.GetCellStringGridView(gvBackups, colposition, -1);
+            return int.Parse(text);
+        }
+        private void BtnDelBackup_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            string dbName = getSelectedDBName();
+            int pos = GetSelectedBackupPos();
+            if (MyConnection.DeleteBackupInstance(dbName, pos))
+            {
+                Utils.ShowInfoMessage("Thông báo", "Đã xóa bản sao lưu được chọn", Utils.MessageType.Information);
+                ReloadGvBackups(getSelectedDBName());
+            }
         }
     }
 }
