@@ -48,15 +48,15 @@ namespace BaredaProject
 
         }
 
-        public static bool BackupDB(string dbName, bool init)
+        public static bool BackupDB(string dbName, string description, bool init)
         {
-            string command = $"BACKUP DATABASE {dbName} TO Device_{dbName}";
-            if (init) command += " WITH INIT";
+            string command = $"BACKUP DATABASE {dbName} TO Device_{dbName} WITH DESCRIPTION = N'{description}'";
+            if (init) command += ", INIT";
             return ExecSqlNonQuery(command, ConnectionString);
 
         }
 
-        public static bool CreateDevice(string deviceName,string fullPath)
+        public static bool CreateDevice(string deviceName, string fullPath)
         {
             string command = $"EXEC master.dbo.sp_addumpdevice @devtype = N'disk', @logicalname = N'{deviceName}', @physicalname = N'{fullPath}'";
             return ExecSqlNonQuery(command, ConnectionString);

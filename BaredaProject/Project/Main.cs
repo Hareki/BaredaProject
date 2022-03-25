@@ -1,4 +1,5 @@
 ﻿using BaredaProject.Project;
+using BaredaProject.Project.Dialogs;
 using DevExpress.XtraEditors.Repository;
 using System;
 using System.Collections.Generic;
@@ -121,28 +122,37 @@ namespace BaredaProject
             return Utils.GetCellStringGridView(gvDBList, colname, -1);
         }
 
-        private void BarBtnDefaultBackup_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        private void BackupDB(bool init)
         {
-            string dbName = getSelectedDBName();
-            if (MyConnection.BackupDB(dbName, false))
+            if (init)
             {
-                Utils.ShowInfoMessage("Thông báo", "Tạo bản sao lưu thành công", Utils.MessageType.Information);
+                if (!Utils.ShowConfirmMessage("Xác nhận", "Bạn có chắc muốn xóa toàn bộ các bản sao lưu cũ và ghi bản mới?"))
+                {
+                    return;
+                }
             }
-            ReloadGvBackups(dbName);
 
-        }
-
-        private void BarBtnInitBackup_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
             string dbName = getSelectedDBName();
-            if (Utils.ShowConfirmMessage("Xác nhận", "Bạn có chắc muốn xóa toàn bộ các bản sao lưu cũ và ghi bản mới?"))
+            DescriptionInput input = new DescriptionInput();
+            input.ShowDialog();
+            if (input.Continue)
             {
-                if (MyConnection.BackupDB(dbName, true))
+                string description = input.Description;
+                if (MyConnection.BackupDB(dbName, description, false))
                 {
                     Utils.ShowInfoMessage("Thông báo", "Tạo bản sao lưu thành công", Utils.MessageType.Information);
                 }
                 ReloadGvBackups(dbName);
             }
+        }
+        private void BarBtnDefaultBackup_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            BackupDB(false);
+        }
+
+        private void BarBtnInitBackup_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            BackupDB(true);
 
         }
 

@@ -61,7 +61,7 @@ namespace BaredaProject
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.textPassword);
             this.panel1.Controls.Add(this.label1);
-            this.panel1.Location = new System.Drawing.Point(58, 31);
+            this.panel1.Location = new System.Drawing.Point(12, 31);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(485, 547);
             this.panel1.TabIndex = 20;
@@ -73,7 +73,7 @@ namespace BaredaProject
             this.btnClose.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
             this.btnClose.Image = global::BaredaProject.Properties.Resources.cancel_30px;
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnClose.Location = new System.Drawing.Point(49, 454);
+            this.btnClose.Location = new System.Drawing.Point(49, 463);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(182, 55);
             this.btnClose.TabIndex = 45;
@@ -90,7 +90,7 @@ namespace BaredaProject
             this.btnLogin.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
             this.btnLogin.Image = global::BaredaProject.Properties.Resources.enter_30px;
             this.btnLogin.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnLogin.Location = new System.Drawing.Point(258, 454);
+            this.btnLogin.Location = new System.Drawing.Point(258, 463);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(182, 55);
             this.btnLogin.TabIndex = 44;
@@ -258,7 +258,7 @@ namespace BaredaProject
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(600, 638);
+            this.ClientSize = new System.Drawing.Size(509, 638);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

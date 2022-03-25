@@ -323,6 +323,16 @@ namespace BaredaProject.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap save_as_30px {
+            get {
+                object obj = ResourceManager.GetObject("save_as_30px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap server_storage {
             get {
                 object obj = ResourceManager.GetObject("server-storage", resourceCulture);

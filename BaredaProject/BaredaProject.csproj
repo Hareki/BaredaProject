@@ -70,6 +70,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Project\Dialogs\DescriptionInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Project\Dialogs\DescriptionInput.Designer.cs">
+      <DependentUpon>DescriptionInput.cs</DependentUpon>
+    </Compile>
     <Compile Include="Project\MyConnection.cs" />
     <Compile Include="Project\Login.cs">
       <SubType>Form</SubType>
@@ -97,6 +103,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Project\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Project\Dialogs\DescriptionInput.resx">
+      <DependentUpon>DescriptionInput.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Project\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
@@ -230,6 +239,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\eye_512px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save_as_30px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
