@@ -82,10 +82,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MyDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Project\TimeInput.cs">
+    <Compile Include="Project\Dialogs\TimeInput.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Project\TimeInput.Designer.cs">
+    <Compile Include="Project\Dialogs\TimeInput.Designer.cs">
       <DependentUpon>TimeInput.cs</DependentUpon>
     </Compile>
     <Compile Include="Project\Main.cs">
@@ -100,7 +100,7 @@
     <EmbeddedResource Include="Project\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Project\TimeInput.resx">
+    <EmbeddedResource Include="Project\Dialogs\TimeInput.resx">
       <DependentUpon>TimeInput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Project\Main.resx">

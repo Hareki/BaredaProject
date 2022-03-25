@@ -35,13 +35,13 @@ namespace BaredaProject
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.btnBackup = new DevExpress.XtraBars.BarButtonItem();
             this.backupMenu = new DevExpress.XtraBars.PopupMenu(this.components);
-            this.barBtnDeB = new DevExpress.XtraBars.BarButtonItem();
-            this.barBtnRB = new DevExpress.XtraBars.BarButtonItem();
+            this.barBtnDefaultBackup = new DevExpress.XtraBars.BarButtonItem();
+            this.barBtnInitBackup = new DevExpress.XtraBars.BarButtonItem();
             this.btnDelBackup = new DevExpress.XtraBars.BarButtonItem();
             this.btnRestore = new DevExpress.XtraBars.BarButtonItem();
             this.restoreMenu = new DevExpress.XtraBars.PopupMenu(this.components);
-            this.barBtnDR = new DevExpress.XtraBars.BarButtonItem();
-            this.barBtnSR = new DevExpress.XtraBars.BarButtonItem();
+            this.barBtnDefaultRestore = new DevExpress.XtraBars.BarButtonItem();
+            this.barBtnTimeRestore = new DevExpress.XtraBars.BarButtonItem();
             this.btnRefresh = new DevExpress.XtraBars.BarButtonItem();
             this.btnCreateDevice = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
@@ -123,10 +123,10 @@ namespace BaredaProject
             this.barCheckItem1,
             this.btnDelBackup,
             this.barCheckItem2,
-            this.barBtnSR,
-            this.barBtnDR,
-            this.barBtnDeB,
-            this.barBtnRB,
+            this.barBtnTimeRestore,
+            this.barBtnDefaultRestore,
+            this.barBtnDefaultBackup,
+            this.barBtnInitBackup,
             this.btnRefresh,
             this.btnCreateDevice});
             this.barManager1.MainMenu = this.bar2;
@@ -161,6 +161,7 @@ namespace BaredaProject
             this.btnBackup.ButtonStyle = DevExpress.XtraBars.BarButtonStyle.DropDown;
             this.btnBackup.Caption = " Sao lưu  ";
             this.btnBackup.DropDownControl = this.backupMenu;
+            this.btnBackup.Enabled = false;
             this.btnBackup.Hint = "Sao lưu CSDL ở thời điểm hiện tại";
             this.btnBackup.Id = 6;
             this.btnBackup.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnBackup.ImageOptions.Image")));
@@ -171,32 +172,35 @@ namespace BaredaProject
             // backupMenu
             // 
             this.backupMenu.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnDeB),
-            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnRB)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnDefaultBackup),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnInitBackup)});
             this.backupMenu.Manager = this.barManager1;
             this.backupMenu.Name = "backupMenu";
             // 
-            // barBtnDeB
+            // barBtnDefaultBackup
             // 
-            this.barBtnDeB.Caption = "Sao lưu thông thường";
-            this.barBtnDeB.Id = 18;
-            this.barBtnDeB.ImageOptions.Image = global::BaredaProject.Properties.Resources.save_as_20px;
-            this.barBtnDeB.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.2F);
-            this.barBtnDeB.ItemAppearance.Normal.Options.UseFont = true;
-            this.barBtnDeB.Name = "barBtnDeB";
+            this.barBtnDefaultBackup.Caption = "Sao lưu thông thường";
+            this.barBtnDefaultBackup.Id = 18;
+            this.barBtnDefaultBackup.ImageOptions.Image = global::BaredaProject.Properties.Resources.save_as_20px;
+            this.barBtnDefaultBackup.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.2F);
+            this.barBtnDefaultBackup.ItemAppearance.Normal.Options.UseFont = true;
+            this.barBtnDefaultBackup.Name = "barBtnDefaultBackup";
+            this.barBtnDefaultBackup.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnDefaultBackup_ItemClick);
             // 
-            // barBtnRB
+            // barBtnInitBackup
             // 
-            this.barBtnRB.Caption = "Xóa tất cả bản sao lưu cũ rồi tiến hành sao lưu";
-            this.barBtnRB.Id = 19;
-            this.barBtnRB.ImageOptions.Image = global::BaredaProject.Properties.Resources.minus_20px;
-            this.barBtnRB.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.2F);
-            this.barBtnRB.ItemAppearance.Normal.Options.UseFont = true;
-            this.barBtnRB.Name = "barBtnRB";
+            this.barBtnInitBackup.Caption = "Xóa tất cả bản sao lưu cũ rồi tiến hành sao lưu";
+            this.barBtnInitBackup.Id = 19;
+            this.barBtnInitBackup.ImageOptions.Image = global::BaredaProject.Properties.Resources.minus_20px;
+            this.barBtnInitBackup.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.2F);
+            this.barBtnInitBackup.ItemAppearance.Normal.Options.UseFont = true;
+            this.barBtnInitBackup.Name = "barBtnInitBackup";
+            this.barBtnInitBackup.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnInitBackup_ItemClick);
             // 
             // btnDelBackup
             // 
             this.btnDelBackup.Caption = "  Xóa bản sao lưu ";
+            this.btnDelBackup.Enabled = false;
             this.btnDelBackup.Hint = "Xóa bản sao lưu đã chọn trên danh sách";
             this.btnDelBackup.Id = 14;
             this.btnDelBackup.ImageOptions.Image = global::BaredaProject.Properties.Resources.remove_from_cart;
@@ -210,6 +214,7 @@ namespace BaredaProject
             this.btnRestore.ButtonStyle = DevExpress.XtraBars.BarButtonStyle.DropDown;
             this.btnRestore.Caption = " Phục hồi ";
             this.btnRestore.DropDownControl = this.restoreMenu;
+            this.btnRestore.Enabled = false;
             this.btnRestore.Hint = "Phục hồi CSDL về một thời điểm tùy chọn";
             this.btnRestore.Id = 7;
             this.btnRestore.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnRestore.ImageOptions.Image")));
@@ -220,29 +225,30 @@ namespace BaredaProject
             // restoreMenu
             // 
             this.restoreMenu.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnDR),
-            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnSR)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnDefaultRestore),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnTimeRestore)});
             this.restoreMenu.Manager = this.barManager1;
             this.restoreMenu.Name = "restoreMenu";
             // 
-            // barBtnDR
+            // barBtnDefaultRestore
             // 
-            this.barBtnDR.Caption = "Phục hồi theo bản sao lưu đã chọn";
-            this.barBtnDR.Id = 17;
-            this.barBtnDR.ImageOptions.Image = global::BaredaProject.Properties.Resources.restart_20px;
-            this.barBtnDR.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.2F);
-            this.barBtnDR.ItemAppearance.Normal.Options.UseFont = true;
-            this.barBtnDR.Name = "barBtnDR";
+            this.barBtnDefaultRestore.Caption = "Phục hồi theo bản sao lưu đã chọn";
+            this.barBtnDefaultRestore.Id = 17;
+            this.barBtnDefaultRestore.ImageOptions.Image = global::BaredaProject.Properties.Resources.restart_20px;
+            this.barBtnDefaultRestore.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.2F);
+            this.barBtnDefaultRestore.ItemAppearance.Normal.Options.UseFont = true;
+            this.barBtnDefaultRestore.Name = "barBtnDefaultRestore";
+            this.barBtnDefaultRestore.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnDefaultRestore_ItemClick);
             // 
-            // barBtnSR
+            // barBtnTimeRestore
             // 
-            this.barBtnSR.Caption = "Phục hồi về một thời điểm cụ thể";
-            this.barBtnSR.Id = 16;
-            this.barBtnSR.ImageOptions.Image = global::BaredaProject.Properties.Resources.clock_20px;
-            this.barBtnSR.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.barBtnSR.ItemAppearance.Normal.Options.UseFont = true;
-            this.barBtnSR.Name = "barBtnSR";
-            this.barBtnSR.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barBtnSR_ItemClick);
+            this.barBtnTimeRestore.Caption = "Phục hồi về một thời điểm cụ thể";
+            this.barBtnTimeRestore.Id = 16;
+            this.barBtnTimeRestore.ImageOptions.Image = global::BaredaProject.Properties.Resources.clock_20px;
+            this.barBtnTimeRestore.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.barBtnTimeRestore.ItemAppearance.Normal.Options.UseFont = true;
+            this.barBtnTimeRestore.Name = "barBtnTimeRestore";
+            this.barBtnTimeRestore.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnTimeRestore_ItemClick);
             // 
             // btnRefresh
             // 
@@ -256,11 +262,13 @@ namespace BaredaProject
             // btnCreateDevice
             // 
             this.btnCreateDevice.Caption = " Tạo device";
+            this.btnCreateDevice.Enabled = false;
             this.btnCreateDevice.Id = 22;
             this.btnCreateDevice.ImageOptions.Image = global::BaredaProject.Properties.Resources.data_warehouse;
             this.btnCreateDevice.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2 Medium", 14F, System.Drawing.FontStyle.Bold);
             this.btnCreateDevice.ItemAppearance.Normal.Options.UseFont = true;
             this.btnCreateDevice.Name = "btnCreateDevice";
+            this.btnCreateDevice.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BtnCreateDevice_ItemClick);
             // 
             // barDockControlTop
             // 
@@ -508,7 +516,7 @@ namespace BaredaProject
             this.gvDBList.OptionsView.ShowIndicator = false;
             this.gvDBList.OptionsView.ShowViewCaption = true;
             this.gvDBList.ViewCaption = "Danh sách CSDL";
-            this.gvDBList.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gvDBList_FocusedRowChanged);
+            this.gvDBList.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.GvDBList_FocusedRowChanged);
             // 
             // colname
             // 
@@ -611,6 +619,7 @@ namespace BaredaProject
             this.gvBackups.SortInfo.AddRange(new DevExpress.XtraGrid.Columns.GridColumnSortInfo[] {
             new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.colbackup_start_date, DevExpress.Data.ColumnSortOrder.Ascending)});
             this.gvBackups.ViewCaption = "Danh sách bản sao lưu theo BikeStores";
+            this.gvBackups.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.GvBackups_FocusedRowChanged);
             // 
             // colposition
             // 
@@ -778,11 +787,11 @@ namespace BaredaProject
         private DevExpress.XtraBars.BarButtonItem btnDelBackup;
         private DevExpress.XtraBars.BarCheckItem barCheckItem2;
         private DevExpress.XtraBars.PopupMenu restoreMenu;
-        private DevExpress.XtraBars.BarButtonItem barBtnSR;
-        private DevExpress.XtraBars.BarButtonItem barBtnDR;
+        private DevExpress.XtraBars.BarButtonItem barBtnTimeRestore;
+        private DevExpress.XtraBars.BarButtonItem barBtnDefaultRestore;
         private DevExpress.XtraBars.PopupMenu backupMenu;
-        private DevExpress.XtraBars.BarButtonItem barBtnDeB;
-        private DevExpress.XtraBars.BarButtonItem barBtnRB;
+        private DevExpress.XtraBars.BarButtonItem barBtnDefaultBackup;
+        private DevExpress.XtraBars.BarButtonItem barBtnInitBackup;
         private DevExpress.XtraBars.BarButtonItem btnRefresh;
         private System.Windows.Forms.BindingSource bdsDBList;
         private MyDataSet myDataSet;

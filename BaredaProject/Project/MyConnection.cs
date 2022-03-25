@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BaredaProject.Project;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -18,7 +19,7 @@ namespace BaredaProject
 
         public static SqlConnection ServerConnection = new SqlConnection();
 
-        public static bool connect(string serverName, string userName, string password)
+        public static bool ConnectToServer(string serverName, string userName, string password)
         {
             MyConnection._serverName = serverName;
             MyConnection._userName = userName;
@@ -45,6 +46,42 @@ namespace BaredaProject
                 return false;
             }
 
+        }
+
+        public static bool BackupDB(string dbName, bool init)
+        {
+            string command = $"BACKUP DATABASE {dbName} TO Device_{dbName}";
+            if (init) command += " WITH INIT";
+            return ExecSqlNonQuery(command, ConnectionString);
+
+        }
+
+        public static bool CreateDevice(string deviceName,string fullPath)
+        {
+            string command = $"EXEC master.dbo.sp_addumpdevice @devtype = N'disk', @logicalname = N'{deviceName}', @physicalname = N'{fullPath}'";
+            return ExecSqlNonQuery(command, ConnectionString);
+        }
+
+        private static bool ExecSqlNonQuery(String command, String connectionString)
+        {
+            SqlConnection connection;
+            connection = new SqlConnection(connectionString);
+            SqlCommand sqlCmd = new SqlCommand(command, connection);
+            sqlCmd.CommandType = CommandType.Text;
+            if (connection.State == ConnectionState.Closed) connection.Open();
+            try
+            {
+                sqlCmd.ExecuteNonQuery();
+                connection.Close();
+                return true;
+            }
+            catch (SqlException ex)
+            {
+                connection.Close();
+                Utils.ShowInfoMessage("Lỗi thực thi", ex.Message, Utils.MessageType.Error);
+                Console.WriteLine(ex.StackTrace);
+                return false;
+            }
         }
     }
 }

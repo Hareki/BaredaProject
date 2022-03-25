@@ -33,7 +33,7 @@ namespace BaredaProject.Project
             MessageBox.Show(message, title,
                          MessageBoxButtons.OK, icon);
         }
-        public static bool ShowConfirmMessage(string title, string message, MessageType type)
+        public static bool ShowConfirmMessage(string title, string message)
         {
             MessageBoxIcon icon = MessageBoxIcon.Question;
             var result = MessageBox.Show(message, title, MessageBoxButtons.YesNo, icon);

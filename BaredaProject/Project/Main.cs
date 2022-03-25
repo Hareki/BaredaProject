@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,10 +20,11 @@ namespace BaredaProject
             InitializeComponent();
         }
 
-        private void barBtnSR_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        private string GetDefaultPath()
         {
-            TimeInput input = new TimeInput();
-            input.ShowDialog();
+            string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
+            var directory = new DirectoryInfo(documentsPath);
+            return directory.Parent.FullName + @"\Deivces";
         }
 
         private void CustomCellPadding()
@@ -58,7 +60,7 @@ namespace BaredaProject
             this.adapterDBList.Fill(this.myDataSet.databases_list);
         }
 
-        private void RefreshDeviceState(string dbName)
+        private void RefreshDeviceBackupState(string dbName)
         {
             String deviceName = $"Device_{dbName}";
             adapterDeviceList.Connection.ConnectionString = MyConnection.ConnectionString;
@@ -67,10 +69,14 @@ namespace BaredaProject
             if (bdsDeviceList.Count > 0)
             {
                 btnCreateDevice.Enabled = false;
+                btnBackup.Enabled = true;
+
+
             }
             else
             {
                 btnCreateDevice.Enabled = true;
+                btnBackup.Enabled = false;
             }
         }
 
@@ -78,31 +84,90 @@ namespace BaredaProject
         {
             adapterBackupList.Connection.ConnectionString = MyConnection.ConnectionString;
             adapterBackupList.Fill(this.myDataSet.database_backups, dbName);
-            //if(!btnCreateDevice.Enabled || bdsBackupList.Count <= 0)
-            //{
-            //    btnBackup.Enabled = btnRestore.Enabled = false;
-            //}
         }
         private void SetBackupsViewCaption(string dbName)
         {
             gvBackups.ViewCaption = $"Danh sách bản sao lưu của {dbName}";
         }
-        private void gvDBList_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
+        private void ReloadGvBackups(string dbName)
+        {
+            RefreshDeviceBackupState(dbName);
+            LoadBackups(dbName);
+            SetBackupsViewCaption(dbName);
+        }
+        private void GvDBList_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
         {
             String dbName;
             try
             {
                 if (!IsValidRowBds(bdsDBList)) return;
                 else dbName = Utils.GetCellStringGridView(gvDBList, colname, -1);
-                RefreshDeviceState(dbName);
-                LoadBackups(dbName);
-                SetBackupsViewCaption(dbName);
-
+                ReloadGvBackups(dbName);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message, "", MessageBoxButtons.OK);
             }
+        }
+
+        private void GvBackups_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
+        {
+            Console.WriteLine("focused: " + gvBackups.FocusedRowHandle);
+            btnDelBackup.Enabled = btnRestore.Enabled = !(gvBackups.FocusedRowHandle < 0);
+        }
+
+        private string getSelectedDBName()
+        {
+            return Utils.GetCellStringGridView(gvDBList, colname, -1);
+        }
+
+        private void BarBtnDefaultBackup_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            string dbName = getSelectedDBName();
+            if (MyConnection.BackupDB(dbName, false))
+            {
+                Utils.ShowInfoMessage("Thông báo", "Tạo bản sao lưu thành công", Utils.MessageType.Information);
+            }
+            ReloadGvBackups(dbName);
+
+        }
+
+        private void BarBtnInitBackup_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            string dbName = getSelectedDBName();
+            if (Utils.ShowConfirmMessage("Xác nhận", "Bạn có chắc muốn xóa toàn bộ các bản sao lưu cũ và ghi bản mới?"))
+            {
+                if (MyConnection.BackupDB(dbName, true))
+                {
+                    Utils.ShowInfoMessage("Thông báo", "Tạo bản sao lưu thành công", Utils.MessageType.Information);
+                }
+                ReloadGvBackups(dbName);
+            }
+
+        }
+
+        private void BarBtnDefaultRestore_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+
+        }
+
+        private void BarBtnTimeRestore_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            TimeInput input = new TimeInput();
+            input.ShowDialog();
+        }
+
+        private void BtnCreateDevice_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            string deviceName = $"Device_{getSelectedDBName()}";
+            string fullPath = $"{GetDefaultPath()}\\{deviceName}.bak";
+            Directory.CreateDirectory(GetDefaultPath());
+            if (MyConnection.CreateDevice(deviceName, fullPath))
+            {
+                Utils.ShowInfoMessage("Thông báo", "Tạo device thành công", Utils.MessageType.Information);
+                ReloadGvBackups(getSelectedDBName());
+            }
+
         }
     }
 }
