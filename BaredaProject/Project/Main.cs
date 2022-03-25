@@ -1,4 +1,5 @@
-﻿using DevExpress.XtraEditors.Repository;
+﻿using BaredaProject.Project;
+using DevExpress.XtraEditors.Repository;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,7 +17,6 @@ namespace BaredaProject
         public Main()
         {
             InitializeComponent();
-            CustomCellPadding();
         }
 
         private void barBtnSR_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -37,16 +37,72 @@ namespace BaredaProject
 
         private void Main_Load(object sender, EventArgs e)
         {
-            // TODO: This line of code loads data into the 'myDataSet.backup_devices' table. You can move, or remove it, as needed.
-            this.backup_devicesTableAdapter.Fill(this.myDataSet.backup_devices);
-            // TODO: This line of code loads data into the 'myDataSet.databases_list' table. You can move, or remove it, as needed.
-            this.databases_listTableAdapter.Fill(this.myDataSet.databases_list);
+            CustomCellPadding();
+            ReloadDBList();
 
         }
 
         private void Main_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
+        }
+
+        private bool IsValidRowBds(BindingSource bds)
+        {
+            return bds.Position != -1 && bds.Count != 0 || bds.DataSource != null;
+        }
+
+        private void ReloadDBList()
+        {
+            this.adapterDBList.Connection.ConnectionString = MyConnection.ConnectionString;
+            this.adapterDBList.Fill(this.myDataSet.databases_list);
+        }
+
+        private void RefreshDeviceState(string dbName)
+        {
+            String deviceName = $"Device_{dbName}";
+            adapterDeviceList.Connection.ConnectionString = MyConnection.ConnectionString;
+            adapterDeviceList.FillBy(this.myDataSet.backup_devices, deviceName);
+
+            if (bdsDeviceList.Count > 0)
+            {
+                btnCreateDevice.Enabled = false;
+            }
+            else
+            {
+                btnCreateDevice.Enabled = true;
+            }
+        }
+
+        private void LoadBackups(string dbName)
+        {
+            adapterBackupList.Connection.ConnectionString = MyConnection.ConnectionString;
+            adapterBackupList.Fill(this.myDataSet.database_backups, dbName);
+            //if(!btnCreateDevice.Enabled || bdsBackupList.Count <= 0)
+            //{
+            //    btnBackup.Enabled = btnRestore.Enabled = false;
+            //}
+        }
+        private void SetBackupsViewCaption(string dbName)
+        {
+            gvBackups.ViewCaption = $"Danh sách bản sao lưu của {dbName}";
+        }
+        private void gvDBList_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
+        {
+            String dbName;
+            try
+            {
+                if (!IsValidRowBds(bdsDBList)) return;
+                else dbName = Utils.GetCellStringGridView(gvDBList, colname, -1);
+                RefreshDeviceState(dbName);
+                LoadBackups(dbName);
+                SetBackupsViewCaption(dbName);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message, "", MessageBoxButtons.OK);
+            }
         }
     }
 }

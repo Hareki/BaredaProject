@@ -14,7 +14,7 @@ namespace BaredaProject
         private static string _serverName;
         private static string _userName;
         private static string _password;
-        private static string _connectionString;
+        public static string ConnectionString;
 
         public static SqlConnection ServerConnection = new SqlConnection();
 
@@ -24,7 +24,7 @@ namespace BaredaProject
             MyConnection._userName = userName;
             MyConnection._password = password;
 
-            _connectionString = "Data source=" + _serverName
+            ConnectionString = "Data source=" + _serverName
                 + ";User Id = " + _userName + "; Password = " + _password;
 
             if (ServerConnection != null && ServerConnection.State == ConnectionState.Open)
@@ -33,9 +33,9 @@ namespace BaredaProject
             }
             try
             {
-                ServerConnection.ConnectionString = _connectionString;
+                ServerConnection.ConnectionString = ConnectionString;
                 ServerConnection.Open();
-                Console.WriteLine("Connection String: " + _connectionString);
+                Console.WriteLine("Connection String: " + ConnectionString);
                 return true;
             }
 

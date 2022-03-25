@@ -62,13 +62,13 @@ namespace BaredaProject
             this.barButtonItem5 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem6 = new DevExpress.XtraBars.BarButtonItem();
             this.myDataSet = new BaredaProject.MyDataSet();
-            this.databases_listBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.databases_listTableAdapter = new BaredaProject.MyDataSetTableAdapters.databases_listTableAdapter();
+            this.bdsDBList = new System.Windows.Forms.BindingSource(this.components);
+            this.adapterDBList = new BaredaProject.MyDataSetTableAdapters.databases_listTableAdapter();
             this.tableAdapterManager = new BaredaProject.MyDataSetTableAdapters.TableAdapterManager();
-            this.database_backupsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.database_backupsTableAdapter = new BaredaProject.MyDataSetTableAdapters.database_backupsTableAdapter();
-            this.backup_devicesBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.backup_devicesTableAdapter = new BaredaProject.MyDataSetTableAdapters.backup_devicesTableAdapter();
+            this.bdsBackupList = new System.Windows.Forms.BindingSource(this.components);
+            this.adapterBackupList = new BaredaProject.MyDataSetTableAdapters.database_backupsTableAdapter();
+            this.bdsDeviceList = new System.Windows.Forms.BindingSource(this.components);
+            this.adapterDeviceList = new BaredaProject.MyDataSetTableAdapters.backup_devicesTableAdapter();
             this.gcDBList = new DevExpress.XtraGrid.GridControl();
             this.gvDBList = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.colname = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -91,9 +91,9 @@ namespace BaredaProject
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemDateEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemDateEdit1.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.myDataSet)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.databases_listBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.database_backupsBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.backup_devicesBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bdsDBList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bdsBackupList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bdsDeviceList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gcDBList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvDBList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gcBackups)).BeginInit();
@@ -409,14 +409,14 @@ namespace BaredaProject
             this.myDataSet.DataSetName = "MyDataSet";
             this.myDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
-            // databases_listBindingSource
+            // bdsDBList
             // 
-            this.databases_listBindingSource.DataMember = "databases_list";
-            this.databases_listBindingSource.DataSource = this.myDataSet;
+            this.bdsDBList.DataMember = "databases_list";
+            this.bdsDBList.DataSource = this.myDataSet;
             // 
-            // databases_listTableAdapter
+            // adapterDBList
             // 
-            this.databases_listTableAdapter.ClearBeforeFill = true;
+            this.adapterDBList.ClearBeforeFill = true;
             // 
             // tableAdapterManager
             // 
@@ -424,29 +424,29 @@ namespace BaredaProject
             this.tableAdapterManager.Connection = null;
             this.tableAdapterManager.UpdateOrder = BaredaProject.MyDataSetTableAdapters.TableAdapterManager.UpdateOrderOption.InsertUpdateDelete;
             // 
-            // database_backupsBindingSource
+            // bdsBackupList
             // 
-            this.database_backupsBindingSource.DataMember = "database_backups";
-            this.database_backupsBindingSource.DataSource = this.myDataSet;
+            this.bdsBackupList.DataMember = "database_backups";
+            this.bdsBackupList.DataSource = this.myDataSet;
             // 
-            // database_backupsTableAdapter
+            // adapterBackupList
             // 
-            this.database_backupsTableAdapter.ClearBeforeFill = true;
+            this.adapterBackupList.ClearBeforeFill = true;
             // 
-            // backup_devicesBindingSource
+            // bdsDeviceList
             // 
-            this.backup_devicesBindingSource.DataMember = "backup_devices";
-            this.backup_devicesBindingSource.DataSource = this.myDataSet;
+            this.bdsDeviceList.DataMember = "backup_devices";
+            this.bdsDeviceList.DataSource = this.myDataSet;
             // 
-            // backup_devicesTableAdapter
+            // adapterDeviceList
             // 
-            this.backup_devicesTableAdapter.ClearBeforeFill = true;
+            this.adapterDeviceList.ClearBeforeFill = true;
             // 
             // gcDBList
             // 
             this.gcDBList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.gcDBList.DataSource = this.databases_listBindingSource;
+            this.gcDBList.DataSource = this.bdsDBList;
             this.gcDBList.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gcDBList.Location = new System.Drawing.Point(39, 106);
             this.gcDBList.MainView = this.gvDBList;
@@ -508,6 +508,7 @@ namespace BaredaProject
             this.gvDBList.OptionsView.ShowIndicator = false;
             this.gvDBList.OptionsView.ShowViewCaption = true;
             this.gvDBList.ViewCaption = "Danh sách CSDL";
+            this.gvDBList.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gvDBList_FocusedRowChanged);
             // 
             // colname
             // 
@@ -544,7 +545,7 @@ namespace BaredaProject
             this.gcBackups.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.gcBackups.DataSource = this.database_backupsBindingSource;
+            this.gcBackups.DataSource = this.bdsBackupList;
             this.gcBackups.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gcBackups.Location = new System.Drawing.Point(496, 106);
             this.gcBackups.MainView = this.gvBackups;
@@ -738,9 +739,9 @@ namespace BaredaProject
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemDateEdit1.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemDateEdit1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.myDataSet)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.databases_listBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.database_backupsBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.backup_devicesBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bdsDBList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bdsBackupList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bdsDeviceList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gcDBList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvDBList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gcBackups)).EndInit();
@@ -783,14 +784,14 @@ namespace BaredaProject
         private DevExpress.XtraBars.BarButtonItem barBtnDeB;
         private DevExpress.XtraBars.BarButtonItem barBtnRB;
         private DevExpress.XtraBars.BarButtonItem btnRefresh;
-        private System.Windows.Forms.BindingSource databases_listBindingSource;
+        private System.Windows.Forms.BindingSource bdsDBList;
         private MyDataSet myDataSet;
-        private MyDataSetTableAdapters.databases_listTableAdapter databases_listTableAdapter;
+        private MyDataSetTableAdapters.databases_listTableAdapter adapterDBList;
         private MyDataSetTableAdapters.TableAdapterManager tableAdapterManager;
-        private System.Windows.Forms.BindingSource database_backupsBindingSource;
-        private MyDataSetTableAdapters.database_backupsTableAdapter database_backupsTableAdapter;
-        private System.Windows.Forms.BindingSource backup_devicesBindingSource;
-        private MyDataSetTableAdapters.backup_devicesTableAdapter backup_devicesTableAdapter;
+        private System.Windows.Forms.BindingSource bdsBackupList;
+        private MyDataSetTableAdapters.database_backupsTableAdapter adapterBackupList;
+        private System.Windows.Forms.BindingSource bdsDeviceList;
+        private MyDataSetTableAdapters.backup_devicesTableAdapter adapterDeviceList;
         private DevExpress.XtraGrid.GridControl gcDBList;
         private DevExpress.XtraGrid.Views.Grid.GridView gvDBList;
         private DevExpress.XtraGrid.GridControl gcBackups;

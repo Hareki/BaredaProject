@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraGrid.Views.Grid;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,6 +39,13 @@ namespace BaredaProject.Project
             var result = MessageBox.Show(message, title, MessageBoxButtons.YesNo, icon);
             return result == DialogResult.Yes;
 
+        }
+        public static string GetCellStringGridView(GridView view, GridColumn column, int row)
+        {
+            if (row < 0)
+                return view.GetRowCellValue(view.FocusedRowHandle, column).ToString().Trim();
+            else
+                return view.GetRowCellValue(row, column).ToString().Trim();
         }
     }
 }
