@@ -872,13 +872,13 @@ namespace BaredaProject {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class database_backupsDataTable : global::System.Data.TypedTableBase<database_backupsRow> {
             
-            private global::System.Data.DataColumn columnposition;
-            
             private global::System.Data.DataColumn columnbackup_start_date;
             
             private global::System.Data.DataColumn columnuser_name;
             
             private global::System.Data.DataColumn columndescription;
+            
+            private global::System.Data.DataColumn columnposition;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
@@ -915,14 +915,6 @@ namespace BaredaProject {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn positionColumn {
-                get {
-                    return this.columnposition;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public global::System.Data.DataColumn backup_start_dateColumn {
                 get {
                     return this.columnbackup_start_date;
@@ -942,6 +934,14 @@ namespace BaredaProject {
             public global::System.Data.DataColumn descriptionColumn {
                 get {
                     return this.columndescription;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn positionColumn {
+                get {
+                    return this.columnposition;
                 }
             }
             
@@ -982,13 +982,13 @@ namespace BaredaProject {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public database_backupsRow Adddatabase_backupsRow(int position, System.DateTime backup_start_date, string user_name, string description) {
+            public database_backupsRow Adddatabase_backupsRow(System.DateTime backup_start_date, string user_name, string description, int position) {
                 database_backupsRow rowdatabase_backupsRow = ((database_backupsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        position,
                         backup_start_date,
                         user_name,
-                        description};
+                        description,
+                        position};
                 rowdatabase_backupsRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdatabase_backupsRow);
                 return rowdatabase_backupsRow;
@@ -1011,23 +1011,23 @@ namespace BaredaProject {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             internal void InitVars() {
-                this.columnposition = base.Columns["position"];
                 this.columnbackup_start_date = base.Columns["backup_start_date"];
                 this.columnuser_name = base.Columns["user_name"];
                 this.columndescription = base.Columns["description"];
+                this.columnposition = base.Columns["position"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             private void InitClass() {
-                this.columnposition = new global::System.Data.DataColumn("position", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnposition);
                 this.columnbackup_start_date = new global::System.Data.DataColumn("backup_start_date", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnbackup_start_date);
                 this.columnuser_name = new global::System.Data.DataColumn("user_name", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnuser_name);
                 this.columndescription = new global::System.Data.DataColumn("description", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columndescription);
+                this.columnposition = new global::System.Data.DataColumn("position", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnposition);
                 this.columnuser_name.MaxLength = 128;
                 this.columndescription.MaxLength = 255;
             }
@@ -1252,22 +1252,6 @@ namespace BaredaProject {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public int position {
-                get {
-                    try {
-                        return ((int)(this[this.tabledatabase_backups.positionColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'position\' in table \'database_backups\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tabledatabase_backups.positionColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public System.DateTime backup_start_date {
                 get {
                     try {
@@ -1316,14 +1300,18 @@ namespace BaredaProject {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IspositionNull() {
-                return this.IsNull(this.tabledatabase_backups.positionColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetpositionNull() {
-                this[this.tabledatabase_backups.positionColumn] = global::System.Convert.DBNull;
+            public int position {
+                get {
+                    try {
+                        return ((int)(this[this.tabledatabase_backups.positionColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'position\' in table \'database_backups\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledatabase_backups.positionColumn] = value;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1360,6 +1348,18 @@ namespace BaredaProject {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetdescriptionNull() {
                 this[this.tabledatabase_backups.descriptionColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IspositionNull() {
+                return this.IsNull(this.tabledatabase_backups.positionColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetpositionNull() {
+                this[this.tabledatabase_backups.positionColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -1967,10 +1967,10 @@ namespace BaredaProject.MyDataSetTableAdapters {
             global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
             tableMapping.SourceTable = "Table";
             tableMapping.DataSetTable = "database_backups";
-            tableMapping.ColumnMappings.Add("position", "position");
             tableMapping.ColumnMappings.Add("backup_start_date", "backup_start_date");
             tableMapping.ColumnMappings.Add("user_name", "user_name");
             tableMapping.ColumnMappings.Add("description", "description");
+            tableMapping.ColumnMappings.Add("position", "position");
             this._adapter.TableMappings.Add(tableMapping);
         }
         
@@ -1988,8 +1988,8 @@ namespace BaredaProject.MyDataSetTableAdapters {
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = "SELECT position, description, backup_start_date, user_name\r\nFROM     msdb.dbo.bac" +
-                "kupset\r\nWHERE  (database_name = @DBNAME) AND (type = \'D\')\r\nORDER BY position DES" +
-                "C";
+                "kupset as bs\r\nWHERE  (database_name = @DBNAME) AND (type = \'D\') AND bs.name LIKE" +
+                " \'Device_%\'\r\nORDER BY position DESC";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[0].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DBNAME", global::System.Data.SqlDbType.NVarChar, 128, global::System.Data.ParameterDirection.Input, 0, 0, "database_name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }

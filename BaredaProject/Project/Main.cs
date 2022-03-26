@@ -138,7 +138,7 @@ namespace BaredaProject
             if (input.Continue)
             {
                 string description = input.Description;
-                if (MyConnection.BackupDB(dbName, description, init))
+                if (MyConnection.BackupDB(dbName, description, init, GetDefaultPath()))
                 {
                     Utils.ShowInfoMessage("Thông báo", "Tạo bản sao lưu thành công", Utils.MessageType.Information);
                 }
@@ -169,10 +169,10 @@ namespace BaredaProject
 
         private void BtnCreateDevice_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            string deviceName = $"Device_{getSelectedDBName()}";
-            string fullPath = $"{GetDefaultPath()}\\{deviceName}.bak";
+            string dbName = getSelectedDBName();
+
             Directory.CreateDirectory(GetDefaultPath());
-            if (MyConnection.CreateDevice(deviceName, fullPath))
+            if (MyConnection.CreateDevice(dbName, GetDefaultPath()))
             {
                 Utils.ShowInfoMessage("Thông báo", "Tạo device thành công", Utils.MessageType.Information);
                 ReloadGvBackups(getSelectedDBName());
@@ -189,7 +189,7 @@ namespace BaredaProject
         {
             string dbName = getSelectedDBName();
             int pos = GetSelectedBackupPos();
-            if (MyConnection.DeleteBackupInstance(dbName, pos))
+            if (MyConnection.DeleteBackupInstance(dbName, pos, GetDefaultPath()))
             {
                 Utils.ShowInfoMessage("Thông báo", "Đã xóa bản sao lưu được chọn", Utils.MessageType.Information);
                 ReloadGvBackups(getSelectedDBName());

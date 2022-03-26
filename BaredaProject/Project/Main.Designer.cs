@@ -279,15 +279,15 @@ namespace BaredaProject
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
             this.barDockControlTop.Manager = this.barManager1;
-            this.barDockControlTop.Size = new System.Drawing.Size(1283, 63);
+            this.barDockControlTop.Size = new System.Drawing.Size(1281, 63);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 527);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 686);
             this.barDockControlBottom.Manager = this.barManager1;
-            this.barDockControlBottom.Size = new System.Drawing.Size(1283, 0);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1281, 0);
             // 
             // barDockControlLeft
             // 
@@ -295,15 +295,15 @@ namespace BaredaProject
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 63);
             this.barDockControlLeft.Manager = this.barManager1;
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 464);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 623);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1283, 63);
+            this.barDockControlRight.Location = new System.Drawing.Point(1281, 63);
             this.barDockControlRight.Manager = this.barManager1;
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 464);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 623);
             // 
             // barButtonItem1
             // 
@@ -456,13 +456,13 @@ namespace BaredaProject
             this.gcDBList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.gcDBList.DataSource = this.bdsDBList;
-            this.gcDBList.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gcDBList.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
             this.gcDBList.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gcDBList.Location = new System.Drawing.Point(49, 132);
+            this.gcDBList.Location = new System.Drawing.Point(59, 116);
             this.gcDBList.MainView = this.gvDBList;
             this.gcDBList.Margin = new System.Windows.Forms.Padding(50, 50, 25, 50);
             this.gcDBList.Name = "gcDBList";
-            this.gcDBList.Size = new System.Drawing.Size(521, 426);
+            this.gcDBList.Size = new System.Drawing.Size(358, 480);
             this.gcDBList.TabIndex = 13;
             this.gcDBList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvDBList});
@@ -557,13 +557,13 @@ namespace BaredaProject
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gcBackups.DataSource = this.bdsBackupList;
-            this.gcBackups.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gcBackups.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
             this.gcBackups.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gcBackups.Location = new System.Drawing.Point(620, 132);
+            this.gcBackups.Location = new System.Drawing.Point(467, 116);
             this.gcBackups.MainView = this.gvBackups;
             this.gcBackups.Margin = new System.Windows.Forms.Padding(25, 50, 50, 50);
             this.gcBackups.Name = "gcBackups";
-            this.gcBackups.Size = new System.Drawing.Size(922, 426);
+            this.gcBackups.Size = new System.Drawing.Size(755, 480);
             this.gcBackups.TabIndex = 14;
             this.gcBackups.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvBackups});
@@ -688,9 +688,9 @@ namespace BaredaProject
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.stripUserName,
             this.toolStripStatusLabel2});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 487);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 646);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1283, 40);
+            this.statusStrip1.Size = new System.Drawing.Size(1281, 40);
             this.statusStrip1.TabIndex = 19;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -718,11 +718,11 @@ namespace BaredaProject
             | System.Windows.Forms.AnchorStyles.Right)));
             this.separatorControl1.BackColor = System.Drawing.SystemColors.Control;
             this.separatorControl1.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.separatorControl1.Location = new System.Drawing.Point(0, 71);
-            this.separatorControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.separatorControl1.Location = new System.Drawing.Point(0, 55);
+            this.separatorControl1.Margin = new System.Windows.Forms.Padding(4);
             this.separatorControl1.Name = "separatorControl1";
-            this.separatorControl1.Padding = new System.Windows.Forms.Padding(11, 11, 11, 11);
-            this.separatorControl1.Size = new System.Drawing.Size(1604, 24);
+            this.separatorControl1.Padding = new System.Windows.Forms.Padding(11);
+            this.separatorControl1.Size = new System.Drawing.Size(1281, 24);
             this.separatorControl1.TabIndex = 24;
             // 
             // Main
@@ -731,7 +731,7 @@ namespace BaredaProject
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1283, 527);
+            this.ClientSize = new System.Drawing.Size(1281, 686);
             this.Controls.Add(this.separatorControl1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.gcBackups);

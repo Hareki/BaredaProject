@@ -14,7 +14,6 @@ namespace BaredaProject
 {
     public partial class Login : Form
     {
-        private bool _showPassword = false;
         public Login()
         {
             InitializeComponent();
@@ -88,13 +87,11 @@ namespace BaredaProject
         {
             if (textPassword.UseSystemPasswordChar == true)
             {
-                _showPassword = false;
                 textPassword.IconRight = global::BaredaProject.Properties.Resources.eye_512px;
                 textPassword.UseSystemPasswordChar = false;
             }
             else
             {
-                _showPassword = true;
                 textPassword.IconRight = global::BaredaProject.Properties.Resources.invisible_512px;
                 textPassword.UseSystemPasswordChar = true;
             }

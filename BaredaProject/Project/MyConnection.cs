@@ -25,9 +25,10 @@ namespace BaredaProject
         private static string _userName;
         private static string _password;
         public static string ConnectionString;
-
         public static SqlConnection ServerConnection = new SqlConnection();
 
+
+        /*----COMMONS----*/
         public static bool ConnectToServer(string serverName, string userName, string password)
         {
             MyConnection._serverName = serverName;
@@ -56,52 +57,165 @@ namespace BaredaProject
             }
 
         }
-
         private static bool ClearBackupHistory(string dbName)
         {
             //DateTime now = DateTime.Now;
             //now.ToString("yyyy-MM-dd HH:mm:ss")
             string command = "EXEC msdb.dbo.sp_delete_database_backuphistory @DBName";
-            List<Para> paraList = new List<Para>();
-            paraList.Add(new Para("@DBName", dbName));
+            List<Para> paraList = new List<Para>
+            {
+                new Para("@DBName", dbName)
+            };
             return ExecSqlNonQuery(command, ConnectionString, paraList);
 
         }
-        public static bool BackupDB(string dbName, string description, bool init)
+
+        /*----BACKUP DEVICE METHODS----*/
+        public static bool CreateDevice(string dbName, string defaultPath)
         {
-            string command = "BACKUP DATABASE @DBName TO @DeviceName WITH DESCRIPTION = @Description";
+            string deviceName = $"Device_{dbName}";
+            string fullPath = $"{defaultPath}\\{deviceName}.bak";
+            string command = "EXEC master.dbo.sp_addumpdevice @devtype = N'disk', @logicalname = @DeviceName, @physicalname = @FullPath";
+            List<Para> paraList = new List<Para>
+            {
+                new Para("@DeviceName", deviceName),
+                new Para("@FullPath", fullPath)
+            };
+            //AddDummyBackupRecord(dbName, defaultPath);// chạy trước tạo device dc, vì ko liên quan tới device.
+            return ExecSqlNonQuery(command, ConnectionString, paraList);
+        }
+        private static bool BackupDevice(string dbName, bool init, string description)
+        {
+            string command = "BACKUP DATABASE @DBName TO @DeviceName WITH DESCRIPTION = @Description, NAME = @DeviceName";
             if (init)
             {
                 command += ", INIT";
-                ClearBackupHistory(dbName);
             }
 
-            List<Para> paraList = new List<Para>();
-            paraList.Add(new Para("@DBName", dbName));
-            paraList.Add(new Para("@DeviceName", "Device_" + dbName));
-            paraList.Add(new Para("@Description", description));
-            return ExecSqlNonQuery(command, ConnectionString, paraList);
-
-        }
-
-        public static bool CreateDevice(string deviceName, string fullPath)
-        {
-            string command = "EXEC master.dbo.sp_addumpdevice @devtype = N'disk', @logicalname = @DeviceName, @physicalname = @FullPath";
-            List<Para> paraList = new List<Para>();
-            paraList.Add(new Para("@DeviceName", deviceName));
-            paraList.Add(new Para("@FullPath", fullPath));
+            List<Para> paraList = new List<Para>
+            {
+                new Para("@DBName", dbName),
+                new Para("@DeviceName", "Device_" + dbName),
+                new Para("@Description", description),
+            };
 
             return ExecSqlNonQuery(command, ConnectionString, paraList);
         }
 
-        public static bool DeleteBackupInstance(string dbName, int pos)
+        //Chỉ có method xóa Info, không thể xóa 1 phần dữ liệu của Device
+        private static bool DeleteBackupDeviceInfo(string dbName, int pos)
         {
             string command = "DECLARE @database_name NVARCHAR(100),@Pos INT " +
-                                "SET @Pos = " + pos + "SET @database_name = '" + dbName + "'  " +
-                                "DECLARE @backup_set_id INT  DECLARE @media_set_id INT  DECLARE @restore_history_id TABLE (restore_history_id INT) SELECT @backup_set_id = MAX(backup_set_id) FROM msdb.dbo.backupset WHERE position = @Pos AND database_name = @database_name SELECT @media_set_id = media_set_id FROM msdb.dbo.backupset WHERE backup_set_id = @backup_set_id  INSERT INTO @restore_history_id (restore_history_id)  SELECT DISTINCT restore_history_id FROM msdb.dbo.restorehistory WHERE backup_set_id = @backup_set_id  SET XACT_ABORT ON  BEGIN TRANSACTION BEGIN TRY DELETE FROM msdb.dbo.backupfile WHERE backup_set_id = @backup_set_id DELETE FROM msdb.dbo.backupfilegroup WHERE backup_set_id = @backup_set_id DELETE FROM msdb.dbo.restorefile WHERE restore_history_id IN (SELECT restore_history_id FROM @restore_history_id) DELETE FROM msdb.dbo.restorefilegroup WHERE restore_history_id IN (SELECT restore_history_id FROM @restore_history_id) DELETE FROM msdb.dbo.restorehistory WHERE restore_history_id IN (SELECT restore_history_id FROM @restore_history_id) DELETE FROM msdb.dbo.backupset WHERE backup_set_id = @backup_set_id COMMIT TRANSACTION END TRY BEGIN CATCH ROLLBACK DECLARE @ErrMess VARCHAR(1000) SELECT @ErrMess = 'Error: ' + ERROR_MESSAGE() RAISERROR(@ErrMess, 16, 1) END CATCH";
+                                "SET @Pos = " + pos + " SET @database_name = '" + dbName + "'  " +
+                                "DECLARE @backup_set_id INT DECLARE @media_set_id INT DECLARE @restore_history_id TABLE (restore_history_id INT) SELECT @backup_set_id = MAX(backup_set_id) FROM msdb.dbo.backupset WHERE position = @Pos AND database_name = @database_name AND name = 'Device_' +  @database_name SELECT @media_set_id = media_set_id FROM msdb.dbo.backupset WHERE backup_set_id = @backup_set_id  INSERT INTO @restore_history_id (restore_history_id)  SELECT DISTINCT restore_history_id FROM msdb.dbo.restorehistory WHERE backup_set_id = @backup_set_id  SET XACT_ABORT ON  BEGIN TRANSACTION BEGIN TRY DELETE FROM msdb.dbo.backupfile WHERE backup_set_id = @backup_set_id DELETE FROM msdb.dbo.backupfilegroup WHERE backup_set_id = @backup_set_id DELETE FROM msdb.dbo.restorefile WHERE restore_history_id IN (SELECT restore_history_id FROM @restore_history_id) DELETE FROM msdb.dbo.restorefilegroup WHERE restore_history_id IN (SELECT restore_history_id FROM @restore_history_id) DELETE FROM msdb.dbo.restorehistory WHERE restore_history_id IN (SELECT restore_history_id FROM @restore_history_id) DELETE FROM msdb.dbo.backupset WHERE backup_set_id = @backup_set_id COMMIT TRANSACTION END TRY BEGIN CATCH ROLLBACK DECLARE @ErrMess VARCHAR(1000) SELECT @ErrMess = 'Error: ' + ERROR_MESSAGE() RAISERROR(@ErrMess, 16, 1) END CATCH";
+            List<Para> paraList = new List<Para>();// ghi cho đủ tham số chứ chỗ này ko cần
+            return ExecSqlNonQuery(command, ConnectionString, paraList);
+        }
+
+
+        /*----BACKUP FILE METHODS----*/
+        private static int GetCurrentPosition(string dbName)
+        {
+            string command = "SELECT COUNT(*) FROM  msdb.dbo.backupset as backupset " +
+                "WHERE database_name = @DBName AND type = 'D'  AND backupset.name = 'File_' + @DBName";
+            List<Para> paraList = new List<Para>
+            {
+                new Para("@DBName", dbName)
+            };
+            using (SqlDataReader myReader = ExecuteSqlDataReader(command, ConnectionString, paraList))
+            {
+                if (myReader == null) return -1;
+
+                myReader.Read();
+                return int.Parse(myReader.GetValue(0).ToString());
+            }
+        }
+        private static bool BackupFile(string dbName, string defaultPath, string description, bool init, int oldPos)
+        {
+            int pos;
+            if (init)
+            {
+                pos = 1;
+                for (int i = 1; i <= oldPos; i++)
+                    DeleteBackupFile(defaultPath, dbName, i);
+            }
+            else pos = oldPos + 1;
+
+            string fileFullPath = $"{defaultPath}\\{dbName} - Pos{pos}.bak";
+            string command = "BACKUP DATABASE @DBName TO DISK = @FileFullPath WITH DESCRIPTION = @Des, NAME = @Name";
+            List<Para> paraList = new List<Para>
+            {
+                new Para("@DBName", dbName),
+                new Para("@FileFullPath", fileFullPath),
+                new Para("@Des", description),
+                new Para("@Name", "File_" + dbName)
+        };
+            return ExecSqlNonQuery(command, ConnectionString, paraList);
+        }
+        private static bool DeleteBackupFile(string defaultPath, string dbName, int pos)
+        {
+            //File chứ không phải device, vì device không thể xóa 1 phần dữ liệu (?), chỉ có lưu trữ
+            //trên các file riêng mới có thể
+            string fileFullPath;
+            if (pos <= 0) fileFullPath = $"{defaultPath}\\{dbName} - Pos{pos} - Dummy.bak";
+            else fileFullPath = $"{defaultPath}\\{dbName} - Pos{pos}.bak";
+            string command = "EXECUTE master.dbo.xp_delete_file 0, @FileFullPath";
+            List<Para> paraList = new List<Para>
+            {
+                new Para("@FileFullPath", fileFullPath)
+            };
+            return ExecSqlNonQuery(command, ConnectionString, paraList);
+        }
+        private static bool DeleteBackupFileInfo(string dbName, int pos)
+        {
+            //Thực chất method này chỉ set dấu hiệu cho biết là đã delete,
+            //ko hiện lên UI nữa chứ ko xóa trong history, vì liên quan đến COUNT trong hàm GetCurrentPosition
+
+            //command cũ dùng để xóa record
+            // string command = "DECLARE @database_name NVARCHAR(100),@Pos INT " +
+            //                      "SET @Pos = " + pos + " SET @database_name = '" + dbName + "'  " +
+            //                    "DECLARE @backup_set_id INT DECLARE @media_set_id INT DECLARE @restore_history_id TABLE (restore_history_id INT); WITH Records AS (SELECT top(@pos) row_number() over(order by backup_set_id) as 'row', backup_set_id FROM msdb.dbo.backupset WHERE database_name = @database_name AND name = 'File_' + database_name) SELECT @backup_set_id = backup_set_id FROM Records WHERE row = @pos SELECT @media_set_id = media_set_id FROM msdb.dbo.backupset WHERE backup_set_id = @backup_set_id INSERT INTO @restore_history_id (restore_history_id) SELECT DISTINCT restore_history_id FROM msdb.dbo.restorehistory WHERE backup_set_id = @backup_set_id SET XACT_ABORT ON BEGIN TRANSACTION BEGIN TRY DELETE FROM msdb.dbo.backupfile WHERE backup_set_id = @backup_set_id DELETE FROM msdb.dbo.backupfilegroup WHERE backup_set_id = @backup_set_id DELETE FROM msdb.dbo.restorefile WHERE restore_history_id IN (SELECT restore_history_id FROM @restore_history_id) DELETE FROM msdb.dbo.restorefilegroup WHERE restore_history_id IN (SELECT restore_history_id FROM @restore_history_id) DELETE FROM msdb.dbo.restorehistory WHERE restore_history_id IN (SELECT restore_history_id FROM @restore_history_id) DELETE FROM msdb.dbo.backupset WHERE backup_set_id = @backup_set_id COMMIT TRANSACTION END TRY BEGIN CATCH ROLLBACK DECLARE @ErrMess VARCHAR(1000) SELECT @ErrMess = 'Error: ' + ERROR_MESSAGE() RAISERROR(@ErrMess, 16, 1) END CATCH";
+
+            string command = "Declare @pos int Declare @database_name nvarchar(50) Declare @backup_set_id int " +
+                "Set @pos = " + pos + " Set @database_name = '" + dbName + "'; WITH Records AS (SELECT top(@pos) row_number() over(order by backup_set_id) as 'row', backup_set_id FROM msdb.dbo.backupset WHERE database_name = @database_name AND name LIKE '%File_' + database_name + '%') SELECT @backup_set_id = backup_set_id from Records where row = @pos UPDATE msdb.dbo.backupset SET name = 'Deleted_' + name WHERE backup_set_id = @backup_set_id";
+
             List<Para> paraList = new List<Para>();
             return ExecSqlNonQuery(command, ConnectionString, paraList);
         }
+
+
+        /*----BACKUP FILE OTHER METHODS----*/
+        private static bool AddDummyBackupRecord(string dbName, string defaultPath)
+        {
+            //Không dùng được, do pos trên db ko tăng nếu khác file hoặc device, nghĩa là phải cùng media (file hoặc device như nhau)
+            //Cũng như việc BackupFile và GetCurrentDBPos đã dc tinh chỉnh nhiều so với ban đầu
+            string fileFullPath = $"{defaultPath}\\{dbName} - Pos0 - Dummy.bak";
+            return BackupFile(dbName, fileFullPath, "Dummy backup file", false, GetCurrentPosition(dbName)) && DeleteBackupFile(defaultPath, dbName, 0);
+        }
+
+
+
+        /*----CALLERS----*/
+        public static bool BackupDB(string dbName, string description, bool init, string defaultPath)
+        {
+            int oldPos = GetCurrentPosition(dbName);
+            if (init) ClearBackupHistory(dbName);
+            return BackupDevice(dbName, init, description) && BackupFile(dbName, defaultPath, description, init, oldPos);
+        }
+        private static bool DeleteBackupInfo(string dbName, int pos)
+        {
+            return DeleteBackupDeviceInfo(dbName, pos);
+            //&& DeleteFileBackupInfo(dbName, pos)
+            //Giả định trường hợp dùng file thay device thì cũng ko dc chạy, vì dùng count, xóa sẽ làm sai lệch dữ liệu
+        }
+        public static bool DeleteBackupInstance(string dbName, int pos, string defaultPath)
+        {
+            return DeleteBackupInfo(dbName, pos) && DeleteBackupFile(defaultPath, dbName, pos);
+        }
+
+
+
+        /*----EXECUTE COMMANDS----*/
         private static bool ExecSqlNonQuery(String command, String connectionString, List<Para> paraList)
         {
             SqlConnection connection;
@@ -132,6 +246,41 @@ namespace BaredaProject
                 Utils.ShowInfoMessage("Lỗi thực thi", ex.Message, Utils.MessageType.Error);
                 Console.WriteLine(ex.StackTrace);
                 return false;
+            }
+        }
+        public static SqlDataReader ExecuteSqlDataReader(string command, String connectionString, List<Para> paraList)
+        {
+            SqlDataReader result;
+            SqlConnection connection;
+            connection = new SqlConnection(connectionString);
+            SqlCommand sqlCmd = new SqlCommand(command, connection);
+            sqlCmd.CommandType = CommandType.Text;
+            foreach (Para element in paraList)
+            {
+                if (element.RealValue.GetType().Equals(typeof(string)))
+                {
+                    sqlCmd.Parameters.Add(element.ValueName, SqlDbType.NVarChar).Value = element.RealValue;
+                }
+                else
+                {
+                    sqlCmd.Parameters.Add(new SqlParameter(element.ValueName, element.RealValue));
+                }
+            }
+
+            if (connection.State == ConnectionState.Closed)
+                connection.Open();
+            try
+            {
+                result = sqlCmd.ExecuteReader();
+                return result;
+            }
+            catch (SqlException ex)
+            {
+                connection.Close();
+                Utils.ShowInfoMessage("Lỗi thực thi", ex.Message, Utils.MessageType.Error);
+                connection.Close();
+                Console.WriteLine(ex.StackTrace);
+                return null;
             }
         }
     }
