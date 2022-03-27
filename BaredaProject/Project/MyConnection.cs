@@ -27,6 +27,7 @@ namespace BaredaProject
         public static string ConnectionString;
         public static SqlConnection ServerConnection = new SqlConnection();
 
+        private static readonly string FILE_DELETED_MESSAGE = "xp_delete_file() returned error 2, 'The system cannot find the file specified.'";
 
         /*----COMMONS----*/
         public static bool ConnectToServer(string serverName, string userName, string password)
@@ -86,6 +87,7 @@ namespace BaredaProject
         }
         private static bool BackupDevice(string dbName, bool init, string description)
         {
+            if (init) ClearBackupHistory(dbName);
             string command = "BACKUP DATABASE @DBName TO @DeviceName WITH DESCRIPTION = @Description, NAME = @DeviceName";
             if (init)
             {
@@ -101,9 +103,12 @@ namespace BaredaProject
 
             return ExecSqlNonQuery(command, ConnectionString, paraList);
         }
-
-        //Chỉ có method xóa Info, không thể xóa 1 phần dữ liệu của Device
-        private static bool DeleteBackupDeviceInfo(string dbName, int pos)
+        private static bool DeleteDevice(string defaultPath, string dbName, int pos)
+        {
+            //Do không thể xóa 1 phần dữ liệu của device.
+            return true;
+        }
+        private static bool DeleteDeviceInfo(string dbName, int pos)
         {
             string command = "DECLARE @database_name NVARCHAR(100),@Pos INT " +
                                 "SET @Pos = " + pos + " SET @database_name = '" + dbName + "'  " +
@@ -113,11 +118,11 @@ namespace BaredaProject
         }
 
 
+
         /*----BACKUP FILE METHODS----*/
         private static int GetCurrentPosition(string dbName)
         {
-            string command = "SELECT COUNT(*) FROM  msdb.dbo.backupset as backupset " +
-                "WHERE database_name = @DBName AND type = 'D'  AND backupset.name = 'File_' + @DBName";
+            string command = "SELECT Count(*) FROM msdb.dbo.backupset AS backupset WHERE database_name = @DBName AND type = 'D' AND NAME LIKE '%File_' + @DBName + '%' ";
             List<Para> paraList = new List<Para>
             {
                 new Para("@DBName", dbName)
@@ -130,14 +135,28 @@ namespace BaredaProject
                 return int.Parse(myReader.GetValue(0).ToString());
             }
         }
-        private static bool BackupFile(string dbName, string defaultPath, string description, bool init, int oldPos)
+        private static bool BackupFile(string dbName, string defaultPath, string description, bool init)
         {
+            int oldPos = GetCurrentPosition(dbName);
+            if (init) ClearBackupHistory(dbName);
             int pos;
             if (init)
             {
                 pos = 1;
                 for (int i = 1; i <= oldPos; i++)
-                    DeleteBackupFile(defaultPath, dbName, i);
+                {
+                    try
+                    {
+                        if (!DeleteFile(defaultPath, dbName, i))
+                            throw new Exception();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"File Skipped During Delete: {dbName} - Pos{i}");
+                    }
+
+                }
+
             }
             else pos = oldPos + 1;
 
@@ -148,11 +167,11 @@ namespace BaredaProject
                 new Para("@DBName", dbName),
                 new Para("@FileFullPath", fileFullPath),
                 new Para("@Des", description),
-                new Para("@Name", "File_" + dbName)
+                new Para("@Name", $"File_{dbName}_Pos{pos}")
         };
             return ExecSqlNonQuery(command, ConnectionString, paraList);
         }
-        private static bool DeleteBackupFile(string defaultPath, string dbName, int pos)
+        private static bool DeleteFile(string defaultPath, string dbName, int pos)
         {
             //File chứ không phải device, vì device không thể xóa 1 phần dữ liệu (?), chỉ có lưu trữ
             //trên các file riêng mới có thể
@@ -166,7 +185,7 @@ namespace BaredaProject
             };
             return ExecSqlNonQuery(command, ConnectionString, paraList);
         }
-        private static bool DeleteBackupFileInfo(string dbName, int pos)
+        private static bool DeleteFileInfo(string dbName, int pos)
         {
             //Thực chất method này chỉ set dấu hiệu cho biết là đã delete,
             //ko hiện lên UI nữa chứ ko xóa trong history, vì liên quan đến COUNT trong hàm GetCurrentPosition
@@ -190,29 +209,38 @@ namespace BaredaProject
             //Không dùng được, do pos trên db ko tăng nếu khác file hoặc device, nghĩa là phải cùng media (file hoặc device như nhau)
             //Cũng như việc BackupFile và GetCurrentDBPos đã dc tinh chỉnh nhiều so với ban đầu
             string fileFullPath = $"{defaultPath}\\{dbName} - Pos0 - Dummy.bak";
-            return BackupFile(dbName, fileFullPath, "Dummy backup file", false, GetCurrentPosition(dbName)) && DeleteBackupFile(defaultPath, dbName, 0);
+            return BackupFile(dbName, fileFullPath, "Dummy backup file", false) && DeleteFile(defaultPath, dbName, 0);
         }
 
 
 
-        /*----CALLERS----*/
+        /*----CALLERS----
+         Backup = Device or File */
         public static bool BackupDB(string dbName, string description, bool init, string defaultPath)
         {
-            int oldPos = GetCurrentPosition(dbName);
-            if (init) ClearBackupHistory(dbName);
-            return BackupDevice(dbName, init, description) && BackupFile(dbName, defaultPath, description, init, oldPos);
+            if (Main.USE_DEVICE_MODE)
+                return BackupDevice(dbName, init, description);
+            else
+                return BackupFile(dbName, defaultPath, description, init);
+        }
+        private static bool DeleteBackup(string defaultPath, string dbName, int pos)
+        {
+            if (Main.USE_DEVICE_MODE)
+                return DeleteDevice(defaultPath, dbName, pos);
+            else
+                return DeleteFile(defaultPath, dbName, pos);
         }
         private static bool DeleteBackupInfo(string dbName, int pos)
         {
-            return DeleteBackupDeviceInfo(dbName, pos);
-            //&& DeleteFileBackupInfo(dbName, pos)
-            //Giả định trường hợp dùng file thay device thì cũng ko dc chạy, vì dùng count, xóa sẽ làm sai lệch dữ liệu
+            if (Main.USE_DEVICE_MODE)
+                return DeleteDeviceInfo(dbName, pos);
+            else
+                return DeleteFileInfo(dbName, pos);
         }
         public static bool DeleteBackupInstance(string dbName, int pos, string defaultPath)
         {
-            return DeleteBackupInfo(dbName, pos) && DeleteBackupFile(defaultPath, dbName, pos);
+            return DeleteBackup(defaultPath, dbName, pos) && DeleteBackupInfo(dbName, pos);
         }
-
 
 
         /*----EXECUTE COMMANDS----*/
@@ -243,8 +271,11 @@ namespace BaredaProject
             catch (SqlException ex)
             {
                 connection.Close();
-                Utils.ShowInfoMessage("Lỗi thực thi", ex.Message, Utils.MessageType.Error);
-                Console.WriteLine(ex.StackTrace);
+                if (!ex.Message.Equals(FILE_DELETED_MESSAGE))
+                {
+                    Utils.ShowInfoMessage("Lỗi thực thi", ex.Message, Utils.MessageType.Error);
+                    Console.WriteLine(ex.StackTrace);
+                }  
                 return false;
             }
         }

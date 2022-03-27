@@ -61,7 +61,7 @@ namespace BaredaProject
             String userName = textUser.Text.Trim();
             String password = textPassword.Text.Trim();
 
-            if(!MyConnection.ConnectToServer(serverName, userName, password))
+            if (!MyConnection.ConnectToServer(serverName, userName, password))
             {
                 Utils.ShowInfoMessage("Lỗi đăng nhập", "Tài khoản, mật khẩu hoặc tên server không chính xác", Utils.MessageType.Error);
                 return;
@@ -74,6 +74,8 @@ namespace BaredaProject
         {
             Program.MainInstance = new Main();
             Program.MainInstance.stripUserName.Text = "Tài khoản: " + userName;
+            string mode = Main.USE_DEVICE_MODE ? "Device" : "File";
+            Program.MainInstance.stripBackupMode.Text = "Backup mode: " + mode;
             this.Hide();
             Program.MainInstance.Show();
         }

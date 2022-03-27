@@ -81,8 +81,9 @@ namespace BaredaProject
             this.coldescription = new DevExpress.XtraGrid.Columns.GridColumn();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.stripUserName = new System.Windows.Forms.ToolStripStatusLabel();
+            this.stripBackupMode = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.separatorControl1 = new DevExpress.XtraEditors.SeparatorControl();
+            this.guna2Separator1 = new Guna.UI2.WinForms.Guna2Separator();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.backupMenu)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.restoreMenu)).BeginInit();
@@ -99,7 +100,6 @@ namespace BaredaProject
             ((System.ComponentModel.ISupportInitialize)(this.gcBackups)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvBackups)).BeginInit();
             this.statusStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).BeginInit();
             this.SuspendLayout();
             // 
             // barManager1
@@ -279,15 +279,15 @@ namespace BaredaProject
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
             this.barDockControlTop.Manager = this.barManager1;
-            this.barDockControlTop.Size = new System.Drawing.Size(1281, 63);
+            this.barDockControlTop.Size = new System.Drawing.Size(1554, 63);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 686);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 641);
             this.barDockControlBottom.Manager = this.barManager1;
-            this.barDockControlBottom.Size = new System.Drawing.Size(1281, 0);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1554, 0);
             // 
             // barDockControlLeft
             // 
@@ -295,15 +295,15 @@ namespace BaredaProject
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 63);
             this.barDockControlLeft.Manager = this.barManager1;
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 623);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 578);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1281, 63);
+            this.barDockControlRight.Location = new System.Drawing.Point(1554, 63);
             this.barDockControlRight.Manager = this.barManager1;
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 623);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 578);
             // 
             // barButtonItem1
             // 
@@ -456,13 +456,13 @@ namespace BaredaProject
             this.gcDBList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.gcDBList.DataSource = this.bdsDBList;
-            this.gcDBList.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
+            this.gcDBList.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(12);
             this.gcDBList.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gcDBList.Location = new System.Drawing.Point(59, 116);
             this.gcDBList.MainView = this.gvDBList;
             this.gcDBList.Margin = new System.Windows.Forms.Padding(50, 50, 25, 50);
             this.gcDBList.Name = "gcDBList";
-            this.gcDBList.Size = new System.Drawing.Size(358, 480);
+            this.gcDBList.Size = new System.Drawing.Size(450, 435);
             this.gcDBList.TabIndex = 13;
             this.gcDBList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvDBList});
@@ -504,7 +504,7 @@ namespace BaredaProject
             this.gvDBList.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.colname,
             this.coldatabase_id});
-            this.gvDBList.DetailHeight = 437;
+            this.gvDBList.DetailHeight = 1331;
             this.gvDBList.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
             this.gvDBList.GridControl = this.gcDBList;
             this.gvDBList.Name = "gvDBList";
@@ -527,11 +527,11 @@ namespace BaredaProject
             this.colname.AppearanceHeader.Options.UseBackColor = true;
             this.colname.Caption = " Tên";
             this.colname.FieldName = "name";
-            this.colname.MinWidth = 31;
+            this.colname.MinWidth = 200;
             this.colname.Name = "colname";
             this.colname.Visible = true;
             this.colname.VisibleIndex = 1;
-            this.colname.Width = 117;
+            this.colname.Width = 200;
             // 
             // coldatabase_id
             // 
@@ -543,13 +543,13 @@ namespace BaredaProject
             this.coldatabase_id.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.coldatabase_id.Caption = "Mã";
             this.coldatabase_id.FieldName = "database_id";
-            this.coldatabase_id.MaxWidth = 125;
-            this.coldatabase_id.MinWidth = 125;
+            this.coldatabase_id.MaxWidth = 150;
+            this.coldatabase_id.MinWidth = 150;
             this.coldatabase_id.Name = "coldatabase_id";
             this.coldatabase_id.OptionsColumn.FixedWidth = true;
             this.coldatabase_id.Visible = true;
             this.coldatabase_id.VisibleIndex = 0;
-            this.coldatabase_id.Width = 125;
+            this.coldatabase_id.Width = 150;
             // 
             // gcBackups
             // 
@@ -557,13 +557,13 @@ namespace BaredaProject
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gcBackups.DataSource = this.bdsBackupList;
-            this.gcBackups.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
+            this.gcBackups.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(12);
             this.gcBackups.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gcBackups.Location = new System.Drawing.Point(467, 116);
+            this.gcBackups.Location = new System.Drawing.Point(559, 116);
             this.gcBackups.MainView = this.gvBackups;
             this.gcBackups.Margin = new System.Windows.Forms.Padding(25, 50, 50, 50);
             this.gcBackups.Name = "gcBackups";
-            this.gcBackups.Size = new System.Drawing.Size(755, 480);
+            this.gcBackups.Size = new System.Drawing.Size(936, 435);
             this.gcBackups.TabIndex = 14;
             this.gcBackups.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvBackups});
@@ -607,7 +607,7 @@ namespace BaredaProject
             this.colbackup_start_date,
             this.coluser_name,
             this.coldescription});
-            this.gvBackups.DetailHeight = 437;
+            this.gvBackups.DetailHeight = 1331;
             this.gvBackups.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
             this.gvBackups.GridControl = this.gcBackups;
             this.gvBackups.Name = "gvBackups";
@@ -650,12 +650,13 @@ namespace BaredaProject
             this.colbackup_start_date.AppearanceHeader.Options.UseBackColor = true;
             this.colbackup_start_date.Caption = " Ngày sao lưu";
             this.colbackup_start_date.FieldName = "backup_start_date";
-            this.colbackup_start_date.MaxWidth = 312;
-            this.colbackup_start_date.MinWidth = 312;
+            this.colbackup_start_date.MaxWidth = 280;
+            this.colbackup_start_date.MinWidth = 280;
             this.colbackup_start_date.Name = "colbackup_start_date";
+            this.colbackup_start_date.OptionsColumn.FixedWidth = true;
             this.colbackup_start_date.Visible = true;
             this.colbackup_start_date.VisibleIndex = 2;
-            this.colbackup_start_date.Width = 312;
+            this.colbackup_start_date.Width = 280;
             // 
             // coluser_name
             // 
@@ -663,12 +664,13 @@ namespace BaredaProject
             this.coluser_name.AppearanceHeader.Options.UseBackColor = true;
             this.coluser_name.Caption = " User sao lưu";
             this.coluser_name.FieldName = "user_name";
-            this.coluser_name.MaxWidth = 312;
-            this.coluser_name.MinWidth = 187;
+            this.coluser_name.MaxWidth = 225;
+            this.coluser_name.MinWidth = 225;
             this.coluser_name.Name = "coluser_name";
+            this.coluser_name.OptionsColumn.FixedWidth = true;
             this.coluser_name.Visible = true;
             this.coluser_name.VisibleIndex = 3;
-            this.coluser_name.Width = 187;
+            this.coluser_name.Width = 225;
             // 
             // coldescription
             // 
@@ -676,21 +678,22 @@ namespace BaredaProject
             this.coldescription.AppearanceHeader.Options.UseBackColor = true;
             this.coldescription.Caption = " Mô tả";
             this.coldescription.FieldName = "description";
-            this.coldescription.MinWidth = 312;
+            this.coldescription.MinWidth = 400;
             this.coldescription.Name = "coldescription";
             this.coldescription.Visible = true;
             this.coldescription.VisibleIndex = 1;
-            this.coldescription.Width = 312;
+            this.coldescription.Width = 400;
             // 
             // statusStrip1
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.stripUserName,
+            this.stripBackupMode,
             this.toolStripStatusLabel2});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 646);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 601);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1281, 40);
+            this.statusStrip1.Size = new System.Drawing.Size(1554, 40);
             this.statusStrip1.TabIndex = 19;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -704,6 +707,16 @@ namespace BaredaProject
             this.stripUserName.Size = new System.Drawing.Size(133, 34);
             this.stripUserName.Text = " Tài khoản: sa ";
             // 
+            // stripBackupMode
+            // 
+            this.stripBackupMode.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
+            this.stripBackupMode.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
+            this.stripBackupMode.Font = new System.Drawing.Font("Baloo 2", 10.8F);
+            this.stripBackupMode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
+            this.stripBackupMode.Name = "stripBackupMode";
+            this.stripBackupMode.Size = new System.Drawing.Size(164, 34);
+            this.stripBackupMode.Text = "Backup mode: File";
+            // 
             // toolStripStatusLabel2
             // 
             this.toolStripStatusLabel2.Font = new System.Drawing.Font("Baloo 2", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -712,18 +725,15 @@ namespace BaredaProject
             this.toolStripStatusLabel2.Size = new System.Drawing.Size(459, 34);
             this.toolStripStatusLabel2.Text = " Đồ án sao lưu - phục hồi cơ sở dữ liệu trong SQL Server";
             // 
-            // separatorControl1
+            // guna2Separator1
             // 
-            this.separatorControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.guna2Separator1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.separatorControl1.BackColor = System.Drawing.SystemColors.Control;
-            this.separatorControl1.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.separatorControl1.Location = new System.Drawing.Point(0, 55);
-            this.separatorControl1.Margin = new System.Windows.Forms.Padding(4);
-            this.separatorControl1.Name = "separatorControl1";
-            this.separatorControl1.Padding = new System.Windows.Forms.Padding(11);
-            this.separatorControl1.Size = new System.Drawing.Size(1281, 24);
-            this.separatorControl1.TabIndex = 24;
+            this.guna2Separator1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.guna2Separator1.Location = new System.Drawing.Point(0, 69);
+            this.guna2Separator1.Name = "guna2Separator1";
+            this.guna2Separator1.Size = new System.Drawing.Size(1554, 11);
+            this.guna2Separator1.TabIndex = 29;
             // 
             // Main
             // 
@@ -731,8 +741,8 @@ namespace BaredaProject
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1281, 686);
-            this.Controls.Add(this.separatorControl1);
+            this.ClientSize = new System.Drawing.Size(1554, 641);
+            this.Controls.Add(this.guna2Separator1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.gcBackups);
             this.Controls.Add(this.gcDBList);
@@ -764,7 +774,6 @@ namespace BaredaProject
             ((System.ComponentModel.ISupportInitialize)(this.gvBackups)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -821,8 +830,9 @@ namespace BaredaProject
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         public System.Windows.Forms.ToolStripStatusLabel stripUserName;
-        private DevExpress.XtraEditors.SeparatorControl separatorControl1;
         private DevExpress.XtraBars.BarButtonItem btnCreateDevice;
+        public System.Windows.Forms.ToolStripStatusLabel stripBackupMode;
+        private Guna.UI2.WinForms.Guna2Separator guna2Separator1;
     }
 }
 

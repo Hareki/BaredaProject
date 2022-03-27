@@ -21,11 +21,18 @@ namespace BaredaProject
             InitializeComponent();
         }
 
+        public static bool USE_DEVICE_MODE = false;
+
         private string GetDefaultPath()
         {
             string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
             var directory = new DirectoryInfo(documentsPath);
-            return directory.Parent.FullName + @"\Deivces";
+
+            if (USE_DEVICE_MODE)
+                return directory.Parent.FullName + @"\Backup\Device";
+            else
+                return directory.Parent.FullName + @"\Backup\File";
+
         }
 
         private void CustomCellPadding()
@@ -61,30 +68,40 @@ namespace BaredaProject
             this.adapterDBList.Fill(this.myDataSet.databases_list);
         }
 
-        private void RefreshDeviceBackupState(string dbName)
+        private void RefreshDeviceAndBackupState(string dbName)
         {
-            String deviceName = $"Device_{dbName}";
-            adapterDeviceList.Connection.ConnectionString = MyConnection.ConnectionString;
-            adapterDeviceList.FillBy(this.myDataSet.backup_devices, deviceName);
-
-            if (bdsDeviceList.Count > 0)
+            if (USE_DEVICE_MODE)
             {
-                btnCreateDevice.Enabled = false;
-                btnBackup.Enabled = true;
+                String deviceName = $"Device_{dbName}";
+                adapterDeviceList.Connection.ConnectionString = MyConnection.ConnectionString;
+                adapterDeviceList.FillBy(this.myDataSet.backup_devices, deviceName);
 
-
+                if (bdsDeviceList.Count > 0)
+                {
+                    btnCreateDevice.Enabled = false;
+                    btnBackup.Enabled = true;
+                }
+                else
+                {
+                    btnCreateDevice.Enabled = true;
+                    btnBackup.Enabled = false;
+                }
             }
             else
             {
-                btnCreateDevice.Enabled = true;
-                btnBackup.Enabled = false;
+                btnBackup.Enabled = true;
+                btnCreateDevice.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
             }
+
         }
 
         private void LoadBackups(string dbName)
         {
             adapterBackupList.Connection.ConnectionString = MyConnection.ConnectionString;
-            adapterBackupList.Fill(this.myDataSet.database_backups, dbName);
+            if (USE_DEVICE_MODE)
+                adapterBackupList.Fill(this.myDataSet.database_backups, dbName);
+            else
+                adapterBackupList.FileFill(this.myDataSet.database_backups, dbName);
         }
         private void SetBackupsViewCaption(string dbName)
         {
@@ -92,7 +109,7 @@ namespace BaredaProject
         }
         private void ReloadGvBackups(string dbName)
         {
-            RefreshDeviceBackupState(dbName);
+            RefreshDeviceAndBackupState(dbName);
             LoadBackups(dbName);
             SetBackupsViewCaption(dbName);
         }
@@ -117,7 +134,7 @@ namespace BaredaProject
             btnDelBackup.Enabled = btnRestore.Enabled = !(gvBackups.FocusedRowHandle < 0);
         }
 
-        private string getSelectedDBName()
+        private string GetSelectedDBName()
         {
             return Utils.GetCellStringGridView(gvDBList, colname, -1);
         }
@@ -125,14 +142,12 @@ namespace BaredaProject
         private void BackupDB(bool init)
         {
             if (init)
-            {
                 if (!Utils.ShowConfirmMessage("Xác nhận", "Bạn có chắc muốn xóa toàn bộ các bản sao lưu cũ và ghi bản mới?"))
-                {
                     return;
-                }
-            }
 
-            string dbName = getSelectedDBName();
+            if (!USE_DEVICE_MODE) Directory.CreateDirectory(GetDefaultPath());
+
+            string dbName = GetSelectedDBName();
             DescriptionInput input = new DescriptionInput();
             input.ShowDialog();
             if (input.Continue)
@@ -169,13 +184,13 @@ namespace BaredaProject
 
         private void BtnCreateDevice_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            string dbName = getSelectedDBName();
+            string dbName = GetSelectedDBName();
 
             Directory.CreateDirectory(GetDefaultPath());
             if (MyConnection.CreateDevice(dbName, GetDefaultPath()))
             {
                 Utils.ShowInfoMessage("Thông báo", "Tạo device thành công", Utils.MessageType.Information);
-                ReloadGvBackups(getSelectedDBName());
+                ReloadGvBackups(GetSelectedDBName());
             }
 
         }
@@ -187,12 +202,12 @@ namespace BaredaProject
         }
         private void BtnDelBackup_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            string dbName = getSelectedDBName();
+            string dbName = GetSelectedDBName();
             int pos = GetSelectedBackupPos();
             if (MyConnection.DeleteBackupInstance(dbName, pos, GetDefaultPath()))
             {
                 Utils.ShowInfoMessage("Thông báo", "Đã xóa bản sao lưu được chọn", Utils.MessageType.Information);
-                ReloadGvBackups(getSelectedDBName());
+                ReloadGvBackups(GetSelectedDBName());
             }
         }
     }
