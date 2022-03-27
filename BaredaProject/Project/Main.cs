@@ -21,7 +21,7 @@ namespace BaredaProject
             InitializeComponent();
         }
 
-        public static bool USE_DEVICE_MODE = false;
+        public static bool USE_DEVICE_MODE = true;
 
         private string GetDefaultPath()
         {
@@ -202,13 +202,16 @@ namespace BaredaProject
         }
         private void BtnDelBackup_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            string dbName = GetSelectedDBName();
-            int pos = GetSelectedBackupPos();
-            if (MyConnection.DeleteBackupInstance(dbName, pos, GetDefaultPath()))
+            if(Utils.ShowConfirmMessage("Xác nhận", "Xóa bản sao lưu đã chọn?"))
             {
-                Utils.ShowInfoMessage("Thông báo", "Đã xóa bản sao lưu được chọn", Utils.MessageType.Information);
-                ReloadGvBackups(GetSelectedDBName());
-            }
+                string dbName = GetSelectedDBName();
+                int pos = GetSelectedBackupPos();
+                if (MyConnection.DeleteBackupInstance(dbName, pos, GetDefaultPath()))
+                {
+                    Utils.ShowInfoMessage("Thông báo", "Đã xóa bản sao lưu được chọn", Utils.MessageType.Information);
+                    ReloadGvBackups(GetSelectedDBName());
+                }
+            } 
         }
     }
 }

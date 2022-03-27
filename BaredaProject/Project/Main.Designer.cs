@@ -33,17 +33,17 @@ namespace BaredaProject
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar2 = new DevExpress.XtraBars.Bar();
-            this.btnBackup = new DevExpress.XtraBars.BarButtonItem();
-            this.backupMenu = new DevExpress.XtraBars.PopupMenu(this.components);
-            this.barBtnDefaultBackup = new DevExpress.XtraBars.BarButtonItem();
-            this.barBtnInitBackup = new DevExpress.XtraBars.BarButtonItem();
+            this.btnCreateDevice = new DevExpress.XtraBars.BarButtonItem();
             this.btnDelBackup = new DevExpress.XtraBars.BarButtonItem();
             this.btnRestore = new DevExpress.XtraBars.BarButtonItem();
             this.restoreMenu = new DevExpress.XtraBars.PopupMenu(this.components);
             this.barBtnDefaultRestore = new DevExpress.XtraBars.BarButtonItem();
             this.barBtnTimeRestore = new DevExpress.XtraBars.BarButtonItem();
             this.btnRefresh = new DevExpress.XtraBars.BarButtonItem();
-            this.btnCreateDevice = new DevExpress.XtraBars.BarButtonItem();
+            this.btnBackup = new DevExpress.XtraBars.BarButtonItem();
+            this.backupMenu = new DevExpress.XtraBars.PopupMenu(this.components);
+            this.barBtnDefaultBackup = new DevExpress.XtraBars.BarButtonItem();
+            this.barBtnInitBackup = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -85,8 +85,8 @@ namespace BaredaProject
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.guna2Separator1 = new Guna.UI2.WinForms.Guna2Separator();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.backupMenu)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.restoreMenu)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.backupMenu)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemDateEdit1)).BeginInit();
@@ -145,57 +145,26 @@ namespace BaredaProject
             this.bar2.DockRow = 0;
             this.bar2.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
             this.bar2.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnBackup, "", true, true, true, 0, null, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
+            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnCreateDevice, "", true, true, true, 0, null, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
             new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnDelBackup, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
             new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnRestore, "", true, true, true, 0, null, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
-            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnRefresh, "", true, true, true, 0, null, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
-            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnCreateDevice, "", true, true, true, 0, null, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph)});
+            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnBackup, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
+            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnRefresh, "", true, true, true, 0, null, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph)});
             this.bar2.OptionsBar.AllowQuickCustomization = false;
             this.bar2.OptionsBar.DrawDragBorder = false;
             this.bar2.OptionsBar.UseWholeRow = true;
             this.bar2.Text = "Main menu";
             // 
-            // btnBackup
+            // btnCreateDevice
             // 
-            this.btnBackup.ActAsDropDown = true;
-            this.btnBackup.ButtonStyle = DevExpress.XtraBars.BarButtonStyle.DropDown;
-            this.btnBackup.Caption = " Sao lưu  ";
-            this.btnBackup.DropDownControl = this.backupMenu;
-            this.btnBackup.Enabled = false;
-            this.btnBackup.Hint = "Sao lưu CSDL ở thời điểm hiện tại";
-            this.btnBackup.Id = 6;
-            this.btnBackup.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnBackup.ImageOptions.Image")));
-            this.btnBackup.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2 Medium", 14F, System.Drawing.FontStyle.Bold);
-            this.btnBackup.ItemAppearance.Normal.Options.UseFont = true;
-            this.btnBackup.Name = "btnBackup";
-            // 
-            // backupMenu
-            // 
-            this.backupMenu.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnDefaultBackup),
-            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnInitBackup)});
-            this.backupMenu.Manager = this.barManager1;
-            this.backupMenu.Name = "backupMenu";
-            // 
-            // barBtnDefaultBackup
-            // 
-            this.barBtnDefaultBackup.Caption = "Sao lưu thông thường";
-            this.barBtnDefaultBackup.Id = 18;
-            this.barBtnDefaultBackup.ImageOptions.Image = global::BaredaProject.Properties.Resources.save_as_20px;
-            this.barBtnDefaultBackup.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.2F);
-            this.barBtnDefaultBackup.ItemAppearance.Normal.Options.UseFont = true;
-            this.barBtnDefaultBackup.Name = "barBtnDefaultBackup";
-            this.barBtnDefaultBackup.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnDefaultBackup_ItemClick);
-            // 
-            // barBtnInitBackup
-            // 
-            this.barBtnInitBackup.Caption = "Xóa tất cả bản sao lưu cũ rồi tiến hành sao lưu";
-            this.barBtnInitBackup.Id = 19;
-            this.barBtnInitBackup.ImageOptions.Image = global::BaredaProject.Properties.Resources.minus_20px;
-            this.barBtnInitBackup.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.2F);
-            this.barBtnInitBackup.ItemAppearance.Normal.Options.UseFont = true;
-            this.barBtnInitBackup.Name = "barBtnInitBackup";
-            this.barBtnInitBackup.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnInitBackup_ItemClick);
+            this.btnCreateDevice.Caption = " Tạo device";
+            this.btnCreateDevice.Enabled = false;
+            this.btnCreateDevice.Id = 22;
+            this.btnCreateDevice.ImageOptions.Image = global::BaredaProject.Properties.Resources.data_warehouse;
+            this.btnCreateDevice.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2 Medium", 14F, System.Drawing.FontStyle.Bold);
+            this.btnCreateDevice.ItemAppearance.Normal.Options.UseFont = true;
+            this.btnCreateDevice.Name = "btnCreateDevice";
+            this.btnCreateDevice.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BtnCreateDevice_ItemClick);
             // 
             // btnDelBackup
             // 
@@ -236,7 +205,7 @@ namespace BaredaProject
             this.barBtnDefaultRestore.Caption = "Phục hồi theo bản sao lưu đã chọn";
             this.barBtnDefaultRestore.Id = 17;
             this.barBtnDefaultRestore.ImageOptions.Image = global::BaredaProject.Properties.Resources.restart_20px;
-            this.barBtnDefaultRestore.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.2F);
+            this.barBtnDefaultRestore.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.barBtnDefaultRestore.ItemAppearance.Normal.Options.UseFont = true;
             this.barBtnDefaultRestore.Name = "barBtnDefaultRestore";
             this.barBtnDefaultRestore.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnDefaultRestore_ItemClick);
@@ -246,7 +215,7 @@ namespace BaredaProject
             this.barBtnTimeRestore.Caption = "Phục hồi về một thời điểm cụ thể";
             this.barBtnTimeRestore.Id = 16;
             this.barBtnTimeRestore.ImageOptions.Image = global::BaredaProject.Properties.Resources.clock_20px;
-            this.barBtnTimeRestore.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.barBtnTimeRestore.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.barBtnTimeRestore.ItemAppearance.Normal.Options.UseFont = true;
             this.barBtnTimeRestore.Name = "barBtnTimeRestore";
             this.barBtnTimeRestore.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnTimeRestore_ItemClick);
@@ -260,16 +229,47 @@ namespace BaredaProject
             this.btnRefresh.ItemAppearance.Normal.Options.UseFont = true;
             this.btnRefresh.Name = "btnRefresh";
             // 
-            // btnCreateDevice
+            // btnBackup
             // 
-            this.btnCreateDevice.Caption = " Tạo device";
-            this.btnCreateDevice.Enabled = false;
-            this.btnCreateDevice.Id = 22;
-            this.btnCreateDevice.ImageOptions.Image = global::BaredaProject.Properties.Resources.data_warehouse;
-            this.btnCreateDevice.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2 Medium", 14F, System.Drawing.FontStyle.Bold);
-            this.btnCreateDevice.ItemAppearance.Normal.Options.UseFont = true;
-            this.btnCreateDevice.Name = "btnCreateDevice";
-            this.btnCreateDevice.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BtnCreateDevice_ItemClick);
+            this.btnBackup.ActAsDropDown = true;
+            this.btnBackup.ButtonStyle = DevExpress.XtraBars.BarButtonStyle.DropDown;
+            this.btnBackup.Caption = " Sao lưu  ";
+            this.btnBackup.DropDownControl = this.backupMenu;
+            this.btnBackup.Enabled = false;
+            this.btnBackup.Hint = "Sao lưu CSDL ở thời điểm hiện tại";
+            this.btnBackup.Id = 6;
+            this.btnBackup.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnBackup.ImageOptions.Image")));
+            this.btnBackup.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2 Medium", 14F, System.Drawing.FontStyle.Bold);
+            this.btnBackup.ItemAppearance.Normal.Options.UseFont = true;
+            this.btnBackup.Name = "btnBackup";
+            // 
+            // backupMenu
+            // 
+            this.backupMenu.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnDefaultBackup),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnInitBackup)});
+            this.backupMenu.Manager = this.barManager1;
+            this.backupMenu.Name = "backupMenu";
+            // 
+            // barBtnDefaultBackup
+            // 
+            this.barBtnDefaultBackup.Caption = "Sao lưu thông thường";
+            this.barBtnDefaultBackup.Id = 18;
+            this.barBtnDefaultBackup.ImageOptions.Image = global::BaredaProject.Properties.Resources.save_as_20px;
+            this.barBtnDefaultBackup.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.barBtnDefaultBackup.ItemAppearance.Normal.Options.UseFont = true;
+            this.barBtnDefaultBackup.Name = "barBtnDefaultBackup";
+            this.barBtnDefaultBackup.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnDefaultBackup_ItemClick);
+            // 
+            // barBtnInitBackup
+            // 
+            this.barBtnInitBackup.Caption = "Xóa tất cả bản sao lưu cũ rồi tiến hành sao lưu";
+            this.barBtnInitBackup.Id = 19;
+            this.barBtnInitBackup.ImageOptions.Image = global::BaredaProject.Properties.Resources.minus_20px;
+            this.barBtnInitBackup.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.barBtnInitBackup.ItemAppearance.Normal.Options.UseFont = true;
+            this.barBtnInitBackup.Name = "barBtnInitBackup";
+            this.barBtnInitBackup.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnInitBackup_ItemClick);
             // 
             // barDockControlTop
             // 
@@ -470,7 +470,7 @@ namespace BaredaProject
             // gvDBList
             // 
             this.gvDBList.Appearance.EvenRow.BackColor = System.Drawing.Color.White;
-            this.gvDBList.Appearance.EvenRow.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
+            this.gvDBList.Appearance.EvenRow.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.gvDBList.Appearance.EvenRow.Options.UseBackColor = true;
             this.gvDBList.Appearance.EvenRow.Options.UseForeColor = true;
             this.gvDBList.Appearance.FocusedCell.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
@@ -484,7 +484,7 @@ namespace BaredaProject
             this.gvDBList.Appearance.HideSelectionRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
             this.gvDBList.Appearance.HideSelectionRow.Options.UseBackColor = true;
             this.gvDBList.Appearance.OddRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.gvDBList.Appearance.OddRow.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
+            this.gvDBList.Appearance.OddRow.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.gvDBList.Appearance.OddRow.Options.UseBackColor = true;
             this.gvDBList.Appearance.OddRow.Options.UseForeColor = true;
             this.gvDBList.Appearance.Preview.Font = new System.Drawing.Font("Baloo 2", 10.2F);
@@ -512,8 +512,10 @@ namespace BaredaProject
             this.gvDBList.OptionsBehavior.ReadOnly = true;
             this.gvDBList.OptionsCustomization.AllowRowSizing = true;
             this.gvDBList.OptionsDetail.EnableMasterViewMode = false;
+            this.gvDBList.OptionsPrint.EnableAppearanceEvenRow = true;
             this.gvDBList.OptionsPrint.EnableAppearanceOddRow = true;
             this.gvDBList.OptionsScrollAnnotations.ShowFocusedRow = DevExpress.Utils.DefaultBoolean.True;
+            this.gvDBList.OptionsView.EnableAppearanceEvenRow = true;
             this.gvDBList.OptionsView.EnableAppearanceOddRow = true;
             this.gvDBList.OptionsView.ShowGroupPanel = false;
             this.gvDBList.OptionsView.ShowIndicator = false;
@@ -571,7 +573,7 @@ namespace BaredaProject
             // gvBackups
             // 
             this.gvBackups.Appearance.EvenRow.BackColor = System.Drawing.Color.White;
-            this.gvBackups.Appearance.EvenRow.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
+            this.gvBackups.Appearance.EvenRow.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.gvBackups.Appearance.EvenRow.Options.UseBackColor = true;
             this.gvBackups.Appearance.EvenRow.Options.UseForeColor = true;
             this.gvBackups.Appearance.FocusedCell.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(248)))), ((int)(((byte)(213)))));
@@ -585,7 +587,7 @@ namespace BaredaProject
             this.gvBackups.Appearance.HideSelectionRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(248)))), ((int)(((byte)(213)))));
             this.gvBackups.Appearance.HideSelectionRow.Options.UseBackColor = true;
             this.gvBackups.Appearance.OddRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.gvBackups.Appearance.OddRow.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
+            this.gvBackups.Appearance.OddRow.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.gvBackups.Appearance.OddRow.Options.UseBackColor = true;
             this.gvBackups.Appearance.OddRow.Options.UseForeColor = true;
             this.gvBackups.Appearance.Preview.Font = new System.Drawing.Font("Baloo 2", 10.2F);
@@ -615,8 +617,10 @@ namespace BaredaProject
             this.gvBackups.OptionsBehavior.ReadOnly = true;
             this.gvBackups.OptionsCustomization.AllowRowSizing = true;
             this.gvBackups.OptionsDetail.EnableMasterViewMode = false;
+            this.gvBackups.OptionsPrint.EnableAppearanceEvenRow = true;
             this.gvBackups.OptionsPrint.EnableAppearanceOddRow = true;
             this.gvBackups.OptionsScrollAnnotations.ShowFocusedRow = DevExpress.Utils.DefaultBoolean.True;
+            this.gvBackups.OptionsView.EnableAppearanceEvenRow = true;
             this.gvBackups.OptionsView.EnableAppearanceOddRow = true;
             this.gvBackups.OptionsView.ShowGroupPanel = false;
             this.gvBackups.OptionsView.ShowIndicator = false;
@@ -758,8 +762,8 @@ namespace BaredaProject
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Main_FormClosed);
             this.Load += new System.EventHandler(this.Main_Load);
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.backupMenu)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.restoreMenu)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.backupMenu)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemDateEdit1.CalendarTimeProperties)).EndInit();
