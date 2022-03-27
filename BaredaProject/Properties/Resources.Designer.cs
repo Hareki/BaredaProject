@@ -83,6 +83,16 @@ namespace BaredaProject.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap cancel_35px {
+            get {
+                object obj = ResourceManager.GetObject("cancel_35px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap cancel_40px {
             get {
                 object obj = ResourceManager.GetObject("cancel_40px", resourceCulture);
@@ -106,6 +116,26 @@ namespace BaredaProject.Properties {
         internal static System.Drawing.Bitmap cancel_480px {
             get {
                 object obj = ResourceManager.GetObject("cancel_480px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cancel_480px1 {
+            get {
+                object obj = ResourceManager.GetObject("cancel_480px1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cancel_black_30px {
+            get {
+                object obj = ResourceManager.GetObject("cancel_black_30px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -263,6 +293,16 @@ namespace BaredaProject.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ok_30px {
+            get {
+                object obj = ResourceManager.GetObject("ok_30px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap refresh_1_ {
             get {
                 object obj = ResourceManager.GetObject("refresh(1)", resourceCulture);
@@ -366,6 +406,26 @@ namespace BaredaProject.Properties {
         internal static System.Drawing.Bitmap warning_shield_25px {
             get {
                 object obj = ResourceManager.GetObject("warning_shield_25px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap warning_shield_45px {
+            get {
+                object obj = ResourceManager.GetObject("warning_shield_45px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap warning_shield_480px {
+            get {
+                object obj = ResourceManager.GetObject("warning_shield_480px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

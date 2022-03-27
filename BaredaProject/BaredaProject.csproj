@@ -73,6 +73,12 @@
     <Compile Include="MyDataSet.cs">
       <DependentUpon>MyDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Project\Dialogs\ConfirmationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Project\Dialogs\ConfirmationForm.Designer.cs">
+      <DependentUpon>ConfirmationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Project\Dialogs\DescriptionInput.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -106,6 +112,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Project\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Project\Dialogs\ConfirmationForm.resx">
+      <DependentUpon>ConfirmationForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Project\Dialogs\DescriptionInput.resx">
       <DependentUpon>DescriptionInput.cs</DependentUpon>
     </EmbeddedResource>
@@ -245,6 +254,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\save_as_30px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\warning_shield_45px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel_35px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\warning_shield_480px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel_480px1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel_black_30px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ok_30px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
