@@ -39,11 +39,11 @@ namespace BaredaProject
             this.restoreMenu = new DevExpress.XtraBars.PopupMenu(this.components);
             this.barBtnDefaultRestore = new DevExpress.XtraBars.BarButtonItem();
             this.barBtnTimeRestore = new DevExpress.XtraBars.BarButtonItem();
-            this.btnRefresh = new DevExpress.XtraBars.BarButtonItem();
             this.btnBackup = new DevExpress.XtraBars.BarButtonItem();
             this.backupMenu = new DevExpress.XtraBars.PopupMenu(this.components);
             this.barBtnDefaultBackup = new DevExpress.XtraBars.BarButtonItem();
             this.barBtnInitBackup = new DevExpress.XtraBars.BarButtonItem();
+            this.btnRefresh = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -220,15 +220,6 @@ namespace BaredaProject
             this.barBtnTimeRestore.Name = "barBtnTimeRestore";
             this.barBtnTimeRestore.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnTimeRestore_ItemClick);
             // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Caption = "  Làm mới ";
-            this.btnRefresh.Id = 20;
-            this.btnRefresh.ImageOptions.Image = global::BaredaProject.Properties.Resources.refresh_1_;
-            this.btnRefresh.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2 Medium", 14F, System.Drawing.FontStyle.Bold);
-            this.btnRefresh.ItemAppearance.Normal.Options.UseFont = true;
-            this.btnRefresh.Name = "btnRefresh";
-            // 
             // btnBackup
             // 
             this.btnBackup.ActAsDropDown = true;
@@ -270,6 +261,15 @@ namespace BaredaProject
             this.barBtnInitBackup.ItemAppearance.Normal.Options.UseFont = true;
             this.barBtnInitBackup.Name = "barBtnInitBackup";
             this.barBtnInitBackup.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnInitBackup_ItemClick);
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Caption = "  Làm mới ";
+            this.btnRefresh.Id = 20;
+            this.btnRefresh.ImageOptions.Image = global::BaredaProject.Properties.Resources.refresh_1_;
+            this.btnRefresh.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2 Medium", 14F, System.Drawing.FontStyle.Bold);
+            this.btnRefresh.ItemAppearance.Normal.Options.UseFont = true;
+            this.btnRefresh.Name = "btnRefresh";
             // 
             // barDockControlTop
             // 
@@ -640,13 +640,13 @@ namespace BaredaProject
             this.colposition.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.colposition.Caption = "Thứ tự";
             this.colposition.FieldName = "position";
-            this.colposition.MaxWidth = 187;
-            this.colposition.MinWidth = 187;
+            this.colposition.MaxWidth = 120;
+            this.colposition.MinWidth = 120;
             this.colposition.Name = "colposition";
             this.colposition.OptionsColumn.FixedWidth = true;
             this.colposition.Visible = true;
             this.colposition.VisibleIndex = 0;
-            this.colposition.Width = 187;
+            this.colposition.Width = 120;
             // 
             // colbackup_start_date
             // 
@@ -654,13 +654,13 @@ namespace BaredaProject
             this.colbackup_start_date.AppearanceHeader.Options.UseBackColor = true;
             this.colbackup_start_date.Caption = " Ngày sao lưu";
             this.colbackup_start_date.FieldName = "backup_start_date";
-            this.colbackup_start_date.MaxWidth = 280;
-            this.colbackup_start_date.MinWidth = 280;
+            this.colbackup_start_date.MaxWidth = 220;
+            this.colbackup_start_date.MinWidth = 220;
             this.colbackup_start_date.Name = "colbackup_start_date";
             this.colbackup_start_date.OptionsColumn.FixedWidth = true;
             this.colbackup_start_date.Visible = true;
             this.colbackup_start_date.VisibleIndex = 2;
-            this.colbackup_start_date.Width = 280;
+            this.colbackup_start_date.Width = 220;
             // 
             // coluser_name
             // 
@@ -682,11 +682,11 @@ namespace BaredaProject
             this.coldescription.AppearanceHeader.Options.UseBackColor = true;
             this.coldescription.Caption = " Mô tả";
             this.coldescription.FieldName = "description";
-            this.coldescription.MinWidth = 400;
+            this.coldescription.MinWidth = 200;
             this.coldescription.Name = "coldescription";
             this.coldescription.Visible = true;
             this.coldescription.VisibleIndex = 1;
-            this.coldescription.Width = 400;
+            this.coldescription.Width = 369;
             // 
             // statusStrip1
             // 

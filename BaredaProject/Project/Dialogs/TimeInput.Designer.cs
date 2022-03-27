@@ -107,7 +107,7 @@ namespace BaredaProject
             this.dateEdit1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.dateEdit1.EditValue = null;
             this.dateEdit1.Location = new System.Drawing.Point(70, 87);
-            this.dateEdit1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dateEdit1.Margin = new System.Windows.Forms.Padding(4);
             this.dateEdit1.Name = "dateEdit1";
             this.dateEdit1.Properties.Appearance.Font = new System.Drawing.Font("Baloo 2", 13F);
             this.dateEdit1.Properties.Appearance.Options.UseFont = true;
@@ -119,11 +119,11 @@ namespace BaredaProject
             this.dateEdit1.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateEdit1.Properties.CalendarView = DevExpress.XtraEditors.Repository.CalendarView.Vista;
-            this.dateEdit1.Properties.DisplayFormat.FormatString = "dd/MM/yyyy | h:mm:ss tt";
+            this.dateEdit1.Properties.DisplayFormat.FormatString = "dd/MM/yyyy   h:mm:ss tt";
             this.dateEdit1.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.dateEdit1.Properties.EditFormat.FormatString = "dd/MM/yyyy | h:mm:ss tt";
+            this.dateEdit1.Properties.EditFormat.FormatString = "dd/MM/yyyy   h:mm:ss tt";
             this.dateEdit1.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.dateEdit1.Properties.MaskSettings.Set("mask", "dd/MM/yyyy | h:mm:ss tt");
+            this.dateEdit1.Properties.MaskSettings.Set("mask", "dd/MM/yyyy   h:mm:ss tt");
             this.dateEdit1.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
             this.dateEdit1.Properties.VistaDisplayMode = DevExpress.Utils.DefaultBoolean.True;
             this.dateEdit1.Size = new System.Drawing.Size(356, 42);
