@@ -1984,7 +1984,7 @@ namespace BaredaProject.MyDataSetTableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
+            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[2];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = "SELECT position, description, backup_start_date, user_name\r\nFROM     msdb.dbo.bac" +
@@ -1992,6 +1992,28 @@ namespace BaredaProject.MyDataSetTableAdapters {
                 " \'Device_%\'\r\nORDER BY position DESC";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[0].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DBNAME", global::System.Data.SqlDbType.NVarChar, 128, global::System.Data.ParameterDirection.Input, 0, 0, "database_name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[1].Connection = this.Connection;
+            this._commandCollection[1].CommandText = @" --Lấy ra danh sách
+ WITH BackupSet
+     AS (SELECT description,backup_start_date,user_name,NAME,backup_set_id
+         FROM   msdb.dbo.backupset AS bs
+         WHERE  ( database_name = @DBName )
+                AND ( type = 'D' )
+                AND ( NAME LIKE '%File_%' )),
+--Đánh số cho danh sách
+     BackupSet2
+     AS (SELECT backup_set_id,description,backup_start_date,user_name,NAME,
+			(SELECT Count(*) + 1
+                FROM BackupSet AS set1       
+                WHERE  (backup_set_id < set2.backup_set_id )) AS RowNum
+         FROM   BackupSet AS set2)
+
+SELECT backup_start_date, user_name, description, RowNum as position
+FROM   BackupSet2
+WHERE  ( NAME NOT LIKE 'Deleted_%' )  ";
+            this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DBName", global::System.Data.SqlDbType.NVarChar, 128, global::System.Data.ParameterDirection.Input, 0, 0, "", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2024,6 +2046,42 @@ namespace BaredaProject.MyDataSetTableAdapters {
             }
             else {
                 this.Adapter.SelectCommand.Parameters[0].Value = ((string)(DBNAME));
+            }
+            MyDataSet.database_backupsDataTable dataTable = new MyDataSet.database_backupsDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FileFill(MyDataSet.database_backupsDataTable dataTable, string DBName) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            if ((DBName == null)) {
+                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[0].Value = ((string)(DBName));
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual MyDataSet.database_backupsDataTable FileGetData(string DBName) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            if ((DBName == null)) {
+                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[0].Value = ((string)(DBName));
             }
             MyDataSet.database_backupsDataTable dataTable = new MyDataSet.database_backupsDataTable();
             this.Adapter.Fill(dataTable);
