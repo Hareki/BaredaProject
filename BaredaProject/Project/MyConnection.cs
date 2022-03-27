@@ -242,6 +242,15 @@ namespace BaredaProject
             return DeleteBackup(defaultPath, dbName, pos) && DeleteBackupInfo(dbName, pos);
         }
 
+        public static bool RestoreDB(string dbName, int pos)
+        {
+            return true;
+        }
+
+        public static bool RestoreDB_Time(string dbName, int pos, DateTime timeInput)
+        {
+            return true;
+        }
 
         /*----EXECUTE COMMANDS----*/
         private static bool ExecSqlNonQuery(String command, String connectionString, List<Para> paraList)

@@ -176,10 +176,58 @@ namespace BaredaProject
 
         }
 
+        private DateTime GetMinBackupTime()
+        {
+            return (DateTime)Utils.GetCellValueGridView(gvBackups, colbackup_start_date, 0);
+        }
+
+        private bool IsValidTimeInput(DateTime timeInput)
+        {
+            DateTime minBackupTime = GetMinBackupTime();
+            Double minutesLeft = DateTime.Now.Subtract(timeInput).TotalMinutes;
+            if (minutesLeft < 4)
+            {
+                Utils.ShowInfoMessage("Lỗi phục hồi", "Thời điểm phục hồi phải nhỏ hơn hiện tại ít nhất 4 phút", Utils.MessageType.Error);
+                return false;
+            }
+
+            if (timeInput < minBackupTime)
+            {
+                Utils.ShowInfoMessage("Lỗi phục hồi", "Thời điểm phục hồi nằm trong khoảng có các bản sao lưu", Utils.MessageType.Error);
+                return false;
+            }
+            return true;
+        }
         private void BarBtnTimeRestore_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             TimeInput input = new TimeInput();
             input.ShowDialog();
+            if (input.Continue)
+            {
+                DateTime timeInput = input.GetTimeInput();
+                while( (!IsValidTimeInput(timeInput)) && input.Continue)
+                {
+                    input.ShowDialog();
+                    timeInput = input.GetTimeInput();
+                }
+
+                string dbName = GetSelectedDBName();
+                int pos = GetSelectedBackupPos();
+                if (Utils.ShowConfirmMessage("Xác nhận phục hồi", $"Xác nhận phục hồi {dbName} về thời điểm {timeInput.ToString()}?"))
+                {
+                    if (MyConnection.RestoreDB_Time(dbName, pos, timeInput)){
+                        Utils.ShowInfoMessage("Thông báo", "Phục hồi thành công", Utils.MessageType.Information);
+                    }
+                    else
+                    {
+                        Utils.ShowInfoMessage("Thông báo", "Xảy ra lỗi abc xyz", Utils.MessageType.Error);
+                    }
+                }
+            }
+
+
+
+
         }
 
         private void BtnCreateDevice_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -202,7 +250,7 @@ namespace BaredaProject
         }
         private void BtnDelBackup_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            if(Utils.ShowConfirmMessage("Xác nhận", "Xóa bản sao lưu đã chọn?"))
+            if (Utils.ShowConfirmMessage("Xác nhận", "Xóa bản sao lưu đã chọn?"))
             {
                 string dbName = GetSelectedDBName();
                 int pos = GetSelectedBackupPos();
@@ -211,7 +259,7 @@ namespace BaredaProject
                     Utils.ShowInfoMessage("Thông báo", "Đã xóa bản sao lưu được chọn", Utils.MessageType.Information);
                     ReloadGvBackups(GetSelectedDBName());
                 }
-            } 
+            }
         }
     }
 }

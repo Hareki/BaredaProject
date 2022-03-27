@@ -34,8 +34,8 @@ namespace BaredaProject
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnOk = new System.Windows.Forms.Button();
             this.dateEdit1 = new DevExpress.XtraEditors.DateEdit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties.CalendarTimeProperties)).BeginInit();
@@ -72,35 +72,37 @@ namespace BaredaProject
             this.label1.TabIndex = 23;
             this.label1.Text = "Nhập thời gian phục hồi";
             // 
-            // button1
+            // btnCancel
             // 
-            this.button1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.button1.Font = new System.Drawing.Font("Baloo 2 Medium", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
-            this.button1.Image = global::BaredaProject.Properties.Resources.cancel_30px;
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button1.Location = new System.Drawing.Point(266, 145);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(160, 55);
-            this.button1.TabIndex = 22;
-            this.button1.Text = "Hủy";
-            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnCancel.Font = new System.Drawing.Font("Baloo 2 Medium", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
+            this.btnCancel.Image = global::BaredaProject.Properties.Resources.cancel_30px;
+            this.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnCancel.Location = new System.Drawing.Point(266, 145);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(160, 55);
+            this.btnCancel.TabIndex = 22;
+            this.btnCancel.Text = "Hủy";
+            this.btnCancel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // button2
+            // btnOk
             // 
-            this.button2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.button2.Font = new System.Drawing.Font("Baloo 2 Medium", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
-            this.button2.Image = global::BaredaProject.Properties.Resources.clock_30px;
-            this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button2.Location = new System.Drawing.Point(70, 145);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(160, 55);
-            this.button2.TabIndex = 21;
-            this.button2.Text = "Phục hồi";
-            this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnOk.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnOk.Font = new System.Drawing.Font("Baloo 2 Medium", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnOk.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
+            this.btnOk.Image = global::BaredaProject.Properties.Resources.clock_30px;
+            this.btnOk.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnOk.Location = new System.Drawing.Point(70, 145);
+            this.btnOk.Name = "btnOk";
+            this.btnOk.Size = new System.Drawing.Size(160, 55);
+            this.btnOk.TabIndex = 21;
+            this.btnOk.Text = "Phục hồi";
+            this.btnOk.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // dateEdit1
             // 
@@ -135,8 +137,8 @@ namespace BaredaProject
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(540, 238);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnOk);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.dateEdit1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -158,8 +160,8 @@ namespace BaredaProject
         private System.Windows.Forms.PictureBox pictureBox1;
         private DevExpress.XtraEditors.DateEdit dateEdit1;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnOk;
+        private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label1;
     }
 }
