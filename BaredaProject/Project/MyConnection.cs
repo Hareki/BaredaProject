@@ -1,4 +1,5 @@
 ﻿using BaredaProject.Project;
+using BaredaProject.Project.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -154,7 +155,7 @@ namespace BaredaProject
                 catch (Exception ex)
                 {
                     Utils.ShowInfoMessage("Lỗi phục hồi", $"Xảy ra lỗi trong quá trình phục hồi: \n{ex.Message}\nTự động" +
-                        $" phục hồi về bản sao lưu mới nhất", Utils.MessageType.Error);
+                        $" phục hồi về bản sao lưu mới nhất", InformationForm.FormType.Error);
                     return RestoreDBFromDevice(dbName, latestPos);
                 }
                 finally
@@ -163,7 +164,7 @@ namespace BaredaProject
                 }
             }
             else
-                Utils.ShowInfoMessage("Lỗi phục hồi", "Không tìm thấy nhật ký backup", Utils.MessageType.Error);
+                Utils.ShowInfoMessage("Lỗi phục hồi", "Không tìm thấy nhật ký backup", InformationForm.FormType.Error);
             return false;
         }
 
@@ -351,7 +352,7 @@ namespace BaredaProject
                 connection.Close();
                 if (!ex.Message.Equals(FILE_DELETED_MESSAGE))
                 {
-                    Utils.ShowInfoMessage("Lỗi thực thi", ex.Message, Utils.MessageType.Error);
+                    Utils.ShowInfoMessage("Lỗi thực thi", ex.Message, InformationForm.FormType.Error);
                     Console.WriteLine(ex.StackTrace);
                 }
                 return false;
@@ -386,7 +387,7 @@ namespace BaredaProject
             catch (SqlException ex)
             {
                 connection.Close();
-                Utils.ShowInfoMessage("Lỗi thực thi", ex.Message, Utils.MessageType.Error);
+                Utils.ShowInfoMessage("Lỗi thực thi", ex.Message, InformationForm.FormType.Error);
                 connection.Close();
                 Console.WriteLine(ex.StackTrace);
                 return null;

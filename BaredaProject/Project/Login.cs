@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static BaredaProject.Project.Dialogs.InformationForm;
 
 namespace BaredaProject
 {
@@ -48,7 +49,7 @@ namespace BaredaProject
 
             if (!(test1 && test2 && test3))
             {
-                Utils.ShowInfoMessage("Lỗi đăng nhập", "Vui lòng điền đầy đủ thông tin", Utils.MessageType.Error);
+                Utils.ShowInfoMessage("Lỗi đăng nhập", "Vui lòng điền đầy đủ thông tin", Project.Dialogs.InformationForm.FormType.Error);
                 return false;
             }
             return true;
@@ -63,7 +64,7 @@ namespace BaredaProject
 
             if (!MyConnection.ConnectToServer(serverName, userName, password))
             {
-                Utils.ShowInfoMessage("Lỗi đăng nhập", "Tài khoản, mật khẩu hoặc tên server không chính xác", Utils.MessageType.Error);
+                Utils.ShowInfoMessage("Lỗi đăng nhập", "Tài khoản, mật khẩu hoặc tên server không chính xác", FormType.Error);
                 return;
             }
 

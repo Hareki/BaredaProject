@@ -1,4 +1,5 @@
-﻿using DevExpress.XtraGrid.Columns;
+﻿using BaredaProject.Project.Dialogs;
+using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Grid;
 using System;
 using System.Collections.Generic;
@@ -11,27 +12,24 @@ namespace BaredaProject.Project
 {
     class Utils
     {
-        public enum MessageType
-        {
-            Error,
-            Confirmation,
-            Information
-        }
 
-        public static void ShowInfoMessage(string title, string message, MessageType type)
+        public static void ShowInfoMessage(string title, string message, InformationForm.FormType type)
         {
-            MessageBoxIcon icon = MessageBoxIcon.Information;
-            switch (type)
-            {
-                case MessageType.Error:
-                    icon = MessageBoxIcon.Error;
-                    break;
-                case MessageType.Information:
-                    icon = MessageBoxIcon.Information;
-                    break;
-            }
-            MessageBox.Show(message, title,
-                         MessageBoxButtons.OK, icon);
+            //MessageBoxIcon icon = MessageBoxIcon.Information;
+            //switch (type)
+            //{
+            //    case MessageType.Error:
+            //        icon = MessageBoxIcon.Error;
+            //        break;
+            //    case MessageType.Information:
+            //        icon = MessageBoxIcon.Information;
+            //        break;
+            //}
+            //MessageBox.Show(message, title,
+            //             MessageBoxButtons.OK, icon);
+
+            InformationForm form = new InformationForm(title, message, type);
+            form.ShowDialog();
         }
         public static bool ShowConfirmMessage(string title, string message)
         {

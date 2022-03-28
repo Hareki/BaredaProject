@@ -155,7 +155,7 @@ namespace BaredaProject
                 string description = input.Description;
                 if (MyConnection.BackupDB(dbName, description, init, GetDefaultPath()))
                 {
-                    Utils.ShowInfoMessage("Thông báo", "Tạo bản sao lưu thành công", Utils.MessageType.Information);
+                    Utils.ShowInfoMessage("Thông báo", "Tạo bản sao lưu thành công", InformationForm.FormType.Infor);
                 }
                 ReloadGvBackups(dbName);
             }
@@ -179,7 +179,7 @@ namespace BaredaProject
             {
                 if (MyConnection.RestoreDB(dbName, pos, null))
                 {
-                    Utils.ShowInfoMessage("Thông báo", "Phục hồi hoàn tất", Utils.MessageType.Information);
+                    Utils.ShowInfoMessage("Thông báo", "Phục hồi hoàn tất", InformationForm.FormType.Infor);
                 }
 
             }
@@ -201,13 +201,13 @@ namespace BaredaProject
             Double minutesLeft = DateTime.Now.Subtract(timeInput).TotalMinutes;
             if (minutesLeft < 4)
             {
-                Utils.ShowInfoMessage("Lỗi phục hồi", "Thời điểm phục hồi phải nhỏ hơn hiện tại ít nhất 4 phút", Utils.MessageType.Error);
+                Utils.ShowInfoMessage("Lỗi phục hồi", "Thời điểm phục hồi phải nhỏ hơn hiện tại ít nhất 4 phút", InformationForm.FormType.Error);
                 return false;
             }
 
             if (timeInput < minBackupTime)
             {
-                Utils.ShowInfoMessage("Lỗi phục hồi", "Thời điểm phục hồi nằm trong khoảng có các bản sao lưu", Utils.MessageType.Error);
+                Utils.ShowInfoMessage("Lỗi phục hồi", "Thời điểm phục hồi nằm trong khoảng có các bản sao lưu", InformationForm.FormType.Error);
                 return false;
             }
             return true;
@@ -232,7 +232,7 @@ namespace BaredaProject
                 if (Utils.ShowConfirmMessage("Xác nhận", $"Xác nhận phục hồi {dbName} về thời điểm {timeInput}?"))
                 {
                     if (MyConnection.RestoreDB_Time(dbName, pos, GetLatestDBPos(dbName), timeInput, GetDefaultPath()))
-                        Utils.ShowInfoMessage("Thông báo", "Phục hồi hoàn tất", Utils.MessageType.Information);
+                        Utils.ShowInfoMessage("Thông báo", "Phục hồi hoàn tất", InformationForm.FormType.Infor);
                 }
             }
 
@@ -245,7 +245,7 @@ namespace BaredaProject
             Directory.CreateDirectory(GetDefaultPath());
             if (MyConnection.CreateDevice(dbName, GetDefaultPath()))
             {
-                Utils.ShowInfoMessage("Thông báo", "Tạo device thành công", Utils.MessageType.Information);
+                Utils.ShowInfoMessage("Thông báo", "Tạo device thành công", InformationForm.FormType.Infor);
                 ReloadGvBackups(GetSelectedDBName());
             }
 
@@ -264,7 +264,7 @@ namespace BaredaProject
                 int pos = GetSelectedBackupPos();
                 if (MyConnection.DeleteBackupInstance(dbName, pos, GetDefaultPath()))
                 {
-                    Utils.ShowInfoMessage("Thông báo", "Đã xóa bản sao lưu được chọn", Utils.MessageType.Information);
+                    Utils.ShowInfoMessage("Thông báo", "Đã xóa bản sao lưu được chọn", InformationForm.FormType.Infor);
                     ReloadGvBackups(GetSelectedDBName());
                 }
             }

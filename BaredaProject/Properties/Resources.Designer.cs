@@ -143,6 +143,16 @@ namespace BaredaProject.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap cancel_red_480px {
+            get {
+                object obj = ResourceManager.GetObject("cancel_red_480px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap clock_20px {
             get {
                 object obj = ResourceManager.GetObject("clock_20px", resourceCulture);
@@ -266,6 +276,16 @@ namespace BaredaProject.Properties {
         internal static System.Drawing.Bitmap info_30px {
             get {
                 object obj = ResourceManager.GetObject("info_30px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap info_480px {
+            get {
+                object obj = ResourceManager.GetObject("info_480px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
