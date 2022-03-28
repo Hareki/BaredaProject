@@ -34,6 +34,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bunifu.Licensing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=f89b4760ba7dcb6b" />
+    <Reference Include="Bunifu.UI.WinForms.1.5.3">
+      <HintPath>..\packages\Bunifu.UI.WinForms.5.2.1\lib\net40\Bunifu.UI.WinForms.1.5.3.dll</HintPath>
+    </Reference>
     <Reference Include="Bunifu.UI.WinForms.BunifuButton">
       <HintPath>..\packages\Bunifu.UI.WinForms.5.2.1\lib\net40\Bunifu.UI.WinForms.BunifuButton.dll</HintPath>
     </Reference>
@@ -272,6 +275,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ok_30px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\help_480px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
