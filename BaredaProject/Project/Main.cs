@@ -173,12 +173,26 @@ namespace BaredaProject
 
         private void BarBtnDefaultRestore_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
+            string dbName = GetSelectedDBName();
+            int pos = GetSelectedBackupPos();
+            if (Utils.ShowConfirmMessage("Xác nhận", $"Xác nhận phục hồi {dbName} về bản sao lưu thứ {pos}?"))
+            {
+                if (MyConnection.RestoreDB(dbName, pos, null))
+                {
+                    Utils.ShowInfoMessage("Thông báo", "Phục hồi hoàn tất", Utils.MessageType.Information);
+                }
 
+            }
         }
 
         private DateTime GetMinBackupTime()
         {
             return (DateTime)Utils.GetCellValueGridView(gvBackups, colbackup_start_date, 0);
+        }
+
+        private int GetLatestDBPos(string dbName)
+        {
+            return int.Parse(Utils.GetCellStringGridView(gvBackups, colposition, gvBackups.RowCount - 1));
         }
 
         private bool IsValidTimeInput(DateTime timeInput)
@@ -198,6 +212,8 @@ namespace BaredaProject
             }
             return true;
         }
+
+
         private void BarBtnTimeRestore_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             TimeInput input = new TimeInput();
@@ -205,7 +221,7 @@ namespace BaredaProject
             if (input.Continue)
             {
                 DateTime timeInput = input.GetTimeInput();
-                while( (!IsValidTimeInput(timeInput)) && input.Continue)
+                while ((!IsValidTimeInput(timeInput)) && input.Continue)
                 {
                     input.ShowDialog();
                     timeInput = input.GetTimeInput();
@@ -213,20 +229,12 @@ namespace BaredaProject
 
                 string dbName = GetSelectedDBName();
                 int pos = GetSelectedBackupPos();
-                if (Utils.ShowConfirmMessage("Xác nhận phục hồi", $"Xác nhận phục hồi {dbName} về thời điểm {timeInput.ToString()}?"))
+                if (Utils.ShowConfirmMessage("Xác nhận", $"Xác nhận phục hồi {dbName} về thời điểm {timeInput}?"))
                 {
-                    if (MyConnection.RestoreDB_Time(dbName, pos, timeInput)){
-                        Utils.ShowInfoMessage("Thông báo", "Phục hồi thành công", Utils.MessageType.Information);
-                    }
-                    else
-                    {
-                        Utils.ShowInfoMessage("Thông báo", "Xảy ra lỗi abc xyz", Utils.MessageType.Error);
-                    }
+                    if (MyConnection.RestoreDB_Time(dbName, pos, GetLatestDBPos(dbName), timeInput, GetDefaultPath()))
+                        Utils.ShowInfoMessage("Thông báo", "Phục hồi hoàn tất", Utils.MessageType.Information);
                 }
             }
-
-
-
 
         }
 

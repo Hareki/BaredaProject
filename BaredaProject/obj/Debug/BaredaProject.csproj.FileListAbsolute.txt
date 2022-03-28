@@ -106,3 +106,4 @@ D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\Bare
 D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\BaredaProject\bin\Debug\Bunifu.UI.WinForms.BunifuButton.xml
 D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\BaredaProject\obj\Debug\BaredaProject.Login.resources
 D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\BaredaProject\obj\Debug\BaredaProject.Project.Dialogs.DescriptionInput.resources
+D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\BaredaProject\obj\Debug\BaredaProject.Project.Dialogs.ConfirmationForm.resources
