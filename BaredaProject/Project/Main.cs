@@ -27,13 +27,26 @@ namespace BaredaProject
         {
             string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
             var directory = new DirectoryInfo(documentsPath);
-
+            string result;
             if (USE_DEVICE_MODE)
-                return directory.Parent.FullName + @"\Backup\Device";
+                result = directory.Parent.FullName + @"\Backup\Device";
             else
-                return directory.Parent.FullName + @"\Backup\File";
+                result = directory.Parent.FullName + @"\Backup\File";
+
+            Directory.CreateDirectory(result);
+            return result;
 
         }
+        private string GetDefaultLogPath()
+        {
+            string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
+            var directory = new DirectoryInfo(documentsPath);
+            string result = directory.Parent.FullName + @"\Backup\Log\";
+            Directory.CreateDirectory(result);
+            return result;
+
+        }
+
 
         private void CustomCellPadding()
         {
@@ -49,7 +62,7 @@ namespace BaredaProject
         {
             CustomCellPadding();
             ReloadDBList();
-
+            MyConnection.AddBackupLogJob(GetDefaultLogPath());
         }
 
         private void Main_FormClosed(object sender, FormClosedEventArgs e)
@@ -145,7 +158,6 @@ namespace BaredaProject
                 if (!Utils.ShowConfirmMessage("Xác nhận", "Bạn có chắc muốn xóa toàn bộ các bản sao lưu cũ và ghi bản mới?"))
                     return;
 
-            if (!USE_DEVICE_MODE) Directory.CreateDirectory(GetDefaultPath());
 
             string dbName = GetSelectedDBName();
             DescriptionInput input = new DescriptionInput();
@@ -242,7 +254,6 @@ namespace BaredaProject
         {
             string dbName = GetSelectedDBName();
 
-            Directory.CreateDirectory(GetDefaultPath());
             if (MyConnection.CreateDevice(dbName, GetDefaultPath()))
             {
                 Utils.ShowInfoMessage("Thông báo", "Tạo device thành công", InformationForm.FormType.Infor);

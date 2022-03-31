@@ -129,7 +129,7 @@ namespace BaredaProject
         {
             string deviceName = $"Device_{dbName}";
 
-            string command = $"ALTER DATABASE {dbName};"
+            string command = $"ALTER DATABASE {dbName}"
               + " SET SINGLE_USER WITH ROLLBACK IMMEDIATE;"
               + $" USE tempdb; RESTORE DATABASE {dbName}"
               + $" FROM {deviceName} WITH FILE = {pos}, REPLACE; "
@@ -145,10 +145,11 @@ namespace BaredaProject
                 try
                 {
                     string command = $"ALTER DATABASE {dbName}"
-                          + "; SET SINGLE_USER WITH ROLLBACK IMMEDIATE;"
+                          + " SET SINGLE_USER WITH ROLLBACK IMMEDIATE;"
                           + $" BACKUP LOG {dbName} TO DISK ='{backupLogPath}' WITH INIT, NORECOVERY;"
-                          + $" USE tempdb; RESTORE DATABASE {dbName};"
-                          + $" FROM {deviceName} WITH FILE = {pos}, REPLACE; "
+                          + $" USE tempdb; "
+                          + $"RESTORE DATABASE {dbName} FROM {deviceName} WITH FILE = {pos}, NORECOVERY; "
+                          + $"RESTORE DATABASE {dbName} FROM DISK = '{backupLogPath}' WITH STOPAT ='{timeInput.ToString("yyyy-MM-dd HH:mm:ss")}'; "
                           + $" ALTER DATABASE {dbName} SET MULTI_USER";
                     return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
                 }
@@ -321,6 +322,13 @@ namespace BaredaProject
                 return RestoreDBFromFile_Time(dbName, pos, latestPos, defaultPath, timeInput);
         }
 
+
+        /*----OTHERS----*/
+        public static bool AddBackupLogJob(string defaultPath)
+        {
+            string command = LongCommands.GetAddBackupJobCommand(defaultPath, "BackupLogDaily");
+            return ExecSqlNonQuery(command,ConnectionString, new List<Para>());
+        }
         
         /*----EXECUTE COMMANDS----*/
         private static bool ExecSqlNonQuery(String command, String connectionString, List<Para> paraList)
@@ -353,7 +361,7 @@ namespace BaredaProject
                 if (!ex.Message.Equals(FILE_DELETED_MESSAGE))
                 {
                     Utils.ShowInfoMessage("Lỗi thực thi", ex.Message, InformationForm.FormType.Error);
-                    Console.WriteLine(ex.StackTrace);
+                    Console.WriteLine("Command:\n " + command);
                 }
                 return false;
             }
@@ -389,7 +397,7 @@ namespace BaredaProject
                 connection.Close();
                 Utils.ShowInfoMessage("Lỗi thực thi", ex.Message, InformationForm.FormType.Error);
                 connection.Close();
-                Console.WriteLine(ex.StackTrace);
+                Console.WriteLine("Command:\n " + command);
                 return null;
             }
         }

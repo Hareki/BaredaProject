@@ -124,9 +124,6 @@
   <data name="data-warehouse" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\data-warehouse.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="lock_500px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\lock_500px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="data_backup_25px" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\data_backup_25px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -136,8 +133,8 @@
   <data name="cancel_40px1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cancel_40px1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="user_480px1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\user_480px1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="minus_20px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\minus_20px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="server-storage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\server-storage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -157,6 +154,9 @@
   <data name="clock_40px1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\clock_40px1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="user_480px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\user_480px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="cancel_35px" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cancel_35px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -172,11 +172,20 @@
   <data name="refresh-arrow(1)" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\refresh-arrow(1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Check Circle_20px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Check Circle_20px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cancel_25px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cancel_25px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="warning_shield_480px" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\warning_shield_480px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="clock_30px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\clock_30px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="warning_shield_45px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\warning_shield_45px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cancel_red_480px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cancel_red_480px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="cancel_40px" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cancel_40px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -196,8 +205,8 @@
   <data name="clock_40px" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\clock_40px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="user_480px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\user_480px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="lock_500px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lock_500px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="save_as_20px" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\save_as_20px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -205,8 +214,8 @@
   <data name="cancel_480px" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cancel_480px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="warning_shield_45px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\warning_shield_45px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="clock_30px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\clock_30px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="eye_512px" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\eye_512px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -223,6 +232,9 @@
   <data name="cancel_480px1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cancel_480px1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Check Circle_Blue25px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Check Circle_Blue25px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="clock_480px" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\clock_480px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -232,10 +244,13 @@
   <data name="invisible_512px" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\invisible_512px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="minus_20px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\minus_20px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Check Circle_25px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Check Circle_25px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="cancel_red_480px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cancel_red_480px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="user_480px1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\user_480px1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cancel_blue25px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cancel_blue25px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

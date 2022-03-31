@@ -21,7 +21,7 @@ namespace BaredaProject.Project.Dialogs
         {
             InitializeComponent();
             this.message.Text = message;
-            this.title.Text = title;
+            this.Text = title;
         }
 
         private void btnOk_Click(object sender, EventArgs e)

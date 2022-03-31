@@ -60,7 +60,7 @@ namespace BaredaProject.Project.Dialogs
             // btnCancel
             // 
             this.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnCancel.Font = new System.Drawing.Font("Baloo 2 Medium", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancel.Font = new System.Drawing.Font("Baloo 2 Medium", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
             this.btnCancel.Image = global::BaredaProject.Properties.Resources.cancel_30px;
             this.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -68,7 +68,7 @@ namespace BaredaProject.Project.Dialogs
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(160, 55);
             this.btnCancel.TabIndex = 27;
-            this.btnCancel.Text = "Hủy";
+            this.btnCancel.Text = " Hủy";
             this.btnCancel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
@@ -76,7 +76,7 @@ namespace BaredaProject.Project.Dialogs
             // btnOk
             // 
             this.btnOk.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnOk.Font = new System.Drawing.Font("Baloo 2 Medium", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnOk.Font = new System.Drawing.Font("Baloo 2 Medium", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOk.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
             this.btnOk.Image = global::BaredaProject.Properties.Resources.save_as_30px;
             this.btnOk.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -84,7 +84,7 @@ namespace BaredaProject.Project.Dialogs
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(160, 55);
             this.btnOk.TabIndex = 26;
-            this.btnOk.Text = "Sao lưu";
+            this.btnOk.Text = " Sao lưu";
             this.btnOk.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.BtnOk_Click);

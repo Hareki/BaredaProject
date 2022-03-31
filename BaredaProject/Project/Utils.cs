@@ -33,9 +33,14 @@ namespace BaredaProject.Project
         }
         public static bool ShowConfirmMessage(string title, string message)
         {
-            MessageBoxIcon icon = MessageBoxIcon.Question;
-            var result = MessageBox.Show(message, title, MessageBoxButtons.YesNo, icon);
-            return result == DialogResult.Yes;
+            //MessageBoxIcon icon = MessageBoxIcon.Question;
+            //var result = MessageBox.Show(message, title, MessageBoxButtons.YesNo, icon);
+            //return result == DialogResult.Yes;
+
+            ConfirmationForm form = new ConfirmationForm(title, message);
+            form.ShowDialog();
+            return form.Continue;
+
 
         }
         public static string GetCellStringGridView(GridView view, GridColumn column, int row)

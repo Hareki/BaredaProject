@@ -64,7 +64,7 @@ namespace BaredaProject
 
             if (!MyConnection.ConnectToServer(serverName, userName, password))
             {
-                Utils.ShowInfoMessage("Lỗi đăng nhập", "Tài khoản, mật khẩu hoặc tên server không chính xác", FormType.Error);
+                Utils.ShowInfoMessage("Lỗi đăng nhập", "Tài khoản, mật khẩu hoặc tên server không chính xácaaaaaaaaaaaaaaaaaaarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrraaaaaa", FormType.Error);
                 return;
             }
 

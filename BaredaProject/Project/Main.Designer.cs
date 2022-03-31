@@ -373,7 +373,6 @@ namespace BaredaProject
             this.repositoryItemDateEdit1.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.repositoryItemDateEdit1.EditFormat.FormatString = "dd/MM/yyyy | h:mm:ss tt";
             this.repositoryItemDateEdit1.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.repositoryItemDateEdit1.MaskSettings.Set("mask", "dd/MM/yyyy | h:mm:ss tt");
             this.repositoryItemDateEdit1.Name = "repositoryItemDateEdit1";
             this.repositoryItemDateEdit1.VistaDisplayMode = DevExpress.Utils.DefaultBoolean.True;
             // 
@@ -456,13 +455,13 @@ namespace BaredaProject
             this.gcDBList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.gcDBList.DataSource = this.bdsDBList;
-            this.gcDBList.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(15, 15, 15, 15);
+            this.gcDBList.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(15);
             this.gcDBList.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gcDBList.Location = new System.Drawing.Point(74, 145);
+            this.gcDBList.Location = new System.Drawing.Point(59, 133);
             this.gcDBList.MainView = this.gvDBList;
-            this.gcDBList.Margin = new System.Windows.Forms.Padding(62, 62, 31, 62);
+            this.gcDBList.Margin = new System.Windows.Forms.Padding(50, 50, 25, 50);
             this.gcDBList.Name = "gcDBList";
-            this.gcDBList.Size = new System.Drawing.Size(562, 544);
+            this.gcDBList.Size = new System.Drawing.Size(547, 418);
             this.gcDBList.TabIndex = 13;
             this.gcDBList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvDBList});
@@ -559,13 +558,13 @@ namespace BaredaProject
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gcBackups.DataSource = this.bdsBackupList;
-            this.gcBackups.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(15, 15, 15, 15);
+            this.gcBackups.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(15);
             this.gcBackups.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gcBackups.Location = new System.Drawing.Point(699, 145);
+            this.gcBackups.Location = new System.Drawing.Point(656, 133);
             this.gcBackups.MainView = this.gvBackups;
-            this.gcBackups.Margin = new System.Windows.Forms.Padding(31, 62, 62, 62);
+            this.gcBackups.Margin = new System.Windows.Forms.Padding(25, 50, 50, 50);
             this.gcBackups.Name = "gcBackups";
-            this.gcBackups.Size = new System.Drawing.Size(1170, 544);
+            this.gcBackups.Size = new System.Drawing.Size(839, 418);
             this.gcBackups.TabIndex = 14;
             this.gcBackups.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvBackups});
