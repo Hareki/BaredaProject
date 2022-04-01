@@ -85,12 +85,13 @@ namespace BaredaProject
         }
         private static string GetDBTailLogFullPath(string dbName)
         {
-            return $"{Main.GetSpecifiedDefaultLogPath(dbName)}{dbName}_log_tailLog.trn";
+            string currentMilis = Utils.ConvertDateTimeToMilisString(DateTime.Now);
+            return $"{Main.GetSpecifiedDefaultLogPath(dbName)}{dbName}_tailLog_{currentMilis}.trn";
         }
         private static string GetBackupTailLogCommand(bool needTailLog, string dbName, string tailLogFullPath)
         {
             if (!needTailLog) return string.Empty;
-            return $"BACKUP LOG {dbName} TO DISK = '{tailLogFullPath}' WITH NORECOVERY, INIT ";
+            return $"BACKUP LOG {dbName} TO DISK = '{tailLogFullPath}' WITH INIT ";
 
         }
         private static string GetRestoreTailLogCommand(bool needTailLog, string dbName, string tailLogFullPath, DateTime timeInput)
@@ -121,7 +122,9 @@ namespace BaredaProject
             List<DateTime> result = new List<DateTime>();
             foreach (string fileName in fileNames)
             {
-                string milis = fileName.Substring(fileName.LastIndexOf("_" + 1));
+                int startIndex = fileName.LastIndexOf("_") + 2;
+                int length = fileName.LastIndexOf(".") - startIndex + 1;
+                string milis = fileName.Substring(fileName.LastIndexOf("_") + 1, length);
                 DateTime date = Utils.ConvertMilisStringToDateTime(milis);
                 result.Add(date);
             }
@@ -216,28 +219,29 @@ namespace BaredaProject
                 needTailLog = false;
                 upperBound = test.Max(date => date);
             }
-            List<DateTime> neededLogDates = logDates.Where(date => date >= lowerBound && date <= upperBound).ToList();
+            List<DateTime> neededLogDates = logDates.Where(date => date >= lowerBound && date <= upperBound).ToList()
+                .OrderBy(date => date).ToList();
 
             string command = GetDeviceRestoreCommand(dbName, timeInput, defaultPath, deviceName, pos, needTailLog, neededLogDates);
-            bool test1 = ExecSqlNonQuery(command, ConnectionString, new List<Para>());
-            bool test2 = DeleteFile(GetDBTailLogFullPath(dbName));
-            return test1 && test2;
+            return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
+
 
         }
 
 
         private static string GetDeviceRestoreCommand(string dbName, DateTime timeInput, string defaultPath, string deviceName, int pos, bool needTailLog, List<DateTime> neededLogDates)
         {
+            string dbTailLogFullPath = GetDBTailLogFullPath(dbName);
             string preCommand = $"ALTER DATABASE {dbName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE; "
-                             + "USE master " + GetBackupTailLogCommand(needTailLog, dbName, GetDBTailLogFullPath(dbName))
+                             + "USE master " + GetBackupTailLogCommand(needTailLog, dbName, dbTailLogFullPath)
                              + $" RESTORE DATABASE {dbName} FROM {deviceName} WITH FILE = {pos}, NORECOVERY, REPLACE; ";
             StringBuilder buider = new StringBuilder(preCommand);
             foreach (DateTime date in neededLogDates)
             {
-                string disk = Utils.ConvertDateTimeToMilisString(date);
+                string disk = $"{Main.GetSpecifiedDefaultLogPath(dbName)}{dbName}_tailLog_{Utils.ConvertDateTimeToMilisString(date)}.trn";
                 buider.AppendLine($"RESTORE LOG {dbName} FROM DISK = '{disk}' WITH STOPAT = '{timeInput.ToString(Utils.SQL_DATE_FORMAT)}', NORECOVERY ");
             }
-            buider.AppendLine(GetRestoreTailLogCommand(needTailLog, dbName, GetDBTailLogFullPath(dbName), timeInput));
+            buider.AppendLine(GetRestoreTailLogCommand(needTailLog, dbName, dbTailLogFullPath, timeInput));
             buider.AppendLine($"RESTORE DATABASE {dbName} ");
             buider.AppendLine($"ALTER DATABASE {dbName} SET MULTI_USER ");
             string command = buider.ToString();

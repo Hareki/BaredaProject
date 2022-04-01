@@ -50,11 +50,11 @@ namespace BaredaProject.Project
         /*----DATE PROCESSING----*/
         public static string ConvertDateTimeToMilisString(DateTime date)
         {
-            return ((long)(date - new DateTime(1970, 1, 1)).TotalMilliseconds).ToString();
+            return new DateTimeOffset(date).ToUnixTimeMilliseconds().ToString();
         }
         public static DateTime ConvertMilisStringToDateTime(string milis)
         {
-            return DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(milis)).UtcDateTime;
+            return DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(milis)).LocalDateTime;
         }
 
     }
