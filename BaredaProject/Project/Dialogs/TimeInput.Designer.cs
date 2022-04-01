@@ -51,7 +51,7 @@ namespace BaredaProject
             // 
             this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pictureBox1.Image = global::BaredaProject.Properties.Resources.warning_shield_25px;
-            this.pictureBox1.Location = new System.Drawing.Point(433, 89);
+            this.pictureBox1.Location = new System.Drawing.Point(434, 89);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(43, 39);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -108,8 +108,8 @@ namespace BaredaProject
             // 
             this.dateEdit1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.dateEdit1.EditValue = null;
-            this.dateEdit1.Location = new System.Drawing.Point(88, 109);
-            this.dateEdit1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.dateEdit1.Location = new System.Drawing.Point(70, 86);
+            this.dateEdit1.Margin = new System.Windows.Forms.Padding(5);
             this.dateEdit1.Name = "dateEdit1";
             this.dateEdit1.Properties.Appearance.Font = new System.Drawing.Font("Baloo 2", 13F);
             this.dateEdit1.Properties.Appearance.Options.UseFont = true;
@@ -128,7 +128,7 @@ namespace BaredaProject
             this.dateEdit1.Properties.MaskSettings.Set("mask", "dd/MM/yyyy   hh:mm:ss tt");
             this.dateEdit1.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
             this.dateEdit1.Properties.VistaDisplayMode = DevExpress.Utils.DefaultBoolean.True;
-            this.dateEdit1.Size = new System.Drawing.Size(445, 42);
+            this.dateEdit1.Size = new System.Drawing.Size(356, 42);
             this.dateEdit1.TabIndex = 18;
             // 
             // TimeInput

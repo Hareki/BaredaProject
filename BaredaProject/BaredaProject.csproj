@@ -95,7 +95,7 @@
       <DependentUpon>InforForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Project\LongCommands.cs" />
-    <Compile Include="Project\MyConnection.cs" />
+    <Compile Include="Project\ConnectionController.cs" />
     <Compile Include="Project\Login.cs">
       <SubType>Form</SubType>
     </Compile>

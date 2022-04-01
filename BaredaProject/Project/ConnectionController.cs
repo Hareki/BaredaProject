@@ -24,7 +24,7 @@ namespace BaredaProject
         }
     }
 
-    class MyConnection
+    class ConnectionController
     {
         private static string _serverName;
         private static string _userName;
@@ -36,9 +36,9 @@ namespace BaredaProject
         /*----COMMONS----*/
         public static bool ConnectToServer(string serverName, string userName, string password)
         {
-            MyConnection._serverName = serverName;
-            MyConnection._userName = userName;
-            MyConnection._password = password;
+            ConnectionController._serverName = serverName;
+            ConnectionController._userName = userName;
+            ConnectionController._password = password;
 
             ConnectionString = "Data source=" + _serverName
                 + ";User Id = " + _userName + "; Password = " + _password;
@@ -85,31 +85,35 @@ namespace BaredaProject
         }
         private static string GetDBTailLogFullPath(string dbName)
         {
-            return $"{Main.GetSpecifiedDefaultLogPath(dbName)}{dbName}_log_tailLog";
+            return $"{Main.GetSpecifiedDefaultLogPath(dbName)}{dbName}_log_tailLog.trn";
         }
         private static string GetBackupTailLogCommand(bool needTailLog, string dbName, string tailLogFullPath)
         {
             if (!needTailLog) return string.Empty;
-            return $"BACKUP LOG {dbName} TO DISK = '{tailLogFullPath}' WITH NORECOVERY ";
+            return $"BACKUP LOG {dbName} TO DISK = '{tailLogFullPath}' WITH NORECOVERY, INIT ";
 
         }
-        private static string GetRestoreTailLogCommand(bool needTailLog, string dbName, string tailLogFullPath)
+        private static string GetRestoreTailLogCommand(bool needTailLog, string dbName, string tailLogFullPath, DateTime timeInput)
         {
             if (!needTailLog) return string.Empty;
-            return $"RESTORE LOG {dbName} FROM DISK = '{tailLogFullPath}' WITH NORECOVERY ";
+            return $"RESTORE LOG {dbName} FROM DISK = '{tailLogFullPath}' WITH NORECOVERY, STOPAT = '{timeInput.ToString(Utils.SQL_DATE_FORMAT)}'";
         }
         private static List<String> GetFileNames(string parentPath)
         {
             List<String> result = new List<string>();
             DirectoryInfo d = new DirectoryInfo(parentPath); //Assuming Test is your Folder
-            FileInfo[] Files = d.GetFiles("*.*"); //Getting Text files
-            string str = "";
-
-            foreach (FileInfo file in Files)
+            try
             {
-                result.Add(file.Name);
+                FileInfo[] Files = d.GetFiles("*.*"); //Getting Text files
+
+                foreach (FileInfo file in Files)
+                {
+                    result.Add(file.Name);
+                }
             }
+            catch (DirectoryNotFoundException) { }
             return result;
+
         }
         private static List<DateTime> GetDatesFromLogs(string dbName)
         {
@@ -119,16 +123,18 @@ namespace BaredaProject
             {
                 string milis = fileName.Substring(fileName.LastIndexOf("_" + 1));
                 DateTime date = Utils.ConvertMilisStringToDateTime(milis);
-                result.Add(date.ToUniversalTime());
+                result.Add(date);
             }
             return result;
         }
-        private static List<DateTime> GetDatesFromBDS(BindingSource bds, GridColumn colDate)
+        private static Dictionary<int, DateTime> GetDatesFromBDS(BindingSource bds, GridColumn colDate, GridColumn colPos)
         {
-            List<DateTime> result = new List<DateTime>();
+            Dictionary<int, DateTime> result = new Dictionary<int, DateTime>();
             for (int i = 0; i < bds.Count; i++)
             {
-                result.Add(((DateTime)Utils.GetCellValueBds(bds, colDate, i)).ToUniversalTime());
+                DateTime date = ((DateTime)Utils.GetCellValueBds(bds, colDate, i));
+                int pos = ((int)Utils.GetCellValueBds(bds, colPos, i));
+                result.Add(pos, date);
             }
             return result;
         }
@@ -189,22 +195,28 @@ namespace BaredaProject
               + $" ALTER DATABASE {dbName} SET MULTI_USER";
             return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
-        private static bool RestoreDBFromDevice_Time(string dbName, List<DateTime> fullBackupDates, List<DateTime> logDates, DateTime timeInput, string defaultPath)
+        private static bool RestoreDBFromDevice_Time(string dbName, Dictionary<int, DateTime> fullBackupDates, List<DateTime> logDates, DateTime timeInput, string defaultPath)
         {
-            //Toàn bộ DateTime input phải là UTC time
             string deviceName = $"Device_{dbName}";
-            int pos = 1;
-            bool needTailLog = false;
-            DateTime lowerBound = fullBackupDates.Where(date => date <= timeInput).Max(date => date);
-            DateTime upperBound = logDates.Where(date => date >= timeInput).Min(date => date);
 
-            if (upperBound == null)
+            bool needTailLog = false;
+            KeyValuePair<int, DateTime> kvp = fullBackupDates.Where(element => element.Value <= timeInput).Max(element => element);
+            DateTime lowerBound = kvp.Value;
+            int pos = kvp.Key;
+            //DateTime upperBound = logDates.Where(date => date >= timeInput).Min(date => date);
+            List<DateTime> test = logDates.Where(date => date >= timeInput).ToList();
+            DateTime upperBound;
+            if (test.Count == 0)
             {
                 needTailLog = true;
-                upperBound = DateTime.UtcNow;
+                upperBound = DateTime.Now;
             }
-            else needTailLog = false;
-            List<DateTime> neededLogDates = (List<DateTime>)logDates.Where(date => date >= lowerBound && date <= upperBound);
+            else
+            {
+                needTailLog = false;
+                upperBound = test.Max(date => date);
+            }
+            List<DateTime> neededLogDates = logDates.Where(date => date >= lowerBound && date <= upperBound).ToList();
 
             string command = GetDeviceRestoreCommand(dbName, timeInput, defaultPath, deviceName, pos, needTailLog, neededLogDates);
             bool test1 = ExecSqlNonQuery(command, ConnectionString, new List<Para>());
@@ -212,18 +224,20 @@ namespace BaredaProject
             return test1 && test2;
 
         }
+
+
         private static string GetDeviceRestoreCommand(string dbName, DateTime timeInput, string defaultPath, string deviceName, int pos, bool needTailLog, List<DateTime> neededLogDates)
         {
             string preCommand = $"ALTER DATABASE {dbName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE; "
-                             + "USE master " + GetBackupTailLogCommand(needTailLog, dbName, defaultPath)
+                             + "USE master " + GetBackupTailLogCommand(needTailLog, dbName, GetDBTailLogFullPath(dbName))
                              + $" RESTORE DATABASE {dbName} FROM {deviceName} WITH FILE = {pos}, NORECOVERY, REPLACE; ";
             StringBuilder buider = new StringBuilder(preCommand);
             foreach (DateTime date in neededLogDates)
             {
                 string disk = Utils.ConvertDateTimeToMilisString(date);
-                buider.AppendLine($"RESTORE LOG {dbName} FROM DISK = '{disk}' WITH STOPAT = {timeInput.ToString(Utils.SQL_DATE_FORMAT)}, NORECOVERY ");
+                buider.AppendLine($"RESTORE LOG {dbName} FROM DISK = '{disk}' WITH STOPAT = '{timeInput.ToString(Utils.SQL_DATE_FORMAT)}', NORECOVERY ");
             }
-            buider.AppendLine(GetRestoreTailLogCommand(needTailLog, dbName, defaultPath));
+            buider.AppendLine(GetRestoreTailLogCommand(needTailLog, dbName, GetDBTailLogFullPath(dbName), timeInput));
             buider.AppendLine($"RESTORE DATABASE {dbName} ");
             buider.AppendLine($"ALTER DATABASE {dbName} SET MULTI_USER ");
             string command = buider.ToString();
@@ -261,7 +275,7 @@ namespace BaredaProject
                         if (!DeleteFile(defaultPath, dbName, i))
                             throw new Exception();
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         Console.WriteLine($"File Skipped During Delete: {dbName} - Pos{i}");
                     }
@@ -325,7 +339,7 @@ namespace BaredaProject
         {
             return true;
         }
-        private static bool RestoreDBFromFile_Time(string dbName, List<DateTime> fullBackupDates, List<DateTime> logDates, DateTime timeInput, string defaultPath)
+        private static bool RestoreDBFromFile_Time(string dbName, Dictionary<int, DateTime> fullBackupDates, List<DateTime> logDates, DateTime timeInput, string defaultPath)
         {
             return true;
         }
@@ -374,20 +388,15 @@ namespace BaredaProject
             else
                 return RestoreDBFromFile(dbName, pos, backupFilePath);
         }
-        public static bool RestoreDB_Time(string dbName, BindingSource bds, GridColumn colDate, DateTime timeInput, string defaultPath)
+        public static bool RestoreDB_Time(string dbName, BindingSource bds, GridColumn colDate, GridColumn colPos, DateTime timeInput, string defaultPath)
         {
-            DateTime utcTimeInput = timeInput.ToUniversalTime();
             List<DateTime> logDates = GetDatesFromLogs(dbName);
-            List<DateTime> fullBackupDates = GetDatesFromBDS(bds, colDate);
+            Dictionary<int, DateTime> fullBackupDates = GetDatesFromBDS(bds, colDate, colPos);
             if (Main.USE_DEVICE_MODE)
-                return RestoreDBFromDevice_Time(dbName, fullBackupDates, logDates, utcTimeInput, defaultPath);
+                return RestoreDBFromDevice_Time(dbName, fullBackupDates, logDates, timeInput, defaultPath);
             else
-                return RestoreDBFromFile_Time(dbName, fullBackupDates, logDates, utcTimeInput, defaultPath);
+                return RestoreDBFromFile_Time(dbName, fullBackupDates, logDates, timeInput, defaultPath);
         }
-
-        
-
-
 
 
         /*----OTHERS----*/

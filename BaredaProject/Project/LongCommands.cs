@@ -56,7 +56,7 @@ EXEC master.sys.xp_dirtree @DefaultPath
 While Exists (SELECT * FROM #BackupList)
 BEGIN
 	SELECT TOP 1 @DBName = database_name From #BackupList
-	SET	@FileName = @DBName + ''_Log_'' + CAST(DATEDIFF_BIG(ms, ''1970-01-01 00:00:00'', GETUTCDATE()) as nvarchar)
+	SET	@FileName = @DBName + ''_log_'' + (CAST(DATEDIFF_BIG(ms, ''1970-01-01 00:00:00'', GETDATE()) as nvarchar) + ''.trn'')
 	SET @DefaultPath2 = @DefaultPath + @DBName+ ''\''	
 	SET @Final = @DefaultPath2 + @FileName
 

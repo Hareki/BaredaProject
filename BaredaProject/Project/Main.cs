@@ -48,7 +48,9 @@ namespace BaredaProject
         }
         public static string GetSpecifiedDefaultLogPath(string dbName)
         {
-            return GetDefaultLogPath() + dbName + @"\";
+            string result = GetDefaultLogPath() + dbName + @"\";
+            Directory.CreateDirectory(result);
+            return result;
         }
 
 
@@ -64,12 +66,12 @@ namespace BaredaProject
         }
         private void ReloadDBList()
         {
-            this.adapterDBList.Connection.ConnectionString = MyConnection.ConnectionString;
+            this.adapterDBList.Connection.ConnectionString = ConnectionController.ConnectionString;
             this.adapterDBList.Fill(this.myDataSet.databases_list);
         }
         private void LoadBackups(string dbName)
         {
-            adapterBackupList.Connection.ConnectionString = MyConnection.ConnectionString;
+            adapterBackupList.Connection.ConnectionString = ConnectionController.ConnectionString;
             if (USE_DEVICE_MODE)
                 adapterBackupList.Fill(this.myDataSet.database_backups, dbName);
             else
@@ -84,7 +86,7 @@ namespace BaredaProject
             if (USE_DEVICE_MODE)
             {
                 String deviceName = $"Device_{dbName}";
-                adapterDeviceList.Connection.ConnectionString = MyConnection.ConnectionString;
+                adapterDeviceList.Connection.ConnectionString = ConnectionController.ConnectionString;
                 adapterDeviceList.FillBy(this.myDataSet.backup_devices, deviceName);
 
                 if (bdsDeviceList.Count > 0)
@@ -140,7 +142,7 @@ namespace BaredaProject
             if (input.Continue)
             {
                 string description = input.Description;
-                if (MyConnection.BackupDB(dbName, description, init, GetDefaultPath()))
+                if (ConnectionController.BackupDB(dbName, description, init, GetDefaultPath()))
                 {
                     Utils.ShowInfoMessage("Thông báo", "Tạo bản sao lưu thành công", InformationForm.FormType.Infor);
                 }
@@ -159,9 +161,9 @@ namespace BaredaProject
         {
             DateTime minBackupTime = GetMinBackupTime();
             Double minutesLeft = DateTime.Now.Subtract(timeInput).TotalMinutes;
-            if (minutesLeft < 4)
+            if (minutesLeft < 1)
             {
-                Utils.ShowInfoMessage("Lỗi phục hồi", "Thời điểm phục hồi phải nhỏ hơn hiện tại ít nhất 4 phút", InformationForm.FormType.Error);
+                Utils.ShowInfoMessage("Lỗi phục hồi", "Thời điểm phục hồi phải nhỏ hơn hiện tại ít nhất 1 phút", InformationForm.FormType.Error);
                 return false;
             }
 
@@ -209,7 +211,7 @@ namespace BaredaProject
             int pos = GetSelectedBackupPos();
             if (Utils.ShowConfirmMessage("Xác nhận", $"Xác nhận phục hồi {dbName} về bản sao lưu thứ {pos}?"))
             {
-                if (MyConnection.RestoreDB(dbName, pos, null))
+                if (ConnectionController.RestoreDB(dbName, pos, null))
                 {
                     Utils.ShowInfoMessage("Thông báo", "Phục hồi hoàn tất", InformationForm.FormType.Infor);
                 }
@@ -233,7 +235,7 @@ namespace BaredaProject
                 int pos = GetSelectedBackupPos();
                 if (Utils.ShowConfirmMessage("Xác nhận", $"Xác nhận phục hồi {dbName} về thời điểm {timeInput}?"))
                 {
-                    if (MyConnection.RestoreDB_Time(dbName, bdsBackupList, colbackup_start_date, timeInput, GetDefaultPath()))
+                    if (ConnectionController.RestoreDB_Time(dbName, bdsBackupList, colbackup_start_date, colposition, timeInput, GetDefaultPath()))
                         Utils.ShowInfoMessage("Thông báo", "Phục hồi hoàn tất", InformationForm.FormType.Infor);
                 }
             }
@@ -243,7 +245,7 @@ namespace BaredaProject
         {
             string dbName = GetSelectedDBName();
 
-            if (MyConnection.CreateDevice(dbName, GetDefaultPath()))
+            if (ConnectionController.CreateDevice(dbName, GetDefaultPath()))
             {
                 Utils.ShowInfoMessage("Thông báo", "Tạo device thành công", InformationForm.FormType.Infor);
                 ReloadGvBackups(GetSelectedDBName());
@@ -256,7 +258,7 @@ namespace BaredaProject
             {
                 string dbName = GetSelectedDBName();
                 int pos = GetSelectedBackupPos();
-                if (MyConnection.DeleteBackupInstance(dbName, pos, GetDefaultPath()))
+                if (ConnectionController.DeleteBackupInstance(dbName, pos, GetDefaultPath()))
                 {
                     Utils.ShowInfoMessage("Thông báo", "Đã xóa bản sao lưu được chọn", InformationForm.FormType.Infor);
                     ReloadGvBackups(GetSelectedDBName());
@@ -267,7 +269,7 @@ namespace BaredaProject
         {
             CustomCellPadding();
             ReloadDBList();
-            MyConnection.AddBackupLogJob(GetDefaultLogPath());
+            ConnectionController.AddBackupLogJob(GetDefaultLogPath());
         }
         private void Main_FormClosed(object sender, FormClosedEventArgs e)
         {
