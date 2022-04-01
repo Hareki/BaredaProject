@@ -20,10 +20,11 @@ namespace BaredaProject
         {
             InitializeComponent();
         }
-
         public static bool USE_DEVICE_MODE = true;
 
-        private string GetDefaultPath()
+
+        /*----GET PATHS----*/
+        public static string GetDefaultPath()
         {
             string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
             var directory = new DirectoryInfo(documentsPath);
@@ -37,17 +38,21 @@ namespace BaredaProject
             return result;
 
         }
-        private string GetDefaultLogPath()
+        public static string GetDefaultLogPath()
         {
             string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
             var directory = new DirectoryInfo(documentsPath);
             string result = directory.Parent.FullName + @"\Backup\Log\";
             Directory.CreateDirectory(result);
             return result;
-
+        }
+        public static string GetSpecifiedDefaultLogPath(string dbName)
+        {
+            return GetDefaultLogPath() + dbName + @"\";
         }
 
 
+        /*----VIEW----*/
         private void CustomCellPadding()
         {
             RepositoryItemTextEdit edit = new RepositoryItemTextEdit();
@@ -57,30 +62,23 @@ namespace BaredaProject
             gvBackups.Columns[2].ColumnEdit =
             gvBackups.Columns[3].ColumnEdit = edit;
         }
-
-        private void Main_Load(object sender, EventArgs e)
-        {
-            CustomCellPadding();
-            ReloadDBList();
-            MyConnection.AddBackupLogJob(GetDefaultLogPath());
-        }
-
-        private void Main_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private bool IsValidRowBds(BindingSource bds)
-        {
-            return bds.Position != -1 && bds.Count != 0 || bds.DataSource != null;
-        }
-
         private void ReloadDBList()
         {
             this.adapterDBList.Connection.ConnectionString = MyConnection.ConnectionString;
             this.adapterDBList.Fill(this.myDataSet.databases_list);
         }
-
+        private void LoadBackups(string dbName)
+        {
+            adapterBackupList.Connection.ConnectionString = MyConnection.ConnectionString;
+            if (USE_DEVICE_MODE)
+                adapterBackupList.Fill(this.myDataSet.database_backups, dbName);
+            else
+                adapterBackupList.FileFill(this.myDataSet.database_backups, dbName);
+        }
+        private void SetBackupsViewCaption(string dbName)
+        {
+            gvBackups.ViewCaption = $"Danh sách bản sao lưu của {dbName}";
+        }
         private void RefreshDeviceAndBackupState(string dbName)
         {
             if (USE_DEVICE_MODE)
@@ -107,51 +105,28 @@ namespace BaredaProject
             }
 
         }
-
-        private void LoadBackups(string dbName)
-        {
-            adapterBackupList.Connection.ConnectionString = MyConnection.ConnectionString;
-            if (USE_DEVICE_MODE)
-                adapterBackupList.Fill(this.myDataSet.database_backups, dbName);
-            else
-                adapterBackupList.FileFill(this.myDataSet.database_backups, dbName);
-        }
-        private void SetBackupsViewCaption(string dbName)
-        {
-            gvBackups.ViewCaption = $"Danh sách bản sao lưu của {dbName}";
-        }
         private void ReloadGvBackups(string dbName)
         {
             RefreshDeviceAndBackupState(dbName);
             LoadBackups(dbName);
             SetBackupsViewCaption(dbName);
         }
-        private void GvDBList_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
-        {
-            String dbName;
-            try
-            {
-                if (!IsValidRowBds(bdsDBList)) return;
-                else dbName = Utils.GetCellStringGridView(gvDBList, colname, -1);
-                ReloadGvBackups(dbName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: " + ex.Message, "", MessageBoxButtons.OK);
-            }
-        }
 
-        private void GvBackups_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
-        {
-            Console.WriteLine("focused: " + gvBackups.FocusedRowHandle);
-            btnDelBackup.Enabled = btnRestore.Enabled = !(gvBackups.FocusedRowHandle < 0);
-        }
 
+        /*----PRE-PROCESS----*/
+        private bool IsValidRowBds(BindingSource bds)
+        {
+            return bds.Position != -1 && bds.Count != 0 || bds.DataSource != null;
+        }
+        private int GetSelectedBackupPos()
+        {
+            string text = Utils.GetCellStringBds(bdsBackupList, colposition, -1);
+            return int.Parse(text);
+        }
         private string GetSelectedDBName()
         {
-            return Utils.GetCellStringGridView(gvDBList, colname, -1);
+            return Utils.GetCellStringBds(bdsDBList, colname, -1);
         }
-
         private void BackupDB(bool init)
         {
             if (init)
@@ -172,41 +147,14 @@ namespace BaredaProject
                 ReloadGvBackups(dbName);
             }
         }
-        private void BarBtnDefaultBackup_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            BackupDB(false);
-        }
-
-        private void BarBtnInitBackup_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            BackupDB(true);
-
-        }
-
-        private void BarBtnDefaultRestore_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            string dbName = GetSelectedDBName();
-            int pos = GetSelectedBackupPos();
-            if (Utils.ShowConfirmMessage("Xác nhận", $"Xác nhận phục hồi {dbName} về bản sao lưu thứ {pos}?"))
-            {
-                if (MyConnection.RestoreDB(dbName, pos, null))
-                {
-                    Utils.ShowInfoMessage("Thông báo", "Phục hồi hoàn tất", InformationForm.FormType.Infor);
-                }
-
-            }
-        }
-
         private DateTime GetMinBackupTime()
         {
-            return (DateTime)Utils.GetCellValueGridView(gvBackups, colbackup_start_date, 0);
+            return (DateTime)Utils.GetCellValueBds(bdsBackupList, colbackup_start_date, 0);
         }
-
         private int GetLatestDBPos(string dbName)
         {
-            return int.Parse(Utils.GetCellStringGridView(gvBackups, colposition, gvBackups.RowCount - 1));
+            return int.Parse(Utils.GetCellStringBds(bdsBackupList, colposition, gvBackups.RowCount - 1));
         }
-
         private bool IsValidTimeInput(DateTime timeInput)
         {
             DateTime minBackupTime = GetMinBackupTime();
@@ -226,6 +174,48 @@ namespace BaredaProject
         }
 
 
+        /*----EVENTS----*/
+        private void GvDBList_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
+        {
+            String dbName;
+            try
+            {
+                if (!IsValidRowBds(bdsDBList)) return;
+                else dbName = Utils.GetCellStringBds(bdsDBList, colname, -1);
+                ReloadGvBackups(dbName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message, "", MessageBoxButtons.OK);
+            }
+        }
+        private void GvBackups_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
+        {
+            Console.WriteLine("focused: " + gvBackups.FocusedRowHandle);
+            btnDelBackup.Enabled = btnRestore.Enabled = !(gvBackups.FocusedRowHandle < 0);
+        }
+        private void BarBtnDefaultBackup_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            BackupDB(false);
+        }
+        private void BarBtnInitBackup_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            BackupDB(true);
+
+        }
+        private void BarBtnDefaultRestore_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            string dbName = GetSelectedDBName();
+            int pos = GetSelectedBackupPos();
+            if (Utils.ShowConfirmMessage("Xác nhận", $"Xác nhận phục hồi {dbName} về bản sao lưu thứ {pos}?"))
+            {
+                if (MyConnection.RestoreDB(dbName, pos, null))
+                {
+                    Utils.ShowInfoMessage("Thông báo", "Phục hồi hoàn tất", InformationForm.FormType.Infor);
+                }
+
+            }
+        }
         private void BarBtnTimeRestore_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             TimeInput input = new TimeInput();
@@ -243,13 +233,12 @@ namespace BaredaProject
                 int pos = GetSelectedBackupPos();
                 if (Utils.ShowConfirmMessage("Xác nhận", $"Xác nhận phục hồi {dbName} về thời điểm {timeInput}?"))
                 {
-                    if (MyConnection.RestoreDB_Time(dbName, pos, GetLatestDBPos(dbName), timeInput, GetDefaultPath()))
+                    if (MyConnection.RestoreDB_Time(dbName, bdsBackupList, colbackup_start_date, timeInput, GetDefaultPath()))
                         Utils.ShowInfoMessage("Thông báo", "Phục hồi hoàn tất", InformationForm.FormType.Infor);
                 }
             }
 
         }
-
         private void BtnCreateDevice_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             string dbName = GetSelectedDBName();
@@ -260,12 +249,6 @@ namespace BaredaProject
                 ReloadGvBackups(GetSelectedDBName());
             }
 
-        }
-
-        private int GetSelectedBackupPos()
-        {
-            string text = Utils.GetCellStringGridView(gvBackups, colposition, -1);
-            return int.Parse(text);
         }
         private void BtnDelBackup_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
@@ -280,5 +263,16 @@ namespace BaredaProject
                 }
             }
         }
+        private void Main_Load(object sender, EventArgs e)
+        {
+            CustomCellPadding();
+            ReloadDBList();
+            MyConnection.AddBackupLogJob(GetDefaultLogPath());
+        }
+        private void Main_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
+
     }
 }

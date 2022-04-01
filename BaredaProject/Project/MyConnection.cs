@@ -1,12 +1,15 @@
 ﻿using BaredaProject.Project;
 using BaredaProject.Project.Dialogs;
+using DevExpress.XtraGrid.Columns;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace BaredaProject
 {
@@ -80,6 +83,55 @@ namespace BaredaProject
                 return myReader.HasRows;
             }
         }
+        private static string GetDBTailLogFullPath(string dbName)
+        {
+            return $"{Main.GetSpecifiedDefaultLogPath(dbName)}{dbName}_log_tailLog";
+        }
+        private static string GetBackupTailLogCommand(bool needTailLog, string dbName, string tailLogFullPath)
+        {
+            if (!needTailLog) return string.Empty;
+            return $"BACKUP LOG {dbName} TO DISK = '{tailLogFullPath}' WITH NORECOVERY ";
+
+        }
+        private static string GetRestoreTailLogCommand(bool needTailLog, string dbName, string tailLogFullPath)
+        {
+            if (!needTailLog) return string.Empty;
+            return $"RESTORE LOG {dbName} FROM DISK = '{tailLogFullPath}' WITH NORECOVERY ";
+        }
+        private static List<String> GetFileNames(string parentPath)
+        {
+            List<String> result = new List<string>();
+            DirectoryInfo d = new DirectoryInfo(parentPath); //Assuming Test is your Folder
+            FileInfo[] Files = d.GetFiles("*.*"); //Getting Text files
+            string str = "";
+
+            foreach (FileInfo file in Files)
+            {
+                result.Add(file.Name);
+            }
+            return result;
+        }
+        private static List<DateTime> GetDatesFromLogs(string dbName)
+        {
+            List<string> fileNames = GetFileNames(Main.GetSpecifiedDefaultLogPath(dbName));
+            List<DateTime> result = new List<DateTime>();
+            foreach (string fileName in fileNames)
+            {
+                string milis = fileName.Substring(fileName.LastIndexOf("_" + 1));
+                DateTime date = Utils.ConvertMilisStringToDateTime(milis);
+                result.Add(date.ToUniversalTime());
+            }
+            return result;
+        }
+        private static List<DateTime> GetDatesFromBDS(BindingSource bds, GridColumn colDate)
+        {
+            List<DateTime> result = new List<DateTime>();
+            for (int i = 0; i < bds.Count; i++)
+            {
+                result.Add(((DateTime)Utils.GetCellValueBds(bds, colDate, i)).ToUniversalTime());
+            }
+            return result;
+        }
 
         /*----BACKUP DEVICE METHODS----*/
         public static bool CreateDevice(string dbName, string defaultPath)
@@ -137,79 +189,45 @@ namespace BaredaProject
               + $" ALTER DATABASE {dbName} SET MULTI_USER";
             return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
-
-        private static Object[] GetValues(Dictionary<DateTime, int> dbPosTime, List<string> logFileNameList, DateTime timeInput)
+        private static bool RestoreDBFromDevice_Time(string dbName, List<DateTime> fullBackupDates, List<DateTime> logDates, DateTime timeInput, string defaultPath)
         {
-            List<DateTime> allLogsDateList = new List<DateTime>();
-            foreach (string fileName in logFileNameList)
-            {
-                string dateString = fileName.Substring(fileName.LastIndexOf("_" + 1));
-                DateTime date = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(dateString)).UtcDateTime;
-                allLogsDateList.Add(date);
-            }
+            //Toàn bộ DateTime input phải là UTC time
+            string deviceName = $"Device_{dbName}";
+            int pos = 1;
+            bool needTailLog = false;
+            DateTime lowerBound = fullBackupDates.Where(date => date <= timeInput).Max(date => date);
+            DateTime upperBound = logDates.Where(date => date >= timeInput).Min(date => date);
 
-            List<DateTime> allDBsDateList = new List<DateTime>();
-            foreach (KeyValuePair<DateTime, int> entry in dbPosTime)
+            if (upperBound == null)
             {
-                allDBsDateList.Add(entry.Key);
+                needTailLog = true;
+                upperBound = DateTime.UtcNow;
             }
-            DateTime upperBound = allLogsDateList.Where(date => date >= timeInput).Min(date => date);
-            DateTime lowerBound = allDBsDateList.Where(date => date <= timeInput).Max(date => date);
+            else needTailLog = false;
+            List<DateTime> neededLogDates = (List<DateTime>)logDates.Where(date => date >= lowerBound && date <= upperBound);
 
-            return new object[3] { upperBound, lowerBound, allLogsDateList };
+            string command = GetDeviceRestoreCommand(dbName, timeInput, defaultPath, deviceName, pos, needTailLog, neededLogDates);
+            bool test1 = ExecSqlNonQuery(command, ConnectionString, new List<Para>());
+            bool test2 = DeleteFile(GetDBTailLogFullPath(dbName));
+            return test1 && test2;
 
         }
-        private static bool RestoreDBFromDevice_Time(string dbName, Dictionary<DateTime, int> dbPosTime, List<string> logFileNameList, DateTime timeInput, string defaultPath)
+        private static string GetDeviceRestoreCommand(string dbName, DateTime timeInput, string defaultPath, string deviceName, int pos, bool needTailLog, List<DateTime> neededLogDates)
         {
-            //string deviceName = $"Device_{dbName}";
-            //string backupLogPath = defaultPath + @"\" + deviceName + ".trn";
-            //if (BackupLogExists(dbName, timeInput))
-            //{
-            //    try
-            //    {
-            //        string command = $"ALTER DATABASE {dbName}"
-            //              + " SET SINGLE_USER WITH ROLLBACK IMMEDIATE;"
-            //              + $" BACKUP LOG {dbName} TO DISK ='{backupLogPath}' WITH INIT, NORECOVERY;"
-            //              + $" USE tempdb; "
-            //              + $"RESTORE DATABASE {dbName} FROM {deviceName} WITH FILE = {pos}, NORECOVERY; "
-            //              + $"RESTORE DATABASE {dbName} FROM DISK = '{backupLogPath}' WITH STOPAT ='{timeInput.ToString("yyyy-MM-dd HH:mm:ss")}'; "
-            //              + $" ALTER DATABASE {dbName} SET MULTI_USER";
-            //        return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
-
-
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Utils.ShowInfoMessage("Lỗi phục hồi", $"Xảy ra lỗi trong quá trình phục hồi: \n{ex.Message}\nTự động" +
-            //            $" phục hồi về bản sao lưu mới nhất", InformationForm.FormType.Error);
-            //        return RestoreDBFromDevice(dbName, latestPos);
-            //    }
-            //    finally
-            //    {
-            //        DeleteFile(backupLogPath);
-            //    }
-            //}
-            //else
-            //    Utils.ShowInfoMessage("Lỗi phục hồi", "Không tìm thấy nhật ký backup", InformationForm.FormType.Error);
-            //return false;
-            //còn trường hợp không có trong này, phải xài tail log
-            string deviceName = $"Device_{dbName}";
-            Object[] values = GetValues(dbPosTime, logFileNameList, timeInput);
-            DateTime upperBound = (DateTime)values[0];
-            DateTime lowerBound = (DateTime)values[1];
-            List<DateTime> allLogsDateList = (List<DateTime>)values[2];
-
-            List<DateTime> restoreLogs = (List<DateTime>)allLogsDateList.Where(date => date >= lowerBound && date <= upperBound);
-
-            dbPosTime.TryGetValue(lowerBound, out int pos);
-            string command = $"ALTER DATABASE {dbName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE; " +
-                              "USE master " +
-                              $"RESTORE DATABASE {dbName} FROM {deviceName} WITH FILE = {pos}, NORECOVERY, REPLACE; ";
-            foreach (DateTime date in restoreLogs)
+            string preCommand = $"ALTER DATABASE {dbName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE; "
+                             + "USE master " + GetBackupTailLogCommand(needTailLog, dbName, defaultPath)
+                             + $" RESTORE DATABASE {dbName} FROM {deviceName} WITH FILE = {pos}, NORECOVERY, REPLACE; ";
+            StringBuilder buider = new StringBuilder(preCommand);
+            foreach (DateTime date in neededLogDates)
             {
-
+                string disk = Utils.ConvertDateTimeToMilisString(date);
+                buider.AppendLine($"RESTORE LOG {dbName} FROM DISK = '{disk}' WITH STOPAT = {timeInput.ToString(Utils.SQL_DATE_FORMAT)}, NORECOVERY ");
             }
-
+            buider.AppendLine(GetRestoreTailLogCommand(needTailLog, dbName, defaultPath));
+            buider.AppendLine($"RESTORE DATABASE {dbName} ");
+            buider.AppendLine($"ALTER DATABASE {dbName} SET MULTI_USER ");
+            string command = buider.ToString();
+            return command;
         }
 
         /*----BACKUP FILE METHODS----*/
@@ -307,7 +325,7 @@ namespace BaredaProject
         {
             return true;
         }
-        private static bool RestoreDBFromFile_Time(string dbName, int pos, int latestPos, string backupFilePath, DateTime timeInput)
+        private static bool RestoreDBFromFile_Time(string dbName, List<DateTime> fullBackupDates, List<DateTime> logDates, DateTime timeInput, string defaultPath)
         {
             return true;
         }
@@ -351,19 +369,25 @@ namespace BaredaProject
         }
         public static bool RestoreDB(string dbName, int pos, string backupFilePath)
         {
-
             if (Main.USE_DEVICE_MODE)
                 return RestoreDBFromDevice(dbName, pos);
             else
                 return RestoreDBFromFile(dbName, pos, backupFilePath);
         }
-        public static bool RestoreDB_Time(string dbName, int pos, int latestPos, DateTime timeInput, string defaultPath)
+        public static bool RestoreDB_Time(string dbName, BindingSource bds, GridColumn colDate, DateTime timeInput, string defaultPath)
         {
+            DateTime utcTimeInput = timeInput.ToUniversalTime();
+            List<DateTime> logDates = GetDatesFromLogs(dbName);
+            List<DateTime> fullBackupDates = GetDatesFromBDS(bds, colDate);
             if (Main.USE_DEVICE_MODE)
-                return RestoreDBFromDevice_Time(dbName, pos, latestPos, timeInput, defaultPath);
+                return RestoreDBFromDevice_Time(dbName, fullBackupDates, logDates, utcTimeInput, defaultPath);
             else
-                return RestoreDBFromFile_Time(dbName, pos, latestPos, defaultPath, timeInput);
+                return RestoreDBFromFile_Time(dbName, fullBackupDates, logDates, utcTimeInput, defaultPath);
         }
+
+        
+
+
 
 
         /*----OTHERS----*/

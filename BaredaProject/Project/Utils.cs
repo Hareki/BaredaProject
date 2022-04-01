@@ -3,6 +3,7 @@ using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Grid;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,50 +13,41 @@ namespace BaredaProject.Project
 {
     class Utils
     {
-
+        public static readonly string SQL_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
         public static void ShowInfoMessage(string title, string message, InformationForm.FormType type)
         {
-            //MessageBoxIcon icon = MessageBoxIcon.Information;
-            //switch (type)
-            //{
-            //    case MessageType.Error:
-            //        icon = MessageBoxIcon.Error;
-            //        break;
-            //    case MessageType.Information:
-            //        icon = MessageBoxIcon.Information;
-            //        break;
-            //}
-            //MessageBox.Show(message, title,
-            //             MessageBoxButtons.OK, icon);
-
             InformationForm form = new InformationForm(title, message, type);
             form.ShowDialog();
         }
         public static bool ShowConfirmMessage(string title, string message)
         {
-            //MessageBoxIcon icon = MessageBoxIcon.Question;
-            //var result = MessageBox.Show(message, title, MessageBoxButtons.YesNo, icon);
-            //return result == DialogResult.Yes;
-
             ConfirmationForm form = new ConfirmationForm(title, message);
             form.ShowDialog();
             return form.Continue;
-
-
         }
-        public static string GetCellStringGridView(GridView view, GridColumn column, int row)
+        public static string GetCellStringBds(BindingSource bds, GridColumn column, int rowIndex)
         {
-            if (row < 0)
-                return view.GetRowCellValue(view.FocusedRowHandle, column).ToString().Trim();
+            if (rowIndex >= 0)
+                return (bds[rowIndex] as DataRowView)[column.Name].ToString().Trim();
             else
-                return view.GetRowCellValue(row, column).ToString().Trim();
+                return (bds[bds.Position] as DataRowView)[column.Name].ToString().Trim();
         }
-        public static object GetCellValueGridView(GridView view, GridColumn column, int row)
+        public static object GetCellValueBds(BindingSource bds, GridColumn column, int rowIndex)
         {
-            if (row < 0)
-                return view.GetRowCellValue(view.FocusedRowHandle, column);
+            if (rowIndex >= 0)
+                return (bds[rowIndex] as DataRowView)[column.Name];
             else
-                return view.GetRowCellValue(row, column);
+                return (bds[bds.Position] as DataRowView)[column.Name];
+        }
+
+        public static string ConvertDateTimeToMilisString(DateTime date)
+        {
+            return ((long)(date - new DateTime(1970, 1, 1)).TotalMilliseconds).ToString();
+        }
+
+        public static DateTime ConvertMilisStringToDateTime(string milis)
+        {
+            return DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(milis)).UtcDateTime;
         }
 
     }
