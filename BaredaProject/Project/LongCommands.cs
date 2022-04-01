@@ -45,13 +45,23 @@ WHERE name LIKE ''Device_%''
 
 DECLARE @DBName nvarchar(50);
 DECLARE @DefaultPath nvarchar(200) = ''" + defaultPath + @"'';
+DECLARE @DefaultPath2 nvarchar(200);
 DECLARE @FileName nvarchar(50);
 DECLARE @Final nvarchar(250);
+DECLARE @DirTree TABLE (subdirectory nvarchar(255), depth INT);
+
+INSERT INTO @DirTree(subdirectory, depth)
+EXEC master.sys.xp_dirtree @DefaultPath
+
 While Exists (SELECT * FROM #BackupList)
 BEGIN
 	SELECT TOP 1 @DBName = database_name From #BackupList
 	SET	@FileName = @DBName + ''_Log_'' + CAST(DATEDIFF_BIG(ms, ''1970-01-01 00:00:00'', GETUTCDATE()) as nvarchar)
-	SET @Final = @DefaultPath + @FileName
+	SET @DefaultPath2 = @DefaultPath + @DBName+ ''\''	
+	SET @Final = @DefaultPath2 + @FileName
+
+	IF NOT EXISTS (SELECT 1 FROM @DirTree WHERE subdirectory = @DBName)
+	EXEC master.dbo.xp_create_subdir @DefaultPath2
 
 	BACKUP LOG @DBName TO DISK = @Final WITH INIT
 	DELETE #BackupList Where database_name = @DBName
@@ -80,15 +90,15 @@ USE [msdb]
 DECLARE @schedule_id int
 EXEC msdb.dbo.sp_add_jobschedule @job_name=N'BackupLogDaily', @name=N'EveryWeek', 
 		@enabled=1, 
-		@freq_type=4, 
-		@freq_interval=1, 
-		@freq_subday_type=4, 
+		@freq_type=8, 
+		@freq_interval=2, 
+		@freq_subday_type=1, 
 		@freq_subday_interval=5, 
 		@freq_relative_interval=0, 
 		@freq_recurrence_factor=1, 
 		@active_start_date=20220331, 
 		@active_end_date=99991231, 
-		@active_start_time=0, 
+		@active_start_time=30000, 
 		@active_end_time=235959, @schedule_id = @schedule_id OUTPUT
 select @schedule_id
 END

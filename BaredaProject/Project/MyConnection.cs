@@ -20,6 +20,7 @@ namespace BaredaProject
             RealValue = realValue;
         }
     }
+
     class MyConnection
     {
         private static string _serverName;
@@ -136,37 +137,79 @@ namespace BaredaProject
               + $" ALTER DATABASE {dbName} SET MULTI_USER";
             return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
-        private static bool RestoreDBFromDevice_Time(string dbName, int pos, int latestPos, DateTime timeInput, string defaultPath)
+
+        private static Object[] GetValues(Dictionary<DateTime, int> dbPosTime, List<string> logFileNameList, DateTime timeInput)
         {
-            string deviceName = $"Device_{dbName}";
-            string backupLogPath = defaultPath + @"\" + deviceName + ".trn";
-            if (BackupLogExists(dbName, timeInput))
+            List<DateTime> allLogsDateList = new List<DateTime>();
+            foreach (string fileName in logFileNameList)
             {
-                try
-                {
-                    string command = $"ALTER DATABASE {dbName}"
-                          + " SET SINGLE_USER WITH ROLLBACK IMMEDIATE;"
-                          + $" BACKUP LOG {dbName} TO DISK ='{backupLogPath}' WITH INIT, NORECOVERY;"
-                          + $" USE tempdb; "
-                          + $"RESTORE DATABASE {dbName} FROM {deviceName} WITH FILE = {pos}, NORECOVERY; "
-                          + $"RESTORE DATABASE {dbName} FROM DISK = '{backupLogPath}' WITH STOPAT ='{timeInput.ToString("yyyy-MM-dd HH:mm:ss")}'; "
-                          + $" ALTER DATABASE {dbName} SET MULTI_USER";
-                    return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
-                }
-                catch (Exception ex)
-                {
-                    Utils.ShowInfoMessage("Lỗi phục hồi", $"Xảy ra lỗi trong quá trình phục hồi: \n{ex.Message}\nTự động" +
-                        $" phục hồi về bản sao lưu mới nhất", InformationForm.FormType.Error);
-                    return RestoreDBFromDevice(dbName, latestPos);
-                }
-                finally
-                {
-                    DeleteFile(backupLogPath);
-                }
+                string dateString = fileName.Substring(fileName.LastIndexOf("_" + 1));
+                DateTime date = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(dateString)).UtcDateTime;
+                allLogsDateList.Add(date);
             }
-            else
-                Utils.ShowInfoMessage("Lỗi phục hồi", "Không tìm thấy nhật ký backup", InformationForm.FormType.Error);
-            return false;
+
+            List<DateTime> allDBsDateList = new List<DateTime>();
+            foreach (KeyValuePair<DateTime, int> entry in dbPosTime)
+            {
+                allDBsDateList.Add(entry.Key);
+            }
+            DateTime upperBound = allLogsDateList.Where(date => date >= timeInput).Min(date => date);
+            DateTime lowerBound = allDBsDateList.Where(date => date <= timeInput).Max(date => date);
+
+            return new object[3] { upperBound, lowerBound, allLogsDateList };
+
+        }
+        private static bool RestoreDBFromDevice_Time(string dbName, Dictionary<DateTime, int> dbPosTime, List<string> logFileNameList, DateTime timeInput, string defaultPath)
+        {
+            //string deviceName = $"Device_{dbName}";
+            //string backupLogPath = defaultPath + @"\" + deviceName + ".trn";
+            //if (BackupLogExists(dbName, timeInput))
+            //{
+            //    try
+            //    {
+            //        string command = $"ALTER DATABASE {dbName}"
+            //              + " SET SINGLE_USER WITH ROLLBACK IMMEDIATE;"
+            //              + $" BACKUP LOG {dbName} TO DISK ='{backupLogPath}' WITH INIT, NORECOVERY;"
+            //              + $" USE tempdb; "
+            //              + $"RESTORE DATABASE {dbName} FROM {deviceName} WITH FILE = {pos}, NORECOVERY; "
+            //              + $"RESTORE DATABASE {dbName} FROM DISK = '{backupLogPath}' WITH STOPAT ='{timeInput.ToString("yyyy-MM-dd HH:mm:ss")}'; "
+            //              + $" ALTER DATABASE {dbName} SET MULTI_USER";
+            //        return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
+
+
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Utils.ShowInfoMessage("Lỗi phục hồi", $"Xảy ra lỗi trong quá trình phục hồi: \n{ex.Message}\nTự động" +
+            //            $" phục hồi về bản sao lưu mới nhất", InformationForm.FormType.Error);
+            //        return RestoreDBFromDevice(dbName, latestPos);
+            //    }
+            //    finally
+            //    {
+            //        DeleteFile(backupLogPath);
+            //    }
+            //}
+            //else
+            //    Utils.ShowInfoMessage("Lỗi phục hồi", "Không tìm thấy nhật ký backup", InformationForm.FormType.Error);
+            //return false;
+            //còn trường hợp không có trong này, phải xài tail log
+            string deviceName = $"Device_{dbName}";
+            Object[] values = GetValues(dbPosTime, logFileNameList, timeInput);
+            DateTime upperBound = (DateTime)values[0];
+            DateTime lowerBound = (DateTime)values[1];
+            List<DateTime> allLogsDateList = (List<DateTime>)values[2];
+
+            List<DateTime> restoreLogs = (List<DateTime>)allLogsDateList.Where(date => date >= lowerBound && date <= upperBound);
+
+            dbPosTime.TryGetValue(lowerBound, out int pos);
+            string command = $"ALTER DATABASE {dbName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE; " +
+                              "USE master " +
+                              $"RESTORE DATABASE {dbName} FROM {deviceName} WITH FILE = {pos}, NORECOVERY, REPLACE; ";
+            foreach (DateTime date in restoreLogs)
+            {
+
+            }
+
         }
 
         /*----BACKUP FILE METHODS----*/
@@ -327,9 +370,9 @@ namespace BaredaProject
         public static bool AddBackupLogJob(string defaultPath)
         {
             string command = LongCommands.GetAddBackupJobCommand(defaultPath, "BackupLogDaily");
-            return ExecSqlNonQuery(command,ConnectionString, new List<Para>());
+            return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
-        
+
         /*----EXECUTE COMMANDS----*/
         private static bool ExecSqlNonQuery(String command, String connectionString, List<Para> paraList)
         {
