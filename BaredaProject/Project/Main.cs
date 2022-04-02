@@ -46,7 +46,7 @@ namespace BaredaProject
             Directory.CreateDirectory(result);
             return result;
         }
-        public static string GetSpecifiedDefaultLogPath(string dbName)
+        public static string GetDBParentLogPath(string dbName)
         {
             string result = GetDefaultLogPath() + dbName + @"\";
             Directory.CreateDirectory(result);

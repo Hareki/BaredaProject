@@ -86,7 +86,7 @@ namespace BaredaProject
         private static string GetDBTailLogFullPath(string dbName)
         {
             string currentMilis = Utils.ConvertDateTimeToMilisString(DateTime.Now);
-            return $"{Main.GetSpecifiedDefaultLogPath(dbName)}{dbName}_tailLog_{currentMilis}.trn";
+            return $"{Main.GetDBParentLogPath(dbName)}{dbName}_tailLog_{currentMilis}.trn";
         }
         private static string GetBackupTailLogCommand(bool needTailLog, string dbName, string tailLogFullPath)
         {
@@ -118,13 +118,13 @@ namespace BaredaProject
         }
         private static List<DateTime> GetDatesFromLogs(string dbName)
         {
-            List<string> fileNames = GetFileNames(Main.GetSpecifiedDefaultLogPath(dbName));
+            List<string> fileNames = GetFileNames(Main.GetDBParentLogPath(dbName));
             List<DateTime> result = new List<DateTime>();
             foreach (string fileName in fileNames)
             {
-                int startIndex = fileName.LastIndexOf("_") + 2;
-                int length = fileName.LastIndexOf(".") - startIndex + 1;
-                string milis = fileName.Substring(fileName.LastIndexOf("_") + 1, length);
+                int startIndex = fileName.LastIndexOf("_") + 1;
+                int length = fileName.LastIndexOf(".") - startIndex;
+                string milis = fileName.Substring(startIndex, length);
                 DateTime date = Utils.ConvertMilisStringToDateTime(milis);
                 result.Add(date);
             }
@@ -231,21 +231,73 @@ namespace BaredaProject
 
         private static string GetDeviceRestoreCommand(string dbName, DateTime timeInput, string defaultPath, string deviceName, int pos, bool needTailLog, List<DateTime> neededLogDates)
         {
+
             string dbTailLogFullPath = GetDBTailLogFullPath(dbName);
+            BackupTailog(needTailLog, dbName, dbTailLogFullPath);
+            dbTailLogFullPath = RenameTailLog(needTailLog, dbName, dbTailLogFullPath);
             string preCommand = $"ALTER DATABASE {dbName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE; "
-                             + "USE master " + GetBackupTailLogCommand(needTailLog, dbName, dbTailLogFullPath)
+                             + "USE master "
                              + $" RESTORE DATABASE {dbName} FROM {deviceName} WITH FILE = {pos}, NORECOVERY, REPLACE; ";
             StringBuilder buider = new StringBuilder(preCommand);
+            string DBParentLogPath = Main.GetDBParentLogPath(dbName);
             foreach (DateTime date in neededLogDates)
             {
-                string disk = $"{Main.GetSpecifiedDefaultLogPath(dbName)}{dbName}_tailLog_{Utils.ConvertDateTimeToMilisString(date)}.trn";
+                string disk = GetLogFullPathByDate(DBParentLogPath, dbName, date);
+                if (disk.Contains("_reset_")) buider = new StringBuilder(preCommand); // lặp 1
                 buider.AppendLine($"RESTORE LOG {dbName} FROM DISK = '{disk}' WITH STOPAT = '{timeInput.ToString(Utils.SQL_DATE_FORMAT)}', NORECOVERY ");
             }
+            if (dbTailLogFullPath.Contains("_reset_")) buider = new StringBuilder(preCommand); //lặp 2
             buider.AppendLine(GetRestoreTailLogCommand(needTailLog, dbName, dbTailLogFullPath, timeInput));
             buider.AppendLine($"RESTORE DATABASE {dbName} ");
             buider.AppendLine($"ALTER DATABASE {dbName} SET MULTI_USER ");
             string command = buider.ToString();
             return command;
+        }
+
+        private static string RenameTailLog(bool needTailog, string dbName, string dbTailLogFullPath)
+        {
+            if (!needTailog) return dbTailLogFullPath;
+            string command = "DECLARE @first_lsn numeric(25,0)"
+            + "SELECT @first_lsn = first_lsn FROM msdb.dbo.backupset as set1, msdb.dbo.backupmediafamily as set2 WHERE set2.physical_device_name = '" + dbTailLogFullPath + "' AND set1.media_set_id = set2.media_set_id"
+            + "IF(EXISTS (SELECT * FROM msdb.dbo.backupset WHERE first_lsn < @first_lsn and database_name = '" + dbName + "')) SELECT 0 ELSE SELECT 1";
+            // 0 = không cần reset, 1 = cần reset
+            using (SqlDataReader myReader = ExecuteSqlDataReader(command, ConnectionString, new List<Para>()))
+            {
+                if (myReader == null) return dbTailLogFullPath;
+
+                myReader.Read();
+                int result = int.Parse(myReader.GetValue(0).ToString());
+                if (result == 0)
+                {
+                    return dbTailLogFullPath;
+                }
+                else
+                {
+                    string newName = dbTailLogFullPath.Replace("_tailLog_", "_tailLog_reset_");
+                    File.Move(dbTailLogFullPath, newName);
+                    return newName;
+                }
+            }
+
+        }
+
+        private static string GetLogFullPathByDate(string DBParentLogPath, string dbName, DateTime date)
+        {
+            string[] names = { "_log_", "_tailLog_", "_log_reset_", "_tailLog_reset_" };
+            string path = string.Empty;
+            for (int i = 0; i < names.Length; i++)
+            {
+                path = $"{DBParentLogPath}{dbName}{names[i]}{Utils.ConvertDateTimeToMilisString(date)}.trn";
+                if (File.Exists(path)) break;
+            }
+            return path;
+        }
+
+        private static bool BackupTailog(bool needTailog, string dbName, string dbTailLogFullPath)
+        {
+            if (!needTailog) return true;
+            string command = $"BACKUP LOG BankManagement TO DISK = '{dbTailLogFullPath}' WITH INIT";
+            return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
 
         /*----BACKUP FILE METHODS----*/
