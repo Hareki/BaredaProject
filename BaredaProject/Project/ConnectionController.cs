@@ -217,7 +217,7 @@ namespace BaredaProject
             else
             {
                 needTailLog = false;
-                upperBound = test.Max(date => date);
+                upperBound = test.Min(date => date);
             }
             List<DateTime> neededLogDates = logDates.Where(date => date >= lowerBound && date <= upperBound).ToList()
                 .OrderBy(date => date).ToList();
@@ -246,7 +246,7 @@ namespace BaredaProject
                 if (disk.Contains("_reset_")) buider = new StringBuilder(preCommand); // lặp 1
                 buider.AppendLine($"RESTORE LOG {dbName} FROM DISK = '{disk}' WITH STOPAT = '{timeInput.ToString(Utils.SQL_DATE_FORMAT)}', NORECOVERY ");
             }
-            if (dbTailLogFullPath.Contains("_reset_")) buider = new StringBuilder(preCommand); //lặp 2
+            if (dbTailLogFullPath.Contains("_reset_") && needTailLog == true) buider = new StringBuilder(preCommand); //lặp 2
             buider.AppendLine(GetRestoreTailLogCommand(needTailLog, dbName, dbTailLogFullPath, timeInput));
             buider.AppendLine($"RESTORE DATABASE {dbName} ");
             buider.AppendLine($"ALTER DATABASE {dbName} SET MULTI_USER ");
@@ -257,8 +257,8 @@ namespace BaredaProject
         private static string RenameTailLog(bool needTailog, string dbName, string dbTailLogFullPath)
         {
             if (!needTailog) return dbTailLogFullPath;
-            string command = "DECLARE @first_lsn numeric(25,0)"
-            + "SELECT @first_lsn = first_lsn FROM msdb.dbo.backupset as set1, msdb.dbo.backupmediafamily as set2 WHERE set2.physical_device_name = '" + dbTailLogFullPath + "' AND set1.media_set_id = set2.media_set_id"
+            string command = "DECLARE @first_lsn numeric(25,0) \n"
+            + "SELECT @first_lsn = first_lsn FROM msdb.dbo.backupset as set1, msdb.dbo.backupmediafamily as set2 WHERE set2.physical_device_name = '" + dbTailLogFullPath + "' AND set1.media_set_id = set2.media_set_id \n"
             + "IF(EXISTS (SELECT * FROM msdb.dbo.backupset WHERE first_lsn < @first_lsn and database_name = '" + dbName + "')) SELECT 0 ELSE SELECT 1";
             // 0 = không cần reset, 1 = cần reset
             using (SqlDataReader myReader = ExecuteSqlDataReader(command, ConnectionString, new List<Para>()))
