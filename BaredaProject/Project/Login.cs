@@ -62,7 +62,7 @@ namespace BaredaProject
             String userName = textUser.Text.Trim();
             String password = textPassword.Text.Trim();
 
-            if (!ConnectionController.ConnectToServer(serverName, userName, password))
+            if (!MainCTL.ConnectToServer(serverName, userName, password))
             {
                 Utils.ShowInfoMessage("Lỗi đăng nhập", "Tài khoản, mật khẩu hoặc tên server không chính xácaaaaaaaaaaaaaaaaaaarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrraaaaaa", FormType.Error);
                 return;

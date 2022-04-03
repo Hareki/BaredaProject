@@ -38,7 +38,6 @@ namespace BaredaProject
             this.deleteMenu = new DevExpress.XtraBars.PopupMenu(this.components);
             this.barBtnDeleteSelected = new DevExpress.XtraBars.BarButtonItem();
             this.barBtnDeleteAll = new DevExpress.XtraBars.BarButtonItem();
-            this.barBtnDeleteTime = new DevExpress.XtraBars.BarButtonItem();
             this.btnRestore = new DevExpress.XtraBars.BarButtonItem();
             this.restoreMenu = new DevExpress.XtraBars.PopupMenu(this.components);
             this.barBtnDefaultRestore = new DevExpress.XtraBars.BarButtonItem();
@@ -135,8 +134,7 @@ namespace BaredaProject
             this.btnRefresh,
             this.btnCreateDevice,
             this.barBtnDeleteSelected,
-            this.barBtnDeleteAll,
-            this.barBtnDeleteTime});
+            this.barBtnDeleteAll});
             this.barManager1.MainMenu = this.bar2;
             this.barManager1.MaxItemId = 26;
             this.barManager1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
@@ -192,8 +190,7 @@ namespace BaredaProject
             // 
             this.deleteMenu.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
             new DevExpress.XtraBars.LinkPersistInfo(this.barBtnDeleteSelected),
-            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnDeleteAll),
-            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnDeleteTime)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnDeleteAll)});
             this.deleteMenu.Manager = this.barManager1;
             this.deleteMenu.Name = "deleteMenu";
             // 
@@ -201,31 +198,21 @@ namespace BaredaProject
             // 
             this.barBtnDeleteSelected.Caption = "Xóa bản sao lưu đã chọn";
             this.barBtnDeleteSelected.Id = 23;
-            this.barBtnDeleteSelected.ImageOptions.Image = global::BaredaProject.Properties.Resources.Close_20px;
-            this.barBtnDeleteSelected.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.8F);
+            this.barBtnDeleteSelected.ImageOptions.Image = global::BaredaProject.Properties.Resources.minus_20px;
+            this.barBtnDeleteSelected.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 12F);
             this.barBtnDeleteSelected.ItemAppearance.Normal.Options.UseFont = true;
             this.barBtnDeleteSelected.Name = "barBtnDeleteSelected";
             this.barBtnDeleteSelected.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnDeleteSelected_ItemClick);
             // 
             // barBtnDeleteAll
             // 
-            this.barBtnDeleteAll.Caption = "Xóa toàn bộ bản sao lưu của CSDL này";
+            this.barBtnDeleteAll.Caption = "Xóa toàn bộ các bản sao lưu của CSDL này";
             this.barBtnDeleteAll.Id = 24;
             this.barBtnDeleteAll.ImageOptions.Image = global::BaredaProject.Properties.Resources.delete_database_20px;
-            this.barBtnDeleteAll.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.8F);
+            this.barBtnDeleteAll.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 12F);
             this.barBtnDeleteAll.ItemAppearance.Normal.Options.UseFont = true;
             this.barBtnDeleteAll.Name = "barBtnDeleteAll";
             this.barBtnDeleteAll.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnDeleteAll_ItemClick);
-            // 
-            // barBtnDeleteTime
-            // 
-            this.barBtnDeleteTime.Caption = "Xóa các bản sao lưu theo mốc thời gian";
-            this.barBtnDeleteTime.Id = 25;
-            this.barBtnDeleteTime.ImageOptions.Image = global::BaredaProject.Properties.Resources.delete_document_20px;
-            this.barBtnDeleteTime.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.8F);
-            this.barBtnDeleteTime.ItemAppearance.Normal.Options.UseFont = true;
-            this.barBtnDeleteTime.Name = "barBtnDeleteTime";
-            this.barBtnDeleteTime.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnDeleteTime_ItemClick);
             // 
             // btnRestore
             // 
@@ -254,7 +241,7 @@ namespace BaredaProject
             this.barBtnDefaultRestore.Caption = "Phục hồi theo bản sao lưu đã chọn";
             this.barBtnDefaultRestore.Id = 17;
             this.barBtnDefaultRestore.ImageOptions.Image = global::BaredaProject.Properties.Resources.restart_20px;
-            this.barBtnDefaultRestore.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.barBtnDefaultRestore.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.barBtnDefaultRestore.ItemAppearance.Normal.Options.UseFont = true;
             this.barBtnDefaultRestore.Name = "barBtnDefaultRestore";
             this.barBtnDefaultRestore.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnDefaultRestore_ItemClick);
@@ -264,7 +251,7 @@ namespace BaredaProject
             this.barBtnTimeRestore.Caption = "Phục hồi về một thời điểm cụ thể";
             this.barBtnTimeRestore.Id = 16;
             this.barBtnTimeRestore.ImageOptions.Image = global::BaredaProject.Properties.Resources.clock_20px;
-            this.barBtnTimeRestore.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.barBtnTimeRestore.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 12F);
             this.barBtnTimeRestore.ItemAppearance.Normal.Options.UseFont = true;
             this.barBtnTimeRestore.Name = "barBtnTimeRestore";
             this.barBtnTimeRestore.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnTimeRestore_ItemClick);
@@ -296,7 +283,7 @@ namespace BaredaProject
             this.barBtnDefaultBackup.Caption = "Sao lưu thông thường";
             this.barBtnDefaultBackup.Id = 18;
             this.barBtnDefaultBackup.ImageOptions.Image = global::BaredaProject.Properties.Resources.save_as_20px;
-            this.barBtnDefaultBackup.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.barBtnDefaultBackup.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 12F);
             this.barBtnDefaultBackup.ItemAppearance.Normal.Options.UseFont = true;
             this.barBtnDefaultBackup.Name = "barBtnDefaultBackup";
             this.barBtnDefaultBackup.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnDefaultBackup_ItemClick);
@@ -305,8 +292,8 @@ namespace BaredaProject
             // 
             this.barBtnInitBackup.Caption = "Xóa tất cả bản sao lưu cũ rồi tiến hành sao lưu";
             this.barBtnInitBackup.Id = 19;
-            this.barBtnInitBackup.ImageOptions.Image = global::BaredaProject.Properties.Resources.minus_20px;
-            this.barBtnInitBackup.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.barBtnInitBackup.ImageOptions.Image = global::BaredaProject.Properties.Resources.delete_database_20px;
+            this.barBtnInitBackup.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 12F);
             this.barBtnInitBackup.ItemAppearance.Normal.Options.UseFont = true;
             this.barBtnInitBackup.Name = "barBtnInitBackup";
             this.barBtnInitBackup.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnInitBackup_ItemClick);
@@ -890,7 +877,6 @@ namespace BaredaProject
         private DevExpress.XtraBars.PopupMenu deleteMenu;
         private DevExpress.XtraBars.BarButtonItem barBtnDeleteSelected;
         private DevExpress.XtraBars.BarButtonItem barBtnDeleteAll;
-        private DevExpress.XtraBars.BarButtonItem barBtnDeleteTime;
     }
 }
 

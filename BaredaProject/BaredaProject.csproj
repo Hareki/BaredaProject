@@ -76,6 +76,8 @@
     <Compile Include="MyDataSet.cs">
       <DependentUpon>MyDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Project\Controllers\DeviceCTL.cs" />
+    <Compile Include="Project\Controllers\FileCTL.cs" />
     <Compile Include="Project\Dialogs\ConfirmationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,8 +96,8 @@
     <Compile Include="Project\Dialogs\InforForm.Designer.cs">
       <DependentUpon>InforForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Project\LongCommands.cs" />
-    <Compile Include="Project\ConnectionController.cs" />
+    <Compile Include="Project\Others\LongCommands.cs" />
+    <Compile Include="Project\Controllers\MainCTL.cs" />
     <Compile Include="Project\Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,7 +122,7 @@
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="Project\Utils.cs" />
+    <Compile Include="Project\Others\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Project\Dialogs\ConfirmationForm.resx">
       <DependentUpon>ConfirmationForm.cs</DependentUpon>
