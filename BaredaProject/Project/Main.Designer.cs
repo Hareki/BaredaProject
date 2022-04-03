@@ -35,6 +35,10 @@ namespace BaredaProject
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.btnCreateDevice = new DevExpress.XtraBars.BarButtonItem();
             this.btnDelBackup = new DevExpress.XtraBars.BarButtonItem();
+            this.deleteMenu = new DevExpress.XtraBars.PopupMenu(this.components);
+            this.barBtnDeleteSelected = new DevExpress.XtraBars.BarButtonItem();
+            this.barBtnDeleteAll = new DevExpress.XtraBars.BarButtonItem();
+            this.barBtnDeleteTime = new DevExpress.XtraBars.BarButtonItem();
             this.btnRestore = new DevExpress.XtraBars.BarButtonItem();
             this.restoreMenu = new DevExpress.XtraBars.PopupMenu(this.components);
             this.barBtnDefaultRestore = new DevExpress.XtraBars.BarButtonItem();
@@ -85,6 +89,7 @@ namespace BaredaProject
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.guna2Separator1 = new Guna.UI2.WinForms.Guna2Separator();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deleteMenu)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.restoreMenu)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.backupMenu)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit1)).BeginInit();
@@ -128,9 +133,12 @@ namespace BaredaProject
             this.barBtnDefaultBackup,
             this.barBtnInitBackup,
             this.btnRefresh,
-            this.btnCreateDevice});
+            this.btnCreateDevice,
+            this.barBtnDeleteSelected,
+            this.barBtnDeleteAll,
+            this.barBtnDeleteTime});
             this.barManager1.MainMenu = this.bar2;
-            this.barManager1.MaxItemId = 23;
+            this.barManager1.MaxItemId = 26;
             this.barManager1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemTextEdit1,
             this.repositoryItemTextEdit2,
@@ -168,7 +176,10 @@ namespace BaredaProject
             // 
             // btnDelBackup
             // 
+            this.btnDelBackup.ActAsDropDown = true;
+            this.btnDelBackup.ButtonStyle = DevExpress.XtraBars.BarButtonStyle.DropDown;
             this.btnDelBackup.Caption = "  Xóa bản sao lưu ";
+            this.btnDelBackup.DropDownControl = this.deleteMenu;
             this.btnDelBackup.Enabled = false;
             this.btnDelBackup.Hint = "Xóa bản sao lưu đã chọn trên danh sách";
             this.btnDelBackup.Id = 14;
@@ -176,7 +187,45 @@ namespace BaredaProject
             this.btnDelBackup.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2 Medium", 14F, System.Drawing.FontStyle.Bold);
             this.btnDelBackup.ItemAppearance.Normal.Options.UseFont = true;
             this.btnDelBackup.Name = "btnDelBackup";
-            this.btnDelBackup.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BtnDelBackup_ItemClick);
+            // 
+            // deleteMenu
+            // 
+            this.deleteMenu.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnDeleteSelected),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnDeleteAll),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barBtnDeleteTime)});
+            this.deleteMenu.Manager = this.barManager1;
+            this.deleteMenu.Name = "deleteMenu";
+            // 
+            // barBtnDeleteSelected
+            // 
+            this.barBtnDeleteSelected.Caption = "Xóa bản sao lưu đã chọn";
+            this.barBtnDeleteSelected.Id = 23;
+            this.barBtnDeleteSelected.ImageOptions.Image = global::BaredaProject.Properties.Resources.Close_20px;
+            this.barBtnDeleteSelected.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.8F);
+            this.barBtnDeleteSelected.ItemAppearance.Normal.Options.UseFont = true;
+            this.barBtnDeleteSelected.Name = "barBtnDeleteSelected";
+            this.barBtnDeleteSelected.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnDeleteSelected_ItemClick);
+            // 
+            // barBtnDeleteAll
+            // 
+            this.barBtnDeleteAll.Caption = "Xóa toàn bộ bản sao lưu của CSDL này";
+            this.barBtnDeleteAll.Id = 24;
+            this.barBtnDeleteAll.ImageOptions.Image = global::BaredaProject.Properties.Resources.delete_database_20px;
+            this.barBtnDeleteAll.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.8F);
+            this.barBtnDeleteAll.ItemAppearance.Normal.Options.UseFont = true;
+            this.barBtnDeleteAll.Name = "barBtnDeleteAll";
+            this.barBtnDeleteAll.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnDeleteAll_ItemClick);
+            // 
+            // barBtnDeleteTime
+            // 
+            this.barBtnDeleteTime.Caption = "Xóa các bản sao lưu theo mốc thời gian";
+            this.barBtnDeleteTime.Id = 25;
+            this.barBtnDeleteTime.ImageOptions.Image = global::BaredaProject.Properties.Resources.delete_document_20px;
+            this.barBtnDeleteTime.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2", 10.8F);
+            this.barBtnDeleteTime.ItemAppearance.Normal.Options.UseFont = true;
+            this.barBtnDeleteTime.Name = "barBtnDeleteTime";
+            this.barBtnDeleteTime.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BarBtnDeleteTime_ItemClick);
             // 
             // btnRestore
             // 
@@ -270,6 +319,7 @@ namespace BaredaProject
             this.btnRefresh.ItemAppearance.Normal.Font = new System.Drawing.Font("Baloo 2 Medium", 14F, System.Drawing.FontStyle.Bold);
             this.btnRefresh.ItemAppearance.Normal.Options.UseFont = true;
             this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.BtnRefresh_ItemClick);
             // 
             // barDockControlTop
             // 
@@ -761,6 +811,7 @@ namespace BaredaProject
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Main_FormClosed);
             this.Load += new System.EventHandler(this.Main_Load);
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deleteMenu)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.restoreMenu)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.backupMenu)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit1)).EndInit();
@@ -836,6 +887,10 @@ namespace BaredaProject
         private DevExpress.XtraBars.BarButtonItem btnCreateDevice;
         public System.Windows.Forms.ToolStripStatusLabel stripBackupMode;
         private Guna.UI2.WinForms.Guna2Separator guna2Separator1;
+        private DevExpress.XtraBars.PopupMenu deleteMenu;
+        private DevExpress.XtraBars.BarButtonItem barBtnDeleteSelected;
+        private DevExpress.XtraBars.BarButtonItem barBtnDeleteAll;
+        private DevExpress.XtraBars.BarButtonItem barBtnDeleteTime;
     }
 }
 

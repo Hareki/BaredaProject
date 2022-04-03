@@ -310,5 +310,14 @@
   <ItemGroup>
     <None Include="Resources\cancel_blue25px.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Close_20px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete_database_20px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete_document_20px.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -253,6 +253,16 @@ namespace BaredaProject.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Close_20px {
+            get {
+                object obj = ResourceManager.GetObject("Close_20px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap data_backup_25px {
             get {
                 object obj = ResourceManager.GetObject("data_backup_25px", resourceCulture);
@@ -276,6 +286,26 @@ namespace BaredaProject.Properties {
         internal static System.Drawing.Bitmap database_administrator_480px {
             get {
                 object obj = ResourceManager.GetObject("database_administrator_480px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap delete_database_20px {
+            get {
+                object obj = ResourceManager.GetObject("delete_database_20px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap delete_document_20px {
+            get {
+                object obj = ResourceManager.GetObject("delete_document_20px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

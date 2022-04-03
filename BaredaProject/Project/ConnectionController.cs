@@ -33,6 +33,8 @@ namespace BaredaProject
         public static SqlConnection ServerConnection = new SqlConnection();
         private static readonly string FILE_DELETED_MESSAGE = "xp_delete_file() returned error 2, 'The system cannot find the file specified.'";
 
+
+
         /*----COMMONS----*/
         public static bool ConnectToServer(string serverName, string userName, string password)
         {
@@ -83,7 +85,7 @@ namespace BaredaProject
                 return myReader.HasRows;
             }
         }
-        private static string GetDBTailLogFullPath(string dbName)
+        private static string GetDBFullTailLogPath(string dbName)
         {
             string currentMilis = Utils.ConvertDateTimeToMilisString(DateTime.Now);
             return $"{Main.GetDBParentLogPath(dbName)}{dbName}_tailLog_{currentMilis}.trn";
@@ -141,6 +143,65 @@ namespace BaredaProject
             }
             return result;
         }
+        private static bool BackupTailog(bool needTailog, string dbName, string dbTailLogFullPath)
+        {
+            if (!needTailog) return true;
+            string command = $"BACKUP LOG {dbName} TO DISK = '{dbTailLogFullPath}' WITH INIT";
+            return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
+        }
+        private static string RenameTailLog(bool needTailog, string dbName, string dbTailLogFullPath)
+        {
+            if (!needTailog) return dbTailLogFullPath;
+            string command = "DECLARE @first_lsn numeric(25,0) \n"
+            + "SELECT @first_lsn = first_lsn FROM msdb.dbo.backupset as set1, msdb.dbo.backupmediafamily as set2 WHERE set2.physical_device_name = '" + dbTailLogFullPath + "' AND set1.media_set_id = set2.media_set_id \n"
+            + "IF(EXISTS (SELECT * FROM msdb.dbo.backupset WHERE first_lsn < @first_lsn and database_name = '" + dbName + "')) SELECT 0 ELSE SELECT 1";
+            // 0 = không cần reset, 1 = cần reset
+            using (SqlDataReader myReader = ExecuteSqlDataReader(command, ConnectionString, new List<Para>()))
+            {
+                if (myReader == null) return dbTailLogFullPath;
+
+                myReader.Read();
+                int result = int.Parse(myReader.GetValue(0).ToString());
+                if (result == 0)
+                {
+                    return dbTailLogFullPath;
+                }
+                else
+                {
+                    string newName = dbTailLogFullPath.Replace("_tailLog_", "_tailLog_reset_");
+                    File.Move(dbTailLogFullPath, newName);
+                    return newName;
+                }
+            }
+
+        }
+        private static string GetLogFullPathByDate(string DBParentLogPath, string dbName, DateTime date)
+        {
+            string[] names = { "_log_", "_tailLog_", "_log_reset_", "_tailLog_reset_" };
+            string path = string.Empty;
+            for (int i = 0; i < names.Length; i++)
+            {
+                path = $"{DBParentLogPath}{dbName}{names[i]}{Utils.ConvertDateTimeToMilisString(date)}.trn";
+                if (File.Exists(path)) break;
+            }
+            return path;
+        }
+        private static bool DeleteFile(string fileFullPath)
+        {
+            string command = "EXECUTE master.dbo.xp_delete_file 0, @FileFullPath";
+            List<Para> paraList = new List<Para>
+            {
+                new Para("@FileFullPath", fileFullPath)
+            };
+            return ExecSqlNonQuery(command, ConnectionString, paraList);
+        }
+        private static string GetFullRestoreLocationCommand(string path, int pos)
+        {
+            if (Main.USE_DEVICE_MODE)
+                return $" FROM {path} WITH FILE = {pos}, REPLACE; ";
+            else
+                return $" FROM DISK = {path} WITH REPLACE; ";
+        }
 
         /*----BACKUP DEVICE METHODS----*/
         public static bool CreateDevice(string dbName, string defaultPath)
@@ -194,11 +255,11 @@ namespace BaredaProject
             string command = $"ALTER DATABASE {dbName}"
               + " SET SINGLE_USER WITH ROLLBACK IMMEDIATE;"
               + $" USE tempdb; RESTORE DATABASE {dbName}"
-              + $" FROM {deviceName} WITH FILE = {pos}, REPLACE; "
+              + $" {GetFullRestoreLocationCommand(dbName,pos)}"
               + $" ALTER DATABASE {dbName} SET MULTI_USER";
             return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
-        private static bool RestoreDBFromDevice_Time(string dbName, Dictionary<int, DateTime> fullBackupDates, List<DateTime> logDates, DateTime timeInput, string defaultPath)
+        private static bool RestoreDBFromDevice_Time(string dbName, Dictionary<int, DateTime> fullBackupDates, List<DateTime> logDates, DateTime timeInput)
         {
             string deviceName = $"Device_{dbName}";
 
@@ -222,17 +283,15 @@ namespace BaredaProject
             List<DateTime> neededLogDates = logDates.Where(date => date >= lowerBound && date <= upperBound).ToList()
                 .OrderBy(date => date).ToList();
 
-            string command = GetDeviceRestoreCommand(dbName, timeInput, defaultPath, deviceName, pos, needTailLog, neededLogDates);
+            string command = GetDeviceRestoreCommand(dbName, timeInput, deviceName, pos, needTailLog, neededLogDates);
             return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
 
 
         }
-
-
-        private static string GetDeviceRestoreCommand(string dbName, DateTime timeInput, string defaultPath, string deviceName, int pos, bool needTailLog, List<DateTime> neededLogDates)
+        private static string GetDeviceRestoreCommand(string dbName, DateTime timeInput, string deviceName, int pos, bool needTailLog, List<DateTime> neededLogDates)
         {
 
-            string dbTailLogFullPath = GetDBTailLogFullPath(dbName);
+            string dbTailLogFullPath = GetDBFullTailLogPath(dbName);
             BackupTailog(needTailLog, dbName, dbTailLogFullPath);
             dbTailLogFullPath = RenameTailLog(needTailLog, dbName, dbTailLogFullPath);
             string preCommand = $"ALTER DATABASE {dbName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE; "
@@ -254,51 +313,9 @@ namespace BaredaProject
             return command;
         }
 
-        private static string RenameTailLog(bool needTailog, string dbName, string dbTailLogFullPath)
-        {
-            if (!needTailog) return dbTailLogFullPath;
-            string command = "DECLARE @first_lsn numeric(25,0) \n"
-            + "SELECT @first_lsn = first_lsn FROM msdb.dbo.backupset as set1, msdb.dbo.backupmediafamily as set2 WHERE set2.physical_device_name = '" + dbTailLogFullPath + "' AND set1.media_set_id = set2.media_set_id \n"
-            + "IF(EXISTS (SELECT * FROM msdb.dbo.backupset WHERE first_lsn < @first_lsn and database_name = '" + dbName + "')) SELECT 0 ELSE SELECT 1";
-            // 0 = không cần reset, 1 = cần reset
-            using (SqlDataReader myReader = ExecuteSqlDataReader(command, ConnectionString, new List<Para>()))
-            {
-                if (myReader == null) return dbTailLogFullPath;
 
-                myReader.Read();
-                int result = int.Parse(myReader.GetValue(0).ToString());
-                if (result == 0)
-                {
-                    return dbTailLogFullPath;
-                }
-                else
-                {
-                    string newName = dbTailLogFullPath.Replace("_tailLog_", "_tailLog_reset_");
-                    File.Move(dbTailLogFullPath, newName);
-                    return newName;
-                }
-            }
 
-        }
 
-        private static string GetLogFullPathByDate(string DBParentLogPath, string dbName, DateTime date)
-        {
-            string[] names = { "_log_", "_tailLog_", "_log_reset_", "_tailLog_reset_" };
-            string path = string.Empty;
-            for (int i = 0; i < names.Length; i++)
-            {
-                path = $"{DBParentLogPath}{dbName}{names[i]}{Utils.ConvertDateTimeToMilisString(date)}.trn";
-                if (File.Exists(path)) break;
-            }
-            return path;
-        }
-
-        private static bool BackupTailog(bool needTailog, string dbName, string dbTailLogFullPath)
-        {
-            if (!needTailog) return true;
-            string command = $"BACKUP LOG BankManagement TO DISK = '{dbTailLogFullPath}' WITH INIT";
-            return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
-        }
 
         /*----BACKUP FILE METHODS----*/
         private static int GetCurrentPosition(string dbName)
@@ -333,7 +350,7 @@ namespace BaredaProject
                     }
                     catch (Exception)
                     {
-                        Console.WriteLine($"File Skipped During Delete: {dbName} - Pos{i}");
+                        Console.WriteLine($"File Skipped During Delete: {dbName}_Pos{i}");
                     }
 
                 }
@@ -341,7 +358,7 @@ namespace BaredaProject
             }
             else pos = oldPos + 1;
 
-            string fileFullPath = $"{defaultPath}\\{dbName} - Pos{pos}.bak";
+            string fileFullPath = $"{defaultPath}\\{dbName}_Pos{pos}.bak";
             string command = "BACKUP DATABASE @DBName TO DISK = @FileFullPath WITH DESCRIPTION = @Des, NAME = @Name";
             List<Para> paraList = new List<Para>
             {
@@ -357,17 +374,8 @@ namespace BaredaProject
             //File chứ không phải device, vì device không thể xóa 1 phần dữ liệu (?), chỉ có lưu trữ
             //trên các file riêng mới có thể
             string fileFullPath;
-            if (pos <= 0) fileFullPath = $"{defaultPath}\\{dbName} - Pos{pos} - Dummy.bak";
-            else fileFullPath = $"{defaultPath}\\{dbName} - Pos{pos}.bak";
-            string command = "EXECUTE master.dbo.xp_delete_file 0, @FileFullPath";
-            List<Para> paraList = new List<Para>
-            {
-                new Para("@FileFullPath", fileFullPath)
-            };
-            return ExecSqlNonQuery(command, ConnectionString, paraList);
-        }
-        private static bool DeleteFile(string fileFullPath)
-        {
+            if (pos <= 0) fileFullPath = $"{defaultPath}\\{dbName}_Pos{pos} - Dummy.bak";
+            else fileFullPath = $"{defaultPath}\\{dbName}_Pos{pos}.bak";
             string command = "EXECUTE master.dbo.xp_delete_file 0, @FileFullPath";
             List<Para> paraList = new List<Para>
             {
@@ -393,8 +401,22 @@ namespace BaredaProject
         }
         private static bool RestoreDBFromFile(string dbName, int pos, string backupFilePath)
         {
-            return true;
+            string fullFilePath = GetFullFilePah(dbName, pos);
+
+            string command = $"ALTER DATABASE {dbName}"
+              + " SET SINGLE_USER WITH ROLLBACK IMMEDIATE; "
+              + $" USE tempdb; RESTORE DATABASE {dbName} "
+              + $" {GetFullRestoreLocationCommand(fullFilePath, pos)}"
+              + $" ALTER DATABASE {dbName} SET MULTI_USER";
+            return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
+
+        private static string GetFullFilePah(string dbName, int pos)
+        {
+            string result = $"{Main.GetDefaultFullBackupPath(dbName)}\\{dbName}_Pos{pos}.bak";
+            return result;
+        }
+
         private static bool RestoreDBFromFile_Time(string dbName, Dictionary<int, DateTime> fullBackupDates, List<DateTime> logDates, DateTime timeInput, string defaultPath)
         {
             return true;
@@ -449,7 +471,7 @@ namespace BaredaProject
             List<DateTime> logDates = GetDatesFromLogs(dbName);
             Dictionary<int, DateTime> fullBackupDates = GetDatesFromBDS(bds, colDate, colPos);
             if (Main.USE_DEVICE_MODE)
-                return RestoreDBFromDevice_Time(dbName, fullBackupDates, logDates, timeInput, defaultPath);
+                return RestoreDBFromDevice_Time(dbName, fullBackupDates, logDates, timeInput);
             else
                 return RestoreDBFromFile_Time(dbName, fullBackupDates, logDates, timeInput, defaultPath);
         }

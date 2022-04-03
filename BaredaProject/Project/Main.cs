@@ -20,19 +20,19 @@ namespace BaredaProject
         {
             InitializeComponent();
         }
-        public static bool USE_DEVICE_MODE = true;
+        public static bool USE_DEVICE_MODE = false;
 
 
         /*----GET PATHS----*/
-        public static string GetDefaultPath()
+        public static string GetDefaultFullBackupPath(string dbName)
         {
             string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
             var directory = new DirectoryInfo(documentsPath);
             string result;
             if (USE_DEVICE_MODE)
-                result = directory.Parent.FullName + @"\Backup\Device";
+                result = directory.Parent.FullName + $"\\Backup\\Device\\{dbName}";
             else
-                result = directory.Parent.FullName + @"\Backup\File";
+                result = directory.Parent.FullName + $"\\Backup\\File\\{dbName}";
 
             Directory.CreateDirectory(result);
             return result;
@@ -142,7 +142,7 @@ namespace BaredaProject
             if (input.Continue)
             {
                 string description = input.Description;
-                if (ConnectionController.BackupDB(dbName, description, init, GetDefaultPath()))
+                if (ConnectionController.BackupDB(dbName, description, init, GetDefaultFullBackupPath(dbName)))
                 {
                     Utils.ShowInfoMessage("Thông báo", "Tạo bản sao lưu thành công", InformationForm.FormType.Infor);
                 }
@@ -235,7 +235,7 @@ namespace BaredaProject
                 int pos = GetSelectedBackupPos();
                 if (Utils.ShowConfirmMessage("Xác nhận", $"Xác nhận phục hồi {dbName} về thời điểm {timeInput}?"))
                 {
-                    if (ConnectionController.RestoreDB_Time(dbName, bdsBackupList, colbackup_start_date, colposition, timeInput, GetDefaultPath()))
+                    if (ConnectionController.RestoreDB_Time(dbName, bdsBackupList, colbackup_start_date, colposition, timeInput, GetDefaultFullBackupPath(dbName)))
                         Utils.ShowInfoMessage("Thông báo", "Phục hồi hoàn tất", InformationForm.FormType.Infor);
                 }
             }
@@ -245,26 +245,14 @@ namespace BaredaProject
         {
             string dbName = GetSelectedDBName();
 
-            if (ConnectionController.CreateDevice(dbName, GetDefaultPath()))
+            if (ConnectionController.CreateDevice(dbName, GetDefaultFullBackupPath(dbName)))
             {
                 Utils.ShowInfoMessage("Thông báo", "Tạo device thành công", InformationForm.FormType.Infor);
                 ReloadGvBackups(GetSelectedDBName());
             }
 
         }
-        private void BtnDelBackup_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            if (Utils.ShowConfirmMessage("Xác nhận", "Xóa bản sao lưu đã chọn?"))
-            {
-                string dbName = GetSelectedDBName();
-                int pos = GetSelectedBackupPos();
-                if (ConnectionController.DeleteBackupInstance(dbName, pos, GetDefaultPath()))
-                {
-                    Utils.ShowInfoMessage("Thông báo", "Đã xóa bản sao lưu được chọn", InformationForm.FormType.Infor);
-                    ReloadGvBackups(GetSelectedDBName());
-                }
-            }
-        }
+
         private void Main_Load(object sender, EventArgs e)
         {
             CustomCellPadding();
@@ -276,5 +264,33 @@ namespace BaredaProject
             Application.Exit();
         }
 
+        private void BarBtnDeleteSelected_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            if (Utils.ShowConfirmMessage("Xác nhận", "Xóa bản sao lưu đã chọn?"))
+            {
+                string dbName = GetSelectedDBName();
+                int pos = GetSelectedBackupPos();
+                if (ConnectionController.DeleteBackupInstance(dbName, pos, GetDefaultFullBackupPath(dbName)))
+                {
+                    Utils.ShowInfoMessage("Thông báo", "Đã xóa bản sao lưu được chọn", InformationForm.FormType.Infor);
+                    ReloadGvBackups(GetSelectedDBName());
+                }
+            }
+        }
+
+        private void BarBtnDeleteAll_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+
+        }
+
+        private void BarBtnDeleteTime_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+
+        }
+
+        private void BtnRefresh_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            ReloadDBList();
+        }
     }
 }
