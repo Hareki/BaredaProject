@@ -135,6 +135,7 @@ namespace BaredaProject.Project.Dialogs
             this.Controls.Add(this.pictureBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ConfirmationForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ConfirmationForm";
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();

@@ -1989,7 +1989,7 @@ namespace BaredaProject.MyDataSetTableAdapters {
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = "SELECT position, description, backup_start_date, user_name\r\nFROM     msdb.dbo.bac" +
                 "kupset as bs\r\nWHERE  (database_name = @DBNAME) AND (type = \'D\') AND bs.name LIKE" +
-                " \'Device_%\'\r\nORDER BY position DESC";
+                " \'Device_%\'\r\nORDER BY position ASC";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[0].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DBNAME", global::System.Data.SqlDbType.NVarChar, 128, global::System.Data.ParameterDirection.Input, 0, 0, "database_name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
@@ -2011,7 +2011,8 @@ namespace BaredaProject.MyDataSetTableAdapters {
 
 SELECT backup_start_date, user_name, description, RowNum as position
 FROM   BackupSet2
-WHERE  ( NAME NOT LIKE 'Deleted_%' )  ";
+WHERE  ( NAME NOT LIKE 'Deleted_%' )  
+ORDER BY position ASC";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DBName", global::System.Data.SqlDbType.NVarChar, 128, global::System.Data.ParameterDirection.Input, 0, 0, "", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }

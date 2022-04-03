@@ -57,8 +57,8 @@ namespace BaredaProject
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 19;
             this.pictureBox1.TabStop = false;
-            this.toolTip1.SetToolTip(this.pictureBox1, "Thời điểm nhập vào phải thỏa các điều kiện sau:\r\n  - Sau thời điểm trên bản sao l" +
-        "ưu đã chọn.\r\n  - Trước thời điểm hiện tại ít nhất 1 phút.");
+            this.toolTip1.SetToolTip(this.pictureBox1, "Thời điểm nhập vào phải thỏa các điều kiện sau:\r\n  - Sau thời điểm của bản sao lư" +
+        "u đầy đủ cũ nhất\r\n  - Trước thời điểm hiện tại ít nhất 1 phút.");
             // 
             // label1
             // 

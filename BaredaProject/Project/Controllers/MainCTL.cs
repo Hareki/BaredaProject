@@ -77,6 +77,31 @@ namespace BaredaProject
             return ExecSqlNonQuery(command, ConnectionString, paraList);
 
         }
+        private static bool DeleteAllFiles(string dbName)
+        {
+            string folderPath = Main.GetDBFullBackupPath(dbName) + @"\";
+            string command = "EXECUTE master.dbo.xp_delete_file 0, @FolderPath";
+            List<Para> paraList = new List<Para>
+            {
+                new Para("@FolderPath", folderPath)
+            };
+            return ExecSqlNonQuery(command, ConnectionString, paraList);
+        }
+        private static bool DeleteAllLogs(string dbName)
+        {
+            string folderPath = Main.GetDBLogPath(dbName);
+            string command = "EXECUTE master.dbo.xp_delete_file 0, @FolderPath";
+            List<Para> paraList = new List<Para>
+            {
+                new Para("@FolderPath", folderPath)
+            };
+            return ExecSqlNonQuery(command, ConnectionString, paraList);
+        }
+        public static bool DropDevice(string deviceName)
+        {
+            string command = $"EXEC sp_dropdevice '{deviceName}', 'delfile'";
+            return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
+        }
         protected static bool BackupLogExists(string dbName, DateTime timeInput)
         {
             string command = $"USE {dbName} SELECT [Begin Time] FROM fn_dblog(null,null) WHERE [Begin Time] < {timeInput}";
@@ -312,29 +337,10 @@ namespace BaredaProject
             bool test3 = DeleteAllLogs(dbName);
             return test1 && test2 && test3 && test4;
         }
-        private static bool DeleteAllFiles(string dbName)
-        {
-            string folderPath = Main.GetDBFullBackupPath(dbName) + @"\";
-            string command = "EXECUTE master.dbo.xp_delete_file 0, @FolderPath";
-            List<Para> paraList = new List<Para>
-            {
-                new Para("@FolderPath", folderPath)
-            };
-            return ExecSqlNonQuery(command, ConnectionString, paraList);
-        }
-        private static bool DeleteAllLogs(string dbName)
+        public static bool DeleteBackupLogs_Time(string dbName, DateTime cutOffDate)
         {
             string folderPath = Main.GetDBLogPath(dbName);
-            string command = "EXECUTE master.dbo.xp_delete_file 0, @FolderPath";
-            List<Para> paraList = new List<Para>
-            {
-                new Para("@FolderPath", folderPath)
-            };
-            return ExecSqlNonQuery(command, ConnectionString, paraList);
-        }
-        public static bool DropDevice(string deviceName)
-        {
-            string command = $"EXEC sp_dropdevice '{deviceName}', 'delfile'";
+            string command = $"EXECUTE master.dbo.xp_delete_file 0, {folderPath}, 'trn', {cutOffDate.ToString(Utils.SQL_DATE_FORMAT)}, 1";
             return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
 

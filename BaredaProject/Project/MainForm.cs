@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -20,8 +21,7 @@ namespace BaredaProject
         {
             InitializeComponent();
         }
-        public static bool USE_DEVICE_MODE = true;
-
+        public static bool USE_DEVICE_MODE = false;
 
         /*----GET PATHS----*/
         public static string GetDBFullBackupPath(string dbName)
@@ -42,7 +42,10 @@ namespace BaredaProject
         {
             string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
             var directory = new DirectoryInfo(documentsPath);
-            string result = directory.Parent.FullName + @"\Backup\Log\";
+            string result;
+            if (USE_DEVICE_MODE)
+                result = directory.Parent.FullName + @"\Backup\Log\Device\";
+            else result = directory.Parent.FullName + @"\Backup\Log\File\";
             Directory.CreateDirectory(result);
             return result;
         }
@@ -131,12 +134,13 @@ namespace BaredaProject
         }
         private void BackupDB(bool init)
         {
+            string dbName = GetSelectedDBName();
             if (init)
-                if (!Utils.ShowConfirmMessage("Xác nhận", "Bạn có chắc muốn xóa toàn bộ các bản sao lưu cũ và ghi bản mới?"))
+                if (!Utils.ShowConfirmMessage("Xác nhận", $"Bạn có chắc muốn xóa toàn bộ các bản sao lưu cũ của {dbName} và ghi bản mới?"))
                     return;
 
 
-            string dbName = GetSelectedDBName();
+
             DescriptionInput input = new DescriptionInput();
             input.ShowDialog();
             if (input.Continue)
@@ -152,10 +156,6 @@ namespace BaredaProject
         private DateTime GetMinBackupTime()
         {
             return (DateTime)Utils.GetCellValueBds(bdsBackupList, colbackup_start_date, 0);
-        }
-        private int GetLatestDBPos(string dbName)
-        {
-            return int.Parse(Utils.GetCellStringBds(bdsBackupList, colposition, gvBackups.RowCount - 1));
         }
         private bool IsValidTimeInput(DateTime timeInput)
         {
@@ -188,7 +188,7 @@ namespace BaredaProject
             }
             catch (Exception ex)
             {
-           //     MessageBox.Show("Error: " + ex.Message, "", MessageBoxButtons.OK);
+                //     MessageBox.Show("Error: " + ex.Message, "", MessageBoxButtons.OK);
             }
         }
         private void GvBackups_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
@@ -209,15 +209,19 @@ namespace BaredaProject
         {
             string dbName = GetSelectedDBName();
             int pos = GetSelectedBackupPos();
-            if (Utils.ShowConfirmMessage("Xác nhận", $"Xác nhận phục hồi {dbName} về bản sao lưu thứ {pos}?"))
+            if (Utils.ShowConfirmMessage("Xác nhận", $"Bạn có chắc muốn phục hồi {dbName} về bản sao lưu thứ {pos}?"))
             {
+                Cursor.Current = Cursors.WaitCursor;
                 if (MainCTL.RestoreDB(dbName, pos, null))
                 {
+                    Cursor.Current = Cursors.Default;
                     Utils.ShowInfoMessage("Thông báo", $"Phục hồi {dbName} về bản sao lưu thứ {pos} hoàn tất", InformationForm.FormType.Infor);
                 }
-
             }
         }
+
+
+
         private void BarBtnTimeRestore_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             TimeInput input = new TimeInput();
@@ -232,15 +236,21 @@ namespace BaredaProject
                 }
 
                 string dbName = GetSelectedDBName();
-                int pos = GetSelectedBackupPos();
-                if (Utils.ShowConfirmMessage("Xác nhận", $"Xác nhận phục hồi {dbName} về thời điểm {timeInput}?"))
+                if (Utils.ShowConfirmMessage("Xác nhận", $"Bạn có chắc muốn phục hồi {dbName} về thời điểm {timeInput}?"))
                 {
+                    Cursor.Current = Cursors.WaitCursor;
                     if (MainCTL.RestoreDB_Time(dbName, bdsBackupList, colbackup_start_date, colposition, timeInput, GetDBFullBackupPath(dbName)))
+                    {
+                        Cursor.Current = Cursors.Default;
                         Utils.ShowInfoMessage("Thông báo", $"Phục hồi {dbName} về thời điểm {timeInput.ToString(Utils.SQL_DATE_FORMAT)} hoàn tất", InformationForm.FormType.Infor);
+
+                    }
                 }
             }
 
         }
+
+
         private void BtnCreateDevice_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             string dbName = GetSelectedDBName();
@@ -266,17 +276,36 @@ namespace BaredaProject
 
         private void BarBtnDeleteSelected_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            if (Utils.ShowConfirmMessage("Xác nhận", "Xóa bản sao lưu đã chọn?"))
+            string dbName = GetSelectedDBName();
+            int pos = GetSelectedBackupPos();
+            if (Utils.ShowConfirmMessage("Xác nhận", $"Bạn có chắc muốn xóa bản sao lưu thứ {pos} của {dbName}?"))
             {
-                string dbName = GetSelectedDBName();
-                int pos = GetSelectedBackupPos();
                 if (MainCTL.DeleteBackupInstance(dbName, pos, GetDBFullBackupPath(dbName)))
                 {
                     Utils.ShowInfoMessage("Thông báo", "Đã xóa bản sao lưu được chọn", InformationForm.FormType.Infor);
                     ReloadGvBackups(GetSelectedDBName());
                 }
+                if(!MainCTL.DeleteBackupLogs_Time(dbName, GetMinBackupTime()))
+                {
+                    Utils.ShowInfoMessage("Thông báo", "Xảy ra lỗi khi cố gắng xóa các file nhật ký vô chủ", InformationForm.FormType.Infor);
+                    Debug.Assert(false);
+                }
             }
         }
+
+        private DateTime GetMinBackupTime2(string dbName) // tương đương GetMinBackupTime, nhưng hướng xử lý khác, chậm nhưng chắc
+        {
+            List<DateTime> dates = new List<DateTime>();
+            int count = bdsBackupList.Count;
+            for (int i = 0; i < count; i++)
+            {
+                DateTime date = ((DateTime)Utils.GetCellValueBds(bdsBackupList, colbackup_start_date, i));
+                dates.Add(date);
+            }
+            DateTime minDate = dates.Min(date => date);
+            return minDate;
+        }
+
         private void BarBtnDeleteAll_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             string dbName = GetSelectedDBName();
