@@ -4,6 +4,7 @@ using DevExpress.XtraEditors.Repository;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -23,6 +24,14 @@ namespace BaredaProject
         }
         public static bool USE_DEVICE_MODE = true;
 
+        private static readonly string MOST_RECENT_PATH = GetGeneralLogPath() + "data.propterties";
+        private static void CheckFileExists()
+        {
+            if (!File.Exists(MOST_RECENT_PATH))
+            {
+                using (File.Create(MOST_RECENT_PATH)) ;
+            }
+        }
         /*----GET PATHS----*/
         public static string GetDBFullBackupPath(string dbName)
         {
@@ -186,7 +195,7 @@ namespace BaredaProject
                 else dbName = Utils.GetCellStringBds(bdsDBList, colname, -1);
                 ReloadGvBackups(dbName);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //     MessageBox.Show("Error: " + ex.Message, "", MessageBoxButtons.OK);
             }
@@ -229,21 +238,35 @@ namespace BaredaProject
             if (input.Continue)
             {
                 DateTime timeInput = input.GetTimeInput();
-                while ((!IsValidTimeInput(timeInput)) && input.Continue)
+                while (input.Continue &&(!IsValidTimeInput(timeInput)))
                 {
                     input.ShowDialog();
                     timeInput = input.GetTimeInput();
                 }
+                if (input.Continue == false) return;
 
                 string dbName = GetSelectedDBName();
-                if (Utils.ShowConfirmMessage("Xác nhận", $"Bạn có chắc muốn phục hồi {dbName} về thời điểm {timeInput}?"))
+                string message = $"Bạn có chắc muốn phục hồi {dbName} về thời điểm {timeInput}?";
+                string temp = File.ReadAllText(MOST_RECENT_PATH);
+                if (!string.IsNullOrEmpty(temp))
+                {
+                    DateTime mostRecentBackup = DateTime.Parse(temp);
+                    if (timeInput < mostRecentBackup)
+                    {
+                        message = $"Bạn vừa nhập vào thời điểm muốn phục hồi nhỏ hơn lần phục hồi gần nhất trước đó là" +
+                             $" {mostRecentBackup.ToString(Utils.SQL_DATE_FORMAT)}. Mọi thao tác trên CSDL kể từ thời điểm vừa nêu đến thời điểm hiện tại " +
+                             $"sẽ bị XÓA VĨNH VIỄN, KHÔNG THỂ PHỤC HỒI.\n\nBạn có chắc muốn phục hồi {dbName} về thời điểm {timeInput}?";
+                    }
+                }
+
+                if (Utils.ShowConfirmMessage("Xác nhận", message))
                 {
                     Cursor.Current = Cursors.WaitCursor;
                     if (MainCTL.RestoreDB_Time(dbName, bdsBackupList, colbackup_start_date, colposition, timeInput, GetDBFullBackupPath(dbName)))
                     {
                         Cursor.Current = Cursors.Default;
                         Utils.ShowInfoMessage("Thông báo", $"Phục hồi {dbName} về thời điểm {timeInput.ToString(Utils.SQL_DATE_FORMAT)} hoàn tất", InformationForm.FormType.Infor);
-
+                        File.WriteAllText(MOST_RECENT_PATH, timeInput.ToString(Utils.SQL_DATE_FORMAT));
                     }
                 }
             }
@@ -267,6 +290,7 @@ namespace BaredaProject
         {
             CustomCellPadding();
             ReloadDBList();
+            CheckFileExists();
             MainCTL.AddBackupLogJob(GetGeneralLogPath());
         }
         private void Main_FormClosed(object sender, FormClosedEventArgs e)
@@ -285,7 +309,7 @@ namespace BaredaProject
                     Utils.ShowInfoMessage("Thông báo", "Đã xóa bản sao lưu được chọn", InformationForm.FormType.Infor);
                     ReloadGvBackups(GetSelectedDBName());
                 }
-                if(!MainCTL.DeleteBackupLogs_Time(dbName, GetMinBackupTime()))
+                if (!MainCTL.DeleteBackupLogs_Time(dbName, GetMinBackupTime()))
                 {
                     Utils.ShowInfoMessage("Thông báo", "Xảy ra lỗi khi cố gắng xóa các file nhật ký vô chủ", InformationForm.FormType.Infor);
                     Debug.Assert(false);

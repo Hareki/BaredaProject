@@ -120,14 +120,12 @@ namespace BaredaProject
             this.dateEdit1.Properties.CalendarTimeEditing = DevExpress.Utils.DefaultBoolean.True;
             this.dateEdit1.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dateEdit1.Properties.CalendarView = DevExpress.XtraEditors.Repository.CalendarView.Vista;
             this.dateEdit1.Properties.DisplayFormat.FormatString = "dd/MM/yyyy   hh:mm:ss tt";
             this.dateEdit1.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dateEdit1.Properties.EditFormat.FormatString = "dd/MM/yyyy   hh:mm:ss tt";
             this.dateEdit1.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dateEdit1.Properties.MaskSettings.Set("mask", "dd/MM/yyyy   hh:mm:ss tt");
             this.dateEdit1.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.dateEdit1.Properties.VistaDisplayMode = DevExpress.Utils.DefaultBoolean.True;
             this.dateEdit1.Size = new System.Drawing.Size(356, 42);
             this.dateEdit1.TabIndex = 18;
             // 

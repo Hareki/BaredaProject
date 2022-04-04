@@ -22,9 +22,9 @@ namespace BaredaProject.Project
             InformationForm form = new InformationForm(title, message, type);
             form.ShowDialog();
         }
-        public static bool ShowConfirmMessage(string title, string message)
+        public static bool ShowConfirmMessage(string title, string message, bool wide = false)
         {
-            ConfirmationForm form = new ConfirmationForm(title, message);
+            ConfirmationForm form = new ConfirmationForm(title, message, wide);
             form.ShowDialog();
             return form.Continue;
         }

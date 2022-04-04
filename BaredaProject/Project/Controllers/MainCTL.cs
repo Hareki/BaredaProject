@@ -4,6 +4,7 @@ using BaredaProject.Project.Dialogs;
 using DevExpress.XtraGrid.Columns;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
@@ -79,7 +80,9 @@ namespace BaredaProject
         }
         private static bool DeleteAllFiles(string dbName)
         {
-            string folderPath = Main.GetDBFullBackupPath(dbName) + @"\";
+            string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
+            var directory = new DirectoryInfo(documentsPath);
+            string folderPath = directory.Parent.FullName + $"\\Backup\\File\\{dbName}";
             string command = "EXECUTE master.dbo.xp_delete_file 0, @FolderPath";
             List<Para> paraList = new List<Para>
             {
@@ -171,13 +174,13 @@ namespace BaredaProject
         }
         protected static bool BackupTailog(bool needTailog, string dbName, string dbTailLogFullPath)
         {
-        //    if (!needTailog) return true;
+            if (!needTailog) return true;
             string command = $"BACKUP LOG {dbName} TO DISK = '{dbTailLogFullPath}' WITH INIT";
             return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
         protected static string RenameTailLog(bool needTailog, string dbName, string dbTailLogFullPath)
         {
-          //  if (!needTailog) return dbTailLogFullPath;
+            if (!needTailog) return dbTailLogFullPath;
             string command = "DECLARE @first_lsn numeric(25,0) \n"
             + "SELECT @first_lsn = first_lsn FROM msdb.dbo.backupset as set1, msdb.dbo.backupmediafamily as set2 WHERE set2.physical_device_name = '" + dbTailLogFullPath + "' AND set1.media_set_id = set2.media_set_id \n"
             + "IF(EXISTS (SELECT * FROM msdb.dbo.backupset WHERE first_lsn < @first_lsn and database_name = '" + dbName + "')) SELECT 0 ELSE SELECT 1";
@@ -282,6 +285,11 @@ namespace BaredaProject
         /*----CALLERS AND COMMON PROCESSES----*/
         public static bool BackupDB(string dbName, string description, bool init, string defaultPath)
         {
+            if (init)
+            {
+                ClearBackupHistory(dbName);
+                DeleteAllLogs(dbName);
+            }
             if (Main.USE_DEVICE_MODE)
                 return DeviceCTL.BackupDB(dbName, init, description);
             else
@@ -322,6 +330,7 @@ namespace BaredaProject
                 return DeviceCTL.RestoreDB_Time(dbName, fullBackupDates, logDates, timeInput);
             else
                 return FileCTL.RestoreDB_Time(dbName, fullBackupDates, logDates, timeInput, defaultPath);
+
         }
         public static bool CreateDevice(string dbName, string defaultPath)
         {
@@ -338,7 +347,7 @@ namespace BaredaProject
         public static bool DeleteBackupLogs_Time(string dbName, DateTime cutOffDate)
         {
             string folderPath = Main.GetDBLogPath(dbName);
-            string command = $"EXECUTE master.dbo.xp_delete_file 0, {folderPath}, 'trn', {cutOffDate.ToString(Utils.SQL_DATE_FORMAT)}, 1";
+            string command = $"EXECUTE master.dbo.xp_delete_file 0, '{folderPath}', 'trn', '{cutOffDate.ToString(Utils.SQL_DATE_FORMAT)}', 1";
             return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
 

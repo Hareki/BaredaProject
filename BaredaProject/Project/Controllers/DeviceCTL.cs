@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BaredaProject.Project.Controller
 {
@@ -73,6 +70,6 @@ namespace BaredaProject.Project.Controller
             string command = GetRestoreCommand(dbName, timeInput, pos, needTailLog, neededLogDates, true, deviceName);
             return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
-       
+
     }
 }

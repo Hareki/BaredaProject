@@ -16,6 +16,7 @@ namespace BaredaProject
         public TimeInput()
         {
             InitializeComponent();
+            dateEdit1.EditValue = DateTime.Now;
         }
         public DateTime GetTimeInput()
         {
