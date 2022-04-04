@@ -70,7 +70,7 @@ namespace BaredaProject.Project.Controller
             int pos = (int)coreParameters[0];
             bool needTailLog = (bool)coreParameters[1];
             List<DateTime> neededLogDates = (List<DateTime>)coreParameters[2];
-            string command = GetRestoreCommand(dbName, timeInput, pos, needTailLog, neededLogDates, true, dbName);
+            string command = GetRestoreCommand(dbName, timeInput, pos, needTailLog, neededLogDates, true, deviceName);
             return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
        

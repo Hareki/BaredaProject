@@ -21,7 +21,7 @@ namespace BaredaProject
         {
             InitializeComponent();
         }
-        public static bool USE_DEVICE_MODE = false;
+        public static bool USE_DEVICE_MODE = true;
 
         /*----GET PATHS----*/
         public static string GetDBFullBackupPath(string dbName)
@@ -155,7 +155,7 @@ namespace BaredaProject
         }
         private DateTime GetMinBackupTime()
         {
-            return (DateTime)Utils.GetCellValueBds(bdsBackupList, colbackup_start_date, 0);
+            return ((DateTime)Utils.GetCellValueBds(bdsBackupList, colbackup_start_date, 0)).AddMilliseconds(-1000);
         }
         private bool IsValidTimeInput(DateTime timeInput)
         {

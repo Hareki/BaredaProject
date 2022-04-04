@@ -171,13 +171,13 @@ namespace BaredaProject
         }
         protected static bool BackupTailog(bool needTailog, string dbName, string dbTailLogFullPath)
         {
-            if (!needTailog) return true;
+        //    if (!needTailog) return true;
             string command = $"BACKUP LOG {dbName} TO DISK = '{dbTailLogFullPath}' WITH INIT";
             return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
         protected static string RenameTailLog(bool needTailog, string dbName, string dbTailLogFullPath)
         {
-            if (!needTailog) return dbTailLogFullPath;
+          //  if (!needTailog) return dbTailLogFullPath;
             string command = "DECLARE @first_lsn numeric(25,0) \n"
             + "SELECT @first_lsn = first_lsn FROM msdb.dbo.backupset as set1, msdb.dbo.backupmediafamily as set2 WHERE set2.physical_device_name = '" + dbTailLogFullPath + "' AND set1.media_set_id = set2.media_set_id \n"
             + "IF(EXISTS (SELECT * FROM msdb.dbo.backupset WHERE first_lsn < @first_lsn and database_name = '" + dbName + "')) SELECT 0 ELSE SELECT 1";
@@ -226,7 +226,7 @@ namespace BaredaProject
             //Path = [Device Name] or [Full File Path]
             string command = noRecovery ? ", NORECOVERY" : string.Empty;
             if (Main.USE_DEVICE_MODE)
-                return $" FROM Device_{path} WITH FILE = {pos}, REPLACE{command}; ";
+                return $" FROM {path} WITH FILE = {pos}, REPLACE{command}; ";
             else
                 return $" FROM DISK = {path} WITH REPLACE{command}; ";
         }
@@ -316,8 +316,6 @@ namespace BaredaProject
         {
             List<DateTime> logDates = GetDatesFromLogs(dbName);
             Dictionary<int, DateTime> fullBackupDates = GetDatesFromBDS(bds, colDate, colPos);
-
-
 
 
             if (Main.USE_DEVICE_MODE)

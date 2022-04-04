@@ -46,7 +46,7 @@ FROM      msdb.dbo.backupset set1
 WHERE name LIKE ''Device_%''
 
 DECLARE @DBName nvarchar(50);
-DECLARE @DefaultPath nvarchar(200) = ''C:\Users\Public\Backup\Log\'';
+DECLARE @DefaultPath nvarchar(200) = ''" + defaultPath + @"'';
 DECLARE @DefaultPath2 nvarchar(200);
 DECLARE @FileName nvarchar(50);
 DECLARE @Final nvarchar(250);
