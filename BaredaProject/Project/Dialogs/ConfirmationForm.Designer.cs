@@ -49,7 +49,7 @@ namespace BaredaProject.Project.Dialogs
             this.panel3.Controls.Add(this.message);
             this.panel3.Location = new System.Drawing.Point(146, 44);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(543, 71);
+            this.panel3.Size = new System.Drawing.Size(630, 71);
             this.panel3.TabIndex = 24;
             // 
             // message
@@ -59,7 +59,7 @@ namespace BaredaProject.Project.Dialogs
             this.message.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
             this.message.Location = new System.Drawing.Point(3, 9);
             this.message.Margin = new System.Windows.Forms.Padding(3, 0, 3, 20);
-            this.message.MaximumSize = new System.Drawing.Size(539, 0);
+            this.message.MaximumSize = new System.Drawing.Size(630, 0);
             this.message.Name = "message";
             this.message.Size = new System.Drawing.Size(127, 31);
             this.message.TabIndex = 2;
@@ -73,7 +73,7 @@ namespace BaredaProject.Project.Dialogs
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel4.Location = new System.Drawing.Point(0, 137);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(721, 99);
+            this.panel4.Size = new System.Drawing.Size(808, 99);
             this.panel4.TabIndex = 25;
             // 
             // btnCancel
@@ -83,7 +83,7 @@ namespace BaredaProject.Project.Dialogs
             this.btnCancel.Font = new System.Drawing.Font("Baloo 2 Medium", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
             this.btnCancel.Image = global::BaredaProject.Properties.Resources.cancel_blue25px;
-            this.btnCancel.Location = new System.Drawing.Point(535, 23);
+            this.btnCancel.Location = new System.Drawing.Point(622, 23);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(154, 53);
             this.btnCancel.TabIndex = 20;
@@ -100,7 +100,7 @@ namespace BaredaProject.Project.Dialogs
             this.btnOk.Font = new System.Drawing.Font("Baloo 2 Medium", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOk.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(70)))), ((int)(((byte)(68)))));
             this.btnOk.Image = global::BaredaProject.Properties.Resources.Check_Circle_Blue25px;
-            this.btnOk.Location = new System.Drawing.Point(354, 23);
+            this.btnOk.Location = new System.Drawing.Point(441, 23);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(154, 53);
             this.btnOk.TabIndex = 19;
@@ -129,7 +129,7 @@ namespace BaredaProject.Project.Dialogs
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(721, 236);
+            this.ClientSize = new System.Drawing.Size(808, 236);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.pictureBox);

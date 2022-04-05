@@ -151,13 +151,17 @@ namespace BaredaProject
             List<DateTime> result = new List<DateTime>();
             foreach (string fileName in fileNames)
             {
-                int startIndex = fileName.LastIndexOf("_") + 1;
-                int length = fileName.LastIndexOf(".") - startIndex;
-                string milis = fileName.Substring(startIndex, length);
-                DateTime date = Utils.ConvertMilisStringToDateTime(milis);
-                result.Add(date);
+                result.Add(GetDateFromFileName(fileName));
             }
             return result;
+        }
+        private static DateTime GetDateFromFileName(string fileName)
+        {
+            int startIndex = fileName.LastIndexOf("_") + 1;
+            int length = fileName.LastIndexOf(".") - startIndex;
+            string milis = fileName.Substring(startIndex, length);
+            DateTime date = Utils.ConvertMilisStringToDateTime(milis);
+            return date;
         }
         protected static Dictionary<int, DateTime> GetDatesFromBDS(BindingSource bds, GridColumn colDate, GridColumn colPos)
         {
@@ -170,10 +174,16 @@ namespace BaredaProject
             }
             return result;
         }
-        protected static bool BackupTailog(bool needTailog, string dbName, string dbTailLogFullPath)
+        protected static bool BackupTailog(bool needTailog, string dbName, string dbTailLogFullPath, DateTime timeInput)
         {
             if (!needTailog) return true;
             string command = $"BACKUP LOG {dbName} TO DISK = '{dbTailLogFullPath}' WITH INIT";
+            string fileName = dbTailLogFullPath.Substring(dbTailLogFullPath.LastIndexOf(@"\") + 1);
+
+            DateTime currentTime = GetDateFromFileName(fileName);
+            Main.WriteKVToFile(dbName, 3, timeInput.ToString(Utils.SQL_DATE_FORMAT));
+            Main.WriteKVToFile(dbName, 4, currentTime.ToString(Utils.SQL_DATE_FORMAT));
+
             return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
         protected static string RenameTailLog(bool needTailog, string dbName, string dbTailLogFullPath)
@@ -258,7 +268,7 @@ namespace BaredaProject
         {
 
             string dbTailLogFullPath = GetDBFullTailLogPath(dbName);
-            BackupTailog(needTailLog, dbName, dbTailLogFullPath);
+            BackupTailog(needTailLog, dbName, dbTailLogFullPath, timeInput);
             dbTailLogFullPath = RenameTailLog(needTailLog, dbName, dbTailLogFullPath);
             string preCommand = $"ALTER DATABASE {dbName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE; "
                              + "USE master "
@@ -323,7 +333,6 @@ namespace BaredaProject
             List<DateTime> logDates = GetDatesFromLogs(dbName);
             Dictionary<int, DateTime> fullBackupDates = GetDatesFromBDS(bds, colDate, colPos);
 
-
             if (Main.USE_DEVICE_MODE)
                 return DeviceCTL.RestoreDB_Time(dbName, fullBackupDates, logDates, timeInput);
             else
@@ -336,12 +345,15 @@ namespace BaredaProject
         }
         public static bool DeleteAllDBBackupInstances(string dbName)
         {
-            bool test2 = ClearBackupHistory(dbName);
-            bool test1 = DropDevice($"Device_{dbName}");
-            bool test4 = DeleteAllFiles(dbName);
-            bool test3 = DeleteAllLogs(dbName);
-            return test1 && test2 && test3 && test4;
+            Main.ClearKV(dbName);
+            bool test1 = ClearBackupHistory(dbName);
+            bool test2 = DropDevice($"Device_{dbName}");
+            DeleteAllFiles(dbName);
+            bool test4 = DeleteAllLogs(dbName);
+            return test1 && test2 && test4;//ko test số 3 vì có thể bị fail, do ko có directory file
         }
+
+
         public static bool DeleteBackupLogs_Time(string dbName, DateTime cutOffDate)
         {
             string folderPath = Main.GetDBLogPath(dbName);

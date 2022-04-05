@@ -109,3 +109,4 @@ D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\Bare
 D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\BaredaProject\obj\Debug\BaredaProject.csproj.CopyComplete
 D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\BaredaProject\obj\Debug\BaredaProject.exe
 D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\BaredaProject\obj\Debug\BaredaProject.pdb
+D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\BaredaProject\obj\Debug\BaredaProject.csproj.AssemblyReference.cache

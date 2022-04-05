@@ -3,20 +3,23 @@ using System.Windows.Forms;
 
 namespace BaredaProject.Project.Dialogs
 {
+
     public partial class ConfirmationForm : Form
     {
         public bool Continue = false;
-        private bool _wide;
         public ConfirmationForm()
         {
             InitializeComponent();
         }
-        public ConfirmationForm(string title, string message, bool wide)
+        public ConfirmationForm(string title, string message, bool warning)
         {
             InitializeComponent();
             this.message.Text = message;
             Text = title;
-            _wide = wide;
+            if (warning)
+            {
+                pictureBox.Image = BaredaProject.Properties.Resources.warning_shield_480px;
+            }
         }
 
         private void btnOk_Click(object sender, EventArgs e)

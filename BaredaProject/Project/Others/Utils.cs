@@ -17,9 +17,9 @@ namespace BaredaProject.Project
             InformationForm form = new InformationForm(title, message, type);
             form.ShowDialog();
         }
-        public static bool ShowConfirmMessage(string title, string message, bool wide = false)
+        public static bool ShowConfirmMessage(string title, string message, bool warning = false)
         {
-            ConfirmationForm form = new ConfirmationForm(title, message, wide);
+            ConfirmationForm form = new ConfirmationForm(title, message, warning);
             form.ShowDialog();
             return form.Continue;
         }
@@ -28,17 +28,27 @@ namespace BaredaProject.Project
         /*----GET BDS VALUE----*/
         public static string GetCellStringBds(BindingSource bds, GridColumn column, int rowIndex)
         {
-            if (rowIndex >= 0)
-                return (bds[rowIndex] as DataRowView)[column.FieldName].ToString().Trim();
-            else
-                return (bds[bds.Position] as DataRowView)[column.FieldName].ToString().Trim();
+            if(bds.Count > 0)
+            {
+                if (rowIndex >= 0)
+                    return (bds[rowIndex] as DataRowView)[column.FieldName].ToString().Trim();
+                else
+                    return (bds[bds.Position] as DataRowView)[column.FieldName].ToString().Trim();
+            }
+            return null;
+            
         }
         public static object GetCellValueBds(BindingSource bds, GridColumn column, int rowIndex)
         {
-            if (rowIndex >= 0)
-                return (bds[rowIndex] as DataRowView)[column.FieldName];
-            else
-                return (bds[bds.Position] as DataRowView)[column.FieldName];
+            if(bds.Count > 0)
+            {
+                if (rowIndex >= 0)
+                    return (bds[rowIndex] as DataRowView)[column.FieldName];
+                else
+                    return (bds[bds.Position] as DataRowView)[column.FieldName];
+            }
+            return null;
+            
         }
 
 
