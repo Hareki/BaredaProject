@@ -4574,9 +4574,9 @@ is dependent on the type of control embedded in this layout item.</value>
     </member>
     <member name="P:DevExpress.XtraLayout.OptionsItemTextGroup.TextToControlDistance">
       <summary>
-        <para>Gets or sets the distance between the text regions of layout items and the corresponding controls.</para>
+        <para>Gets or sets the distance between text regions and controls for the current group’s layout items.</para>
       </summary>
-      <value>An integer value that represents the distance between the text regions of layout items and  the corresponding controls.</value>
+      <value>The distance between text regions and controls in the current group.</value>
     </member>
     <member name="M:DevExpress.XtraLayout.OptionsItemTextGroup.ToString">
       <summary />
@@ -5817,6 +5817,9 @@ is dependent on the type of control embedded in this layout item.</value>
       </summary>
       <param name="item">A <see cref="T:DevExpress.XtraLayout.LayoutGroup"/> object which represents the tab page to be removed from the collection.</param>
       <returns>true if the tab page has been removed; otherwise, false.</returns>
+    </member>
+    <member name="E:DevExpress.XtraLayout.TabbedGroup.SelectedPageChangeAnimationCompleted">
+      <summary />
     </member>
     <member name="E:DevExpress.XtraLayout.TabbedGroup.SelectedPageChanged">
       <summary>

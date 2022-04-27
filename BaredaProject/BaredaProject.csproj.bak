@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8DB807F1-02C0-4408-8BE2-963633857504}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>BaredaProject</RootNamespace>
+    <AssemblyName>BaredaProject</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Bunifu.Licensing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=f89b4760ba7dcb6b" />
+    <Reference Include="Bunifu.UI.WinForms.1.5.3">
+      <HintPath>..\packages\Bunifu.UI.WinForms.5.2.1\lib\net40\Bunifu.UI.WinForms.1.5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Bunifu.UI.WinForms.BunifuButton">
+      <HintPath>..\packages\Bunifu.UI.WinForms.5.2.1\lib\net40\Bunifu.UI.WinForms.BunifuButton.dll</HintPath>
+    </Reference>
+    <Reference Include="Bunifu.UI.WinForms.BunifuImageButton">
+      <HintPath>..\packages\Bunifu.UI.WinForms.5.2.1\lib\net40\Bunifu.UI.WinForms.BunifuImageButton.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.Desktop.v21.2, Version=21.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Data.v21.2, Version=21.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Printing.v21.2.Core, Version=21.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Utils.v21.2, Version=21.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraBars.v21.2, Version=21.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v21.2, Version=21.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraGrid.v21.2, Version=21.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraLayout.v21.2, Version=21.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraPrinting.v21.2, Version=21.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraVerticalGrid.v21.2, Version=21.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="Guna.UI2">
+      <HintPath>..\packages\Guna2 UI\Guna.UI2.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MyDataSet.cs">
+      <DependentUpon>MyDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Project\Controllers\DeviceCTL.cs" />
+    <Compile Include="Project\Controllers\FileCTL.cs" />
+    <Compile Include="Project\Dialogs\ConfirmationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Project\Dialogs\ConfirmationForm.Designer.cs">
+      <DependentUpon>ConfirmationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Project\Dialogs\DescriptionInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Project\Dialogs\DescriptionInput.Designer.cs">
+      <DependentUpon>DescriptionInput.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Project\Dialogs\InforForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Project\Dialogs\InforForm.Designer.cs">
+      <DependentUpon>InforForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Project\Others\LongCommands.cs" />
+    <Compile Include="Project\Controllers\MainCTL.cs" />
+    <Compile Include="Project\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Project\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MyDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MyDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Project\Dialogs\TimeInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Project\Dialogs\TimeInput.Designer.cs">
+      <DependentUpon>TimeInput.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Project\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Project\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Project\Others\Utils.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Project\Dialogs\ConfirmationForm.resx">
+      <DependentUpon>ConfirmationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Project\Dialogs\DescriptionInput.resx">
+      <DependentUpon>DescriptionInput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Project\Dialogs\InforForm.resx">
+      <DependentUpon>InforForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Project\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Project\Dialogs\TimeInput.resx">
+      <DependentUpon>TimeInput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Project\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="MyDataSet.xsc">
+      <DependentUpon>MyDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="MyDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>MyDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="MyDataSet.xss">
+      <DependentUpon>MyDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\backup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\data-warehouse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\remove-from-cart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\restore%281%29%281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\data_backup_25px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\restart_20px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\clock_20px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save_as_20px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\minus_20px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\info_30px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\clock_40px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel_40px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\clock_30px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel_30px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\clock_40px1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel_40px1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel_480px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\clock_480px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\info_20px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\warning_shield_25px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\server-storage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\enter_30px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\database_administrator_480px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\user_480px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\user_480px1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lock_500px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\invisible_512px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refresh-arrow%281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refresh%281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eye_512px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save_as_30px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\warning_shield_45px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel_35px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\warning_shield_480px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel_480px1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel_black_30px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ok_30px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\help_480px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\info_480px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel_red_480px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Check Circle_20px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Check Circle_25px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel_25px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Check Circle_Blue25px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel_blue25px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Close_20px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete_database_20px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete_document_20px.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

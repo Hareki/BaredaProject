@@ -96,6 +96,7 @@ D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\Bare
 D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\BaredaProject\bin\Debug\es\DevExpress.Office.v21.2.Core.resources.dll
 D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\BaredaProject\bin\Debug\ja\DevExpress.Office.v21.2.Core.resources.dll
 D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\BaredaProject\bin\Debug\ru\DevExpress.Office.v21.2.Core.resources.dll
+D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\BaredaProject\obj\Debug\BaredaProject.csproj.AssemblyReference.cache
 D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\BaredaProject\obj\Debug\BaredaProject.Project.Dialogs.ConfirmationForm.resources
 D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\BaredaProject\obj\Debug\BaredaProject.Project.Dialogs.DescriptionInput.resources
 D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\BaredaProject\obj\Debug\BaredaProject.Project.Dialogs.InformationForm.resources
@@ -109,4 +110,3 @@ D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\Bare
 D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\BaredaProject\obj\Debug\BaredaProject.csproj.CopyComplete
 D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\BaredaProject\obj\Debug\BaredaProject.exe
 D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\BaredaProject\obj\Debug\BaredaProject.pdb
-D:\Study\CNTT\4th year\2nd semester\Chuyen de CNPM\Repository\BaredaProject\BaredaProject\obj\Debug\BaredaProject.csproj.AssemblyReference.cache

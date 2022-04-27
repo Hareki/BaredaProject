@@ -19080,7 +19080,7 @@
     </member>
     <member name="F:DevExpress.XtraPrinting.ImageExportOptions.ImageFormats">
       <summary>
-        <para>Lists the available image formats (“.bmp”, “.gif”, “.jpg”, “.png”, “.emf”, “.wmf”, “.tiff”).</para>
+        <para>For internal use.</para>
       </summary>
       <value></value>
     </member>
@@ -20533,7 +20533,7 @@
     </member>
     <member name="T:DevExpress.XtraPrinting.PageInfoDataProviderBase">
       <summary>
-        <para>A service enabling the <see cref="T:DevExpress.XtraReports.UI.XRPageInfo"/> control to display custom information (e.g., the name of a logged user instead of a user under whose account the web server is running).</para>
+        <para>A service that allows the XRPageInfo control to display custom information.</para>
       </summary>
     </member>
     <member name="M:DevExpress.XtraPrinting.PageInfoDataProviderBase.GetText(DevExpress.XtraPrinting.PrintingSystemBase,DevExpress.XtraPrinting.PageInfoTextBrickBase)">
@@ -24217,6 +24217,10 @@
       </summary>
       <value>A <see cref="T:System.String"/> value, specifying the data source serializer name.</value>
     </member>
+    <member name="P:DevExpress.XtraPrinting.WebClientUIControl.DataContracts.DataSourceInfo.HasErrors">
+      <summary />
+      <value></value>
+    </member>
     <member name="P:DevExpress.XtraPrinting.WebClientUIControl.DataContracts.DataSourceInfo.HasParameters">
       <summary />
       <value></value>
@@ -26587,7 +26591,7 @@ The DefaultBoolean.Default value is equivalent to True.</value>
     </member>
     <member name="T:DevExpress.XtraReports.Parameters.Parameter">
       <summary>
-        <para>Provides functionality to a report parameter.</para>
+        <para>A report parameter.</para>
       </summary>
     </member>
     <member name="M:DevExpress.XtraReports.Parameters.Parameter.#ctor">
@@ -26597,15 +26601,15 @@ The DefaultBoolean.Default value is equivalent to True.</value>
     </member>
     <member name="P:DevExpress.XtraReports.Parameters.Parameter.AllowNull">
       <summary>
-        <para>Indicates whether the parameter‘s value can be unspecified.</para>
+        <para>Specifies whether a parameter value can be empty.</para>
       </summary>
-      <value>true, to allow the parameter to be unspecified; otherwise, false.</value>
+      <value>true, to allow an empty value; otherwise, false.</value>
     </member>
     <member name="P:DevExpress.XtraReports.Parameters.Parameter.Description">
       <summary>
-        <para>Specifies a description that identifies a parameter editor in the Parameters UI.</para>
+        <para>Specifies a parameter description. This description is displayed beside a parameter editor in the Parameters panel.</para>
       </summary>
-      <value>A <see cref="T:System.String"/> that is the parameter description.</value>
+      <value>A parameter description.</value>
     </member>
     <member name="P:DevExpress.XtraReports.Parameters.Parameter.Enabled">
       <summary>
@@ -26627,15 +26631,15 @@ The DefaultBoolean.Default value is equivalent to True.</value>
     </member>
     <member name="P:DevExpress.XtraReports.Parameters.Parameter.MultiValue">
       <summary>
-        <para>Specifies whether or not a parameter can have multiple values.</para>
+        <para>Specifies whether you and end users can pass multiple values to a report parameter.</para>
       </summary>
-      <value>true if a parameter can have multiple values; otherwise false.</value>
+      <value>true to make a parameter multivalue; otherwise, false.</value>
     </member>
     <member name="P:DevExpress.XtraReports.Parameters.Parameter.Name">
       <summary>
-        <para>Specifies the parameter name.</para>
+        <para>Specifies a name by which you can reference a parameter in a report.</para>
       </summary>
-      <value>A <see cref="T:System.String"/> that specifies the parameter name.</value>
+      <value>A parameter name.</value>
     </member>
     <member name="P:DevExpress.XtraReports.Parameters.Parameter.ObjectType">
       <summary>
@@ -26657,9 +26661,9 @@ The DefaultBoolean.Default value is equivalent to True.</value>
     </member>
     <member name="P:DevExpress.XtraReports.Parameters.Parameter.SelectAllValues">
       <summary>
-        <para>Gets or sets whether to assign the multi-value parameter‘s all predefined values to the <see cref="P:DevExpress.XtraReports.Parameters.Parameter.Value"/> property.</para>
+        <para>Specifies whether to use all values of a multivalue parameter as defaults.</para>
       </summary>
-      <value>true, to assign the multi-value parameter’s all predefined values to the Value property; otherwise, false.</value>
+      <value>true to use all values as defaults; otherwise, false.</value>
     </member>
     <member name="P:DevExpress.XtraReports.Parameters.Parameter.Tag">
       <summary>
@@ -26669,15 +26673,15 @@ The DefaultBoolean.Default value is equivalent to True.</value>
     </member>
     <member name="P:DevExpress.XtraReports.Parameters.Parameter.Type">
       <summary>
-        <para>Determines which values a report parameter can accept.</para>
+        <para>Specifies a parameter type.</para>
       </summary>
-      <value>A <see cref="T:System.Type"/> object that specifies the type declarations. The default type is <see cref="T:System.String"/>.</value>
+      <value>A parameter type.</value>
     </member>
     <member name="P:DevExpress.XtraReports.Parameters.Parameter.Value">
       <summary>
-        <para>Specifies the report parameter‘s value.</para>
+        <para>Specifies a parameter value.</para>
       </summary>
-      <value>The parameter’s value.</value>
+      <value>A parameter value.</value>
     </member>
     <member name="P:DevExpress.XtraReports.Parameters.Parameter.ValueInfo">
       <summary>
@@ -26687,15 +26691,15 @@ The DefaultBoolean.Default value is equivalent to True.</value>
     </member>
     <member name="P:DevExpress.XtraReports.Parameters.Parameter.ValueSourceSettings">
       <summary>
-        <para>Provides access to the settings that are used to generate the parameter’s predefined values.</para>
+        <para>Gets or sets settings used to generate predefined values for a report parameter.</para>
       </summary>
-      <value>The settings used to generate the parameter’s predefined values.</value>
+      <value>Settings used to generate predefined values for a report parameter.</value>
     </member>
     <member name="P:DevExpress.XtraReports.Parameters.Parameter.Visible">
       <summary>
-        <para>Specifies whether a parameter‘s editor should be displayed in the Parameters UI, which is invoked for an end-user if the <see cref="P:DevExpress.XtraReports.UI.XtraReport.RequestParameters"/> property is enabled.</para>
+        <para>Specifies whether a parameter editor is visible in the Parameters panel.</para>
       </summary>
-      <value>true to display the parameter’s editor; otherwise, false.</value>
+      <value>true to show a parameter editor; otherwise, false.</value>
     </member>
     <member name="T:DevExpress.XtraReports.Parameters.ParameterCollection">
       <summary>

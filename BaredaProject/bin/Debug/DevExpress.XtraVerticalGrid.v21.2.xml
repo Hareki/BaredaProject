@@ -2453,9 +2453,9 @@
     </member>
     <member name="P:DevExpress.XtraVerticalGrid.Rows.BaseRow.AppearanceCell">
       <summary>
-        <para>Provides access to appearance settings used to paint row cells.</para>
+        <para>Contains appearance settings used to paint row cells.</para>
       </summary>
-      <value>An <see cref="T:DevExpress.Utils.AppearanceObjectEx"/> object that provides appearance settings used to paint row cells.</value>
+      <value>An <see cref="T:DevExpress.Utils.AppearanceObjectEx"/> object that contains settings used to paint row cells.</value>
     </member>
     <member name="P:DevExpress.XtraVerticalGrid.Rows.BaseRow.AppearanceHeader">
       <summary>
@@ -2897,9 +2897,9 @@
     </member>
     <member name="P:DevExpress.XtraVerticalGrid.Rows.MultiEditorRowProperties.CellWidth">
       <summary>
-        <para>Gets or sets the width of the data cells in a multi-editor row.</para>
+        <para>Gets or sets the width of the current data cell relative to other data cells in the multi-editor row.</para>
       </summary>
-      <value>An integer value that specifies the width of the data cells in a multi-editor row.</value>
+      <value>The relative width of the data cell in the multi-editor row.</value>
     </member>
     <member name="F:DevExpress.XtraVerticalGrid.Rows.MultiEditorRowProperties.MinWidth">
       <summary>

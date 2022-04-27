@@ -282,8 +282,6 @@ namespace BaredaProject
                     {
                         Cursor.Current = Cursors.Default;
                         Utils.ShowInfoMessage("Thông báo", $"Phục hồi {dbName} về thời điểm {timeInput.ToString(Utils.SQL_DATE_FORMAT)} hoàn tất", InformationForm.FormType.Infor);
-
-                        WriteKVToFile(dbName, 1, date.ToString(Utils.SQL_DATE_FORMAT));//gần nhất
                     }
                 }
             }

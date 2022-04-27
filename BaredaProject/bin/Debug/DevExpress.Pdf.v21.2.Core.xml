@@ -3435,7 +3435,7 @@
     </member>
     <member name="P:DevExpress.Pdf.PdfClearContentOptions.ClearGraphics">
       <summary>
-        <para>Gets or sets whether to clear graphics ().</para>
+        <para>Gets or sets whether to clear graphics.</para>
       </summary>
       <value>true to remove graphics; otherwise, false.</value>
     </member>
@@ -4018,7 +4018,7 @@
     </member>
     <member name="P:DevExpress.Pdf.PdfDocument.Pages">
       <summary>
-        <para>Provides access to the collection of document pages.</para>
+        <para>Obtains to the collection of document pages.</para>
       </summary>
       <value>A collection of <see cref="T:DevExpress.Pdf.PdfPage"/> objects.</value>
     </member>
@@ -11420,6 +11420,11 @@
     <member name="F:DevExpress.Pdf.PdfZugferdConformanceLevel.None">
       <summary>
         <para>No conformance level is specified.</para>
+      </summary>
+    </member>
+    <member name="F:DevExpress.Pdf.PdfZugferdConformanceLevel.XRechnung">
+      <summary>
+        <para>XRechnung level (a binding requirement for the receipt of electronic invoices for all public sector customers in Germany).</para>
       </summary>
     </member>
     <member name="T:DevExpress.Pdf.PdfZugferdVersion">

@@ -2713,6 +2713,9 @@
       </summary>
       <param name="itemIndex">An Int32 value that is the current node path’s index within a complete navigation journal.</param>
     </member>
+    <member name="M:DevExpress.XtraEditors.BreadCrumbEdit.ShowHistoryPopup">
+      <summary />
+    </member>
     <member name="P:DevExpress.XtraEditors.BreadCrumbEdit.Text">
       <summary>
         <para>This member supports the internal infrastructure, and is not intended to be used directly from your code.</para>
@@ -15415,7 +15418,7 @@ The DefaultBoolean.Default value is equivalent to DefaultBoolean.False.</value>
     </member>
     <member name="E:DevExpress.XtraEditors.FilterControl.BeforeShowValueEditor">
       <summary>
-        <para>Fires before displaying an editor used to edit operands in the FilterControl.</para>
+        <para>Fires before the Filter Control displays editors for operands.</para>
       </summary>
     </member>
     <member name="M:DevExpress.XtraEditors.FilterControl.ClearFilter">
@@ -15445,10 +15448,14 @@ The DefaultBoolean.Default value is equivalent to DefaultBoolean.False.</value>
       </summary>
     </member>
     <member name="E:DevExpress.XtraEditors.FilterControl.CustomValueEditor">
-      <summary />
+      <summary>
+        <para>Allows you to assign a custom editor used to display and edit an operand.</para>
+      </summary>
     </member>
     <member name="E:DevExpress.XtraEditors.FilterControl.CustomValueEditorForEditing">
-      <summary />
+      <summary>
+        <para>Allows you to specify a custom editor used to edit an operand. Handle the <see cref="E:DevExpress.XtraEditors.FilterControl.CustomValueEditor"/> event to specify an editor used to display and edit the operand.</para>
+      </summary>
     </member>
     <member name="E:DevExpress.XtraEditors.FilterControl.DisposeValueEditor">
       <summary>
@@ -15674,7 +15681,9 @@ The DefaultBoolean.Default value is equivalent to DefaultBoolean.False.</value>
       <value>true if a menu is used to select operands and operators in a <see cref="T:DevExpress.XtraEditors.FilterControl"/>; false if a combobox editor is used.</value>
     </member>
     <member name="E:DevExpress.XtraEditors.FilterControl.ValueEditorShown">
-      <summary />
+      <summary>
+        <para>Fires after an operand’s editor has been displayed.</para>
+      </summary>
     </member>
     <member name="T:DevExpress.XtraEditors.FilterEditorViewMode">
       <summary>
@@ -15741,6 +15750,38 @@ The DefaultBoolean.Default value is equivalent to DefaultBoolean.False.</value>
         <para>Gets or sets whether to display the Filter Editor (the form that embeds the Filter Editor).</para>
       </summary>
       <value>true, to display the Filter Editor; otherwise, false.</value>
+    </member>
+    <member name="T:DevExpress.XtraEditors.Filtering.CustomValueEditorArgs">
+      <summary />
+    </member>
+    <member name="M:DevExpress.XtraEditors.Filtering.CustomValueEditorArgs.#ctor(DevExpress.XtraEditors.Filtering.ClauseNode,System.Object,System.Int32,DevExpress.XtraEditors.Repository.RepositoryItem)">
+      <summary>
+        <para>Initializes a new instance of the <see cref="T:DevExpress.XtraEditors.Filtering.CustomValueEditorArgs"/> class with specified settings.</para>
+      </summary>
+      <param name="node"></param>
+      <param name="value"></param>
+      <param name="elementIndex"></param>
+      <param name="repositoryItem"></param>
+    </member>
+    <member name="P:DevExpress.XtraEditors.Filtering.CustomValueEditorArgs.ElementIndex">
+      <summary />
+      <value></value>
+    </member>
+    <member name="P:DevExpress.XtraEditors.Filtering.CustomValueEditorArgs.Node">
+      <summary />
+      <value></value>
+    </member>
+    <member name="P:DevExpress.XtraEditors.Filtering.CustomValueEditorArgs.Operation">
+      <summary />
+      <value></value>
+    </member>
+    <member name="P:DevExpress.XtraEditors.Filtering.CustomValueEditorArgs.RepositoryItem">
+      <summary />
+      <value></value>
+    </member>
+    <member name="P:DevExpress.XtraEditors.Filtering.CustomValueEditorArgs.Value">
+      <summary />
+      <value></value>
     </member>
     <member name="T:DevExpress.XtraEditors.Filtering.ExcelFilteringDataEventArgs">
       <summary>
@@ -27055,6 +27096,11 @@ The DefaultBoolean.Default value is equivalent to DefaultBoolean.True if the sta
       </summary>
       <param name="item">A <see cref="T:DevExpress.XtraEditors.Repository.RepositoryItem"/> object representing the source of the operation.</param>
     </member>
+    <member name="M:DevExpress.XtraEditors.Repository.RepositoryItemPopupBaseAutoSearchEdit.EnableCustomMaskTextInput(System.Action{DevExpress.Data.Mask.CustomTextMaskInputArgs},System.Object)">
+      <summary />
+      <param name="onTextInput"></param>
+      <param name="tag"></param>
+    </member>
     <member name="P:DevExpress.XtraEditors.Repository.RepositoryItemPopupBaseAutoSearchEdit.ImmediatePopup">
       <summary>
         <para>Gets or sets whether the popup window is displayed immediately after an end-user has typed a character in the edit box.</para>
@@ -28147,6 +28193,9 @@ The DefaultBoolean.Default value is equivalent to DefaultBoolean.True if the sta
       </summary>
     </member>
     <member name="E:DevExpress.XtraEditors.Repository.RepositoryItemTextEdit.CustomizeAutoCompleteSource">
+      <summary />
+    </member>
+    <member name="E:DevExpress.XtraEditors.Repository.RepositoryItemTextEdit.CustomTextLineHeight">
       <summary />
     </member>
     <member name="M:DevExpress.XtraEditors.Repository.RepositoryItemTextEdit.EditMaskSettings(System.Object)">
@@ -30940,6 +30989,9 @@ The default value is <see cref="F:DevExpress.Utils.DefaultBoolean.Default"/>.</v
       </summary>
     </member>
     <member name="E:DevExpress.XtraEditors.TextEdit.CustomizeAutoCompleteSource">
+      <summary />
+    </member>
+    <member name="E:DevExpress.XtraEditors.TextEdit.CustomTextLineHeight">
       <summary />
     </member>
     <member name="M:DevExpress.XtraEditors.TextEdit.Cut">
@@ -36452,7 +36504,7 @@ The DefaultBoolean.Default value is equivalent to DefaultBoolean.True if the sta
         <para>Initializes a new instance of the <see cref="T:DevExpress.XtraSplashScreen.OverlayWindowOptions"/> class.</para>
       </summary>
     </member>
-    <member name="M:DevExpress.XtraSplashScreen.OverlayWindowOptions.#ctor(System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Drawing.Color},System.Nullable{System.Drawing.Color},System.Nullable{System.Double},System.Drawing.Image,DevExpress.XtraSplashScreen.IOverlayWindowPainter,System.String,System.Nullable{DevExpress.XtraSplashScreen.ImageRotationParams},System.Nullable{System.Int32},System.Nullable{System.Drawing.Size},System.Nullable{DevExpress.XtraSplashScreen.WaitAnimationType},System.Nullable{DevExpress.XtraSplashScreen.LineAnimationParams},System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
+    <member name="M:DevExpress.XtraSplashScreen.OverlayWindowOptions.#ctor(System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Drawing.Color},System.Nullable{System.Drawing.Color},System.Nullable{System.Double},System.Drawing.Image,DevExpress.XtraSplashScreen.IOverlayWindowPainter,System.String,System.Nullable{DevExpress.XtraSplashScreen.ImageRotationParams},System.Nullable{System.Int32},System.Nullable{System.Drawing.Size},System.Nullable{DevExpress.XtraSplashScreen.WaitAnimationType},System.Nullable{DevExpress.XtraSplashScreen.LineAnimationParams},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
       <summary>
         <para>Initializes a new instance of the <see cref="T:DevExpress.XtraSplashScreen.OverlayWindowOptions"/> class with specified settings.</para>
       </summary>
@@ -36471,6 +36523,7 @@ The DefaultBoolean.Default value is equivalent to DefaultBoolean.True if the sta
       <param name="lineAnimationParameters"></param>
       <param name="useDirectX"></param>
       <param name="disableInput"></param>
+      <param name="trackOwnerBounds"></param>
     </member>
     <member name="P:DevExpress.XtraSplashScreen.OverlayWindowOptions.AnimationType">
       <summary>
@@ -36561,6 +36614,10 @@ The DefaultBoolean.Default value is equivalent to DefaultBoolean.True if the sta
         <para>Gets or sets the delay before the form is shown.</para>
       </summary>
       <value>The delay before the form is shown.</value>
+    </member>
+    <member name="P:DevExpress.XtraSplashScreen.OverlayWindowOptions.TrackOwnerBounds">
+      <summary />
+      <value></value>
     </member>
     <member name="P:DevExpress.XtraSplashScreen.OverlayWindowOptions.UseDirectX">
       <summary>
@@ -37748,7 +37805,7 @@ The DefaultBoolean.Default value is equivalent to DefaultBoolean.True if the sta
       <param name="options">An OverlayWindowOptions object that specifies the Overlay Form options, such as the loading image, fade animation and colors.</param>
       <returns>A handle for the shown Overlay Form. Use this handle to close the Overlay Form.</returns>
     </member>
-    <member name="M:DevExpress.XtraSplashScreen.SplashScreenManager.ShowOverlayForm(System.Windows.Forms.Control,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Drawing.Color},System.Nullable{System.Drawing.Color},System.Nullable{System.Int32},System.Drawing.Image,DevExpress.XtraSplashScreen.IOverlayWindowPainter,System.String,System.Nullable{DevExpress.XtraSplashScreen.ImageRotationParams},System.Nullable{System.Int32},System.Nullable{System.Drawing.Size},System.Nullable{DevExpress.XtraSplashScreen.WaitAnimationType},System.Nullable{DevExpress.XtraSplashScreen.LineAnimationParams},System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
+    <member name="M:DevExpress.XtraSplashScreen.SplashScreenManager.ShowOverlayForm(System.Windows.Forms.Control,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Drawing.Color},System.Nullable{System.Drawing.Color},System.Nullable{System.Int32},System.Drawing.Image,DevExpress.XtraSplashScreen.IOverlayWindowPainter,System.String,System.Nullable{DevExpress.XtraSplashScreen.ImageRotationParams},System.Nullable{System.Int32},System.Nullable{System.Drawing.Size},System.Nullable{DevExpress.XtraSplashScreen.WaitAnimationType},System.Nullable{DevExpress.XtraSplashScreen.LineAnimationParams},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
       <summary />
       <param name="owner"></param>
       <param name="fadeIn"></param>
@@ -37766,6 +37823,7 @@ The DefaultBoolean.Default value is equivalent to DefaultBoolean.True if the sta
       <param name="lineAnimationParameters"></param>
       <param name="useDirectX"></param>
       <param name="disableInput"></param>
+      <param name="trackOwnerBounds"></param>
       <returns></returns>
     </member>
     <member name="M:DevExpress.XtraSplashScreen.SplashScreenManager.ShowSkinSplashScreen(DevExpress.Utils.Svg.SvgImage,System.Nullable{System.Drawing.Size},System.String,System.String,System.String,System.String,System.Windows.Forms.Form,System.Boolean,System.Boolean,System.Boolean,DevExpress.XtraSplashScreen.SplashFormStartPosition,System.Drawing.Point)">

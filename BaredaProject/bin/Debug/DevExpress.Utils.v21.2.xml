@@ -1127,16 +1127,16 @@
     </member>
     <member name="M:DevExpress.Skins.SkinManager.RegisterAssembly(System.Reflection.Assembly)">
       <summary>
-        <para>Registers the specified assembly that contains custom skins.</para>
+        <para>Registers the specified assembly that contains custom skins. Registered skins cannot be applied to splash screens; use the <see cref="M:DevExpress.XtraEditors.WindowsFormsSettings.RegisterUserSkins(System.Reflection.Assembly)"/> method instead.</para>
       </summary>
       <param name="assembly">An assembly that should be registered.</param>
-      <returns>true, if the assembly is successfully registered; othrewise, false.</returns>
+      <returns>true if the assembly is successfully registered; otherwise, false.</returns>
     </member>
     <member name="M:DevExpress.Skins.SkinManager.RegisterSkin(DevExpress.Skins.SkinCreator)">
       <summary>
-        <para>Registers the specified skin stored as a BLOB for runtime use.</para>
+        <para>Registers the specified skin stored as a BLOB for runtime use. The registered skin cannot be applied to splash screens; use the <see cref="M:DevExpress.XtraEditors.WindowsFormsSettings.RegisterUserSkin(DevExpress.Skins.Info.SkinBlobXmlCreator)"/> method instead.</para>
       </summary>
-      <param name="creator">An object that provides information on the target BLOB skin.</param>
+      <param name="creator">An object that contains information on the target BLOB skin.</param>
     </member>
     <member name="M:DevExpress.Skins.SkinManager.RegisterSkinAssembly(System.Reflection.Assembly)">
       <summary>
@@ -1147,7 +1147,7 @@
     </member>
     <member name="M:DevExpress.Skins.SkinManager.RegisterSkinPatch(System.IO.Stream,System.Boolean)">
       <summary>
-        <para>Loads a skin patch from the stream.</para>
+        <para>Loads a skin patch from the stream. Patches loaded by this method overload are not applied to Splash Screens, use other overloads instead.</para>
       </summary>
       <param name="skinPatchStream">The stream to load a patch from.</param>
       <param name="registerSkinPatchPalettes">true to register palettes from the patch, false to leave palettes of the default skin.</param>
@@ -6183,6 +6183,13 @@ The DefaultBoolean.Default value is equivalent to DefaultBoolean.True if the sta
       <param name="svgImage">The vector image to draw.</param>
       <param name="point">A Point structure that specifies the coordinates for the drawn image.</param>
       <param name="svgPalette">An object that retrieves vector skin palettes. Vector image colors are slighly adjusted depending on the active palette.</param>
+    </member>
+    <member name="M:DevExpress.Utils.Drawing.GraphicsCache.DrawSvgImage(DevExpress.Utils.Svg.SvgImage,System.Drawing.Point,DevExpress.Utils.Design.ISvgPaletteProvider,System.Nullable{System.Single})">
+      <summary />
+      <param name="svgImage"></param>
+      <param name="point"></param>
+      <param name="svgPalette"></param>
+      <param name="forcedScaleFactor"></param>
     </member>
     <member name="M:DevExpress.Utils.Drawing.GraphicsCache.DrawSvgImage(DevExpress.Utils.Svg.SvgImage,System.Drawing.Rectangle,DevExpress.Utils.Design.ISvgPaletteProvider)">
       <summary>
@@ -17562,7 +17569,7 @@ The DefaultBoolean.Default value is equivalent to DefaultBoolean.True if the sta
     </member>
     <member name="P:DevExpress.XtraEditors.WindowsFormsSettings.BackgroundSkinningMode">
       <summary>
-        <para>Gets or sets what colors assigned to <see cref="P:DevExpress.Utils.AppearanceObject.BackColor"/> or <see cref="P:DevExpress.Utils.AppearanceObject.BorderColor"/> properties can blend with skin element bitmaps.</para>
+        <para>Gets or sets whether colors assigned to <see cref="P:DevExpress.Utils.AppearanceObject.BackColor"/> or <see cref="P:DevExpress.Utils.AppearanceObject.BorderColor"/> properties can blend with skin element bitmaps.</para>
       </summary>
       <value>A DevExpress.XtraEditors.BackgroundSkinningMode object enumerator value that specifies what appearance colors can blend with skin element bitmaps.</value>
     </member>
@@ -17836,6 +17843,10 @@ The DefaultBoolean.Default value is equivalent to DefaultBoolean.True if the sta
       <param name="rightToLeft">A default System.Windows.Forms.RightToLeft enumeration value that is returned if the <see cref="P:DevExpress.XtraEditors.WindowsFormsSettings.RightToLeft"/> property equals Default.</param>
       <returns>A System.Windows.Forms.RightToLeft enumeration value that specifies whether DevExpress controls are aligned to support locales using right-to-left fonts.</returns>
     </member>
+    <member name="M:DevExpress.XtraEditors.WindowsFormsSettings.GetUseTextForAccessibility">
+      <summary />
+      <returns></returns>
+    </member>
     <member name="M:DevExpress.XtraEditors.WindowsFormsSettings.GetUseUIAutomation(DevExpress.Utils.DefaultBoolean)">
       <summary />
       <param name="useUIAutomationInControl"></param>
@@ -17901,12 +17912,16 @@ The DefaultBoolean.Default value is equivalent to DefaultBoolean.True if the sta
       <value></value>
     </member>
     <member name="M:DevExpress.XtraEditors.WindowsFormsSettings.RegisterUserSkin(DevExpress.Skins.Info.SkinBlobXmlCreator)">
-      <summary />
-      <param name="creator"></param>
+      <summary>
+        <para>Registers the specified skin stored as a BLOB for runtime use. This method replaces the previously used <see cref="M:DevExpress.Skins.SkinManager.RegisterSkin(DevExpress.Skins.SkinCreator)"/> method that did not affect splash screens and required that you call the additional <see cref="M:DevExpress.XtraSplashScreen.SplashScreenManager.RegisterUserSkins(System.Reflection.Assembly)"/> method.</para>
+      </summary>
+      <param name="creator">An object that contains information on the target BLOB skin.</param>
     </member>
     <member name="M:DevExpress.XtraEditors.WindowsFormsSettings.RegisterUserSkins(System.Reflection.Assembly)">
-      <summary />
-      <param name="assembly"></param>
+      <summary>
+        <para>Registers all skins from the target assembly, allowing you and your users to apply them. This method replaces the previously used SkinManager.Default.RegisterAssembly method that did not affect splash screens and required that you call the additional <see cref="M:DevExpress.XtraSplashScreen.SplashScreenManager.RegisterUserSkins(System.Reflection.Assembly)"/> method.</para>
+      </summary>
+      <param name="assembly">Custom skin storage.</param>
     </member>
     <member name="P:DevExpress.XtraEditors.WindowsFormsSettings.RightToLeft">
       <summary>
@@ -17995,6 +18010,10 @@ The DefaultBoolean.Default value is equivalent to DefaultBoolean.True if the sta
         <para>Gets or sets whether DevExpress controls and components that display Open File, Save File and Folder Browser dialogs should display standard WinForms dialogs or their DevExpress counterparts (<see cref="T:DevExpress.XtraEditors.XtraOpenFileDialog"/>, <see cref="T:DevExpress.XtraEditors.XtraSaveFileDialog"/>, and <see cref="T:DevExpress.XtraEditors.XtraFolderBrowserDialog"/>).</para>
       </summary>
       <value>A <see cref="T:DevExpress.Utils.DefaultBoolean"/> enumeration value that specifies whether DevExpress controls and components should replace standard Open File, Save File and Folder Browser dialogs with skinnable DX Dialogs.</value>
+    </member>
+    <member name="P:DevExpress.XtraEditors.WindowsFormsSettings.UseEditorTextAsAccessibleName">
+      <summary />
+      <value></value>
     </member>
     <member name="P:DevExpress.XtraEditors.WindowsFormsSettings.UseUIAutomation">
       <summary />

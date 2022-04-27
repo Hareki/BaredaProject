@@ -174,13 +174,15 @@ namespace BaredaProject
             }
             return result;
         }
-        protected static bool BackupTailog(bool needTailog, string dbName, string dbTailLogFullPath, DateTime timeInput)
+        protected static bool BackupTailog(bool needTailLog, string dbName, string dbTailLogFullPath, DateTime timeInput)
         {
-            if (!needTailog) return true;
+            
             string command = $"BACKUP LOG {dbName} TO DISK = '{dbTailLogFullPath}' WITH INIT";
             string fileName = dbTailLogFullPath.Substring(dbTailLogFullPath.LastIndexOf(@"\") + 1);
-
             DateTime currentTime = GetDateFromFileName(fileName);
+            Main.WriteKVToFile(dbName, 1, currentTime.ToString(Utils.SQL_DATE_FORMAT));//gần nhất
+            if (!needTailLog) return true;
+
             Main.WriteKVToFile(dbName, 3, timeInput.ToString(Utils.SQL_DATE_FORMAT));
             Main.WriteKVToFile(dbName, 4, currentTime.ToString(Utils.SQL_DATE_FORMAT));
 
@@ -244,9 +246,8 @@ namespace BaredaProject
         protected static object[] GetCoreParametes(Dictionary<int, DateTime> fullBackupDates, DateTime timeInput, List<DateTime> logDates)
         {
             bool needTailLog = false;
-            KeyValuePair<int, DateTime> kvp = fullBackupDates.Where(element => element.Value <= timeInput).Max(element => element);
-            DateTime lowerBound = kvp.Value;
-            int pos = kvp.Key;
+            int pos = fullBackupDates.Where(element => element.Value <= timeInput).Max(element => element.Key);
+            fullBackupDates.TryGetValue(pos, out DateTime lowerBound);
             //DateTime upperBound = logDates.Where(date => date >= timeInput).Min(date => date);
             List<DateTime> test = logDates.Where(date => date >= timeInput).ToList();
             DateTime upperBound;
