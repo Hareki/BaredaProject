@@ -97,7 +97,6 @@
     <Compile Include="Project\Dialogs\InforForm.Designer.cs">
       <DependentUpon>InforForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Project\Others\LongCommands.cs" />
     <Compile Include="Project\Controllers\MainCTL.cs" />
     <Compile Include="Project\LoginForm.cs">
       <SubType>Form</SubType>

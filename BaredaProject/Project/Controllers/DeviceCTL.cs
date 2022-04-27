@@ -49,25 +49,44 @@ namespace BaredaProject.Project.Controller
             List<Para> paraList = new List<Para>();// ghi cho đủ tham số chứ chỗ này ko cần
             return ExecSqlNonQuery(command, ConnectionString, paraList);
         }
+        private static string GetDeviceName(string dbName)
+        {
+            return $"Device_{dbName}";
+        }
         internal static bool RestoreDB(string dbName, int pos)
         {
-            string deviceName = $"Device_{dbName}";
+            string deviceName = GetDeviceName(dbName);
 
             string command = $"ALTER DATABASE {dbName}"
               + " SET SINGLE_USER WITH ROLLBACK IMMEDIATE;"
-              + $" USE tempdb; RESTORE DATABASE {dbName}"
-              + $" {GetFullRestoreLocationCommand(dbName, pos, false)}"
+              + $" USE tempdb;"
+              + $" {GetFullRestoreCommand(dbName, deviceName, pos, false)};"
               + $" ALTER DATABASE {dbName} SET MULTI_USER";
             return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
-        internal static bool RestoreDB_Time(string dbName, Dictionary<int, DateTime> fullBackupDates, List<DateTime> logDates, DateTime timeInput)
+        internal static new bool RestoreDB_Time(string dbName, DateTime timeInput, int latestPos, bool needNewLog)
         {
-            string deviceName = $"Device_{dbName}";
-            object[] coreParameters = MainCTL.GetCoreParametes(fullBackupDates, timeInput, logDates);
-            int pos = (int)coreParameters[0];
-            bool needTailLog = (bool)coreParameters[1];
-            List<DateTime> neededLogDates = (List<DateTime>)coreParameters[2];
-            string command = GetRestoreCommand(dbName, timeInput, pos, needTailLog, neededLogDates, true, deviceName);
+            string deviceName = GetDeviceName(dbName);
+            string backupLogCommand;
+            if (needNewLog)
+            {
+                backupLogCommand = $"BACKUP LOG {dbName} TO DISK = '{Main.GetDBLogPath(dbName)}' WITH INIT, NORECOVERY\n";
+                Main.WriteKVToFile(dbName, "LogStartTime", Main.ReadKVFromFile(dbName, "LogEndTime"));
+                Main.WriteKVToFile(dbName, "LogEndTime", DateTime.Now.ToString(Utils.SQL_DATE_FORMAT));
+            }
+            else
+            {
+                backupLogCommand = string.Empty;
+            }
+            string restoreLogCommand = $"RESTORE LOG {dbName} FROM DISK  = '{Main.GetDBLogPath(dbName)}' WITH  STOPAT = '{timeInput.ToString(Utils.SQL_DATE_FORMAT)}', NORECOVERY\n";
+            string command = $"ALTER DATABASE {dbName}\n"
+                + "SET SINGLE_USER WITH ROLLBACK IMMEDIATE;\n"
+                + $"USE tempdb;\n"
+                + backupLogCommand
+                + $"{GetFullRestoreCommand(dbName, deviceName, latestPos, true)}\n"
+                + restoreLogCommand
+                + $"RESTORE DATABASE {dbName} WITH RECOVERY;\n"
+                + $"ALTER DATABASE {dbName} SET MULTI_USER";
             return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
 

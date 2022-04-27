@@ -88,143 +88,13 @@ namespace BaredaProject
             };
             return ExecSqlNonQuery(command, ConnectionString, paraList);
         }
-        private static bool DeleteAllLogs(string dbName)
-        {
-            string folderPath = Main.GetDBLogPath(dbName);
-            string command = "EXECUTE master.dbo.xp_delete_file 0, @FolderPath";
-            List<Para> paraList = new List<Para>
-            {
-                new Para("@FolderPath", folderPath)
-            };
-            return ExecSqlNonQuery(command, ConnectionString, paraList);
-        }
+
         public static bool DropDevice(string deviceName)
         {
             string command = $"EXEC sp_dropdevice '{deviceName}', 'delfile'";
             return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
-        protected static bool BackupLogExists(string dbName, DateTime timeInput)
-        {
-            string command = $"USE {dbName} SELECT [Begin Time] FROM fn_dblog(null,null) WHERE [Begin Time] < {timeInput}";
-            using (SqlDataReader myReader = ExecuteSqlDataReader(command, ConnectionString, new List<Para>()))
-            {
-                if (myReader is null) return false;
-                return myReader.HasRows;
-            }
-        }
-        protected static string GetDBFullTailLogPath(string dbName)
-        {
-            string currentMilis = Utils.ConvertDateTimeToMilisString(DateTime.Now);
-            return $"{Main.GetDBLogPath(dbName)}{dbName}_tailLog_{currentMilis}.trn";
-        }
-        protected static string GetBackupTailLogCommand(bool needTailLog, string dbName, string tailLogFullPath)
-        {
-            if (!needTailLog) return string.Empty;
-            return $"BACKUP LOG {dbName} TO DISK = '{tailLogFullPath}' WITH INIT ";
 
-        }
-        protected static string GetRestoreTailLogCommand(bool needTailLog, string dbName, string tailLogFullPath, DateTime timeInput)
-        {
-            if (!needTailLog) return string.Empty;
-            return $"RESTORE LOG {dbName} FROM DISK = '{tailLogFullPath}' WITH NORECOVERY, STOPAT = '{timeInput.ToString(Utils.SQL_DATE_FORMAT)}'";
-        }
-        protected static List<String> GetFileNames(string parentPath)
-        {
-            List<String> result = new List<string>();
-            DirectoryInfo d = new DirectoryInfo(parentPath); //Assuming Test is your Folder
-            try
-            {
-                FileInfo[] Files = d.GetFiles("*.*"); //Getting Text files
-
-                foreach (FileInfo file in Files)
-                {
-                    result.Add(file.Name);
-                }
-            }
-            catch (DirectoryNotFoundException) { }
-            return result;
-
-        }
-        protected static List<DateTime> GetDatesFromLogs(string dbName)
-        {
-            List<string> fileNames = GetFileNames(Main.GetDBLogPath(dbName));
-            List<DateTime> result = new List<DateTime>();
-            foreach (string fileName in fileNames)
-            {
-                result.Add(GetDateFromFileName(fileName));
-            }
-            return result;
-        }
-        private static DateTime GetDateFromFileName(string fileName)
-        {
-            int startIndex = fileName.LastIndexOf("_") + 1;
-            int length = fileName.LastIndexOf(".") - startIndex;
-            string milis = fileName.Substring(startIndex, length);
-            DateTime date = Utils.ConvertMilisStringToDateTime(milis);
-            return date;
-        }
-        protected static Dictionary<int, DateTime> GetDatesFromBDS(BindingSource bds, GridColumn colDate, GridColumn colPos)
-        {
-            Dictionary<int, DateTime> result = new Dictionary<int, DateTime>();
-            for (int i = 0; i < bds.Count; i++)
-            {
-                DateTime date = ((DateTime)Utils.GetCellValueBds(bds, colDate, i));
-                int pos = ((int)Utils.GetCellValueBds(bds, colPos, i));
-                result.Add(pos, date);
-            }
-            return result;
-        }
-        protected static bool BackupTailog(bool needTailLog, string dbName, string dbTailLogFullPath, DateTime timeInput)
-        {
-            
-            string command = $"BACKUP LOG {dbName} TO DISK = '{dbTailLogFullPath}' WITH INIT";
-            string fileName = dbTailLogFullPath.Substring(dbTailLogFullPath.LastIndexOf(@"\") + 1);
-            DateTime currentTime = GetDateFromFileName(fileName);
-            Main.WriteKVToFile(dbName, 1, currentTime.ToString(Utils.SQL_DATE_FORMAT));//gần nhất
-            if (!needTailLog) return true;
-
-            Main.WriteKVToFile(dbName, 3, timeInput.ToString(Utils.SQL_DATE_FORMAT));
-            Main.WriteKVToFile(dbName, 4, currentTime.ToString(Utils.SQL_DATE_FORMAT));
-
-            return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
-        }
-        protected static string RenameTailLog(bool needTailog, string dbName, string dbTailLogFullPath)
-        {
-            if (!needTailog) return dbTailLogFullPath;
-            string command = "DECLARE @first_lsn numeric(25,0) \n"
-            + "SELECT @first_lsn = first_lsn FROM msdb.dbo.backupset as set1, msdb.dbo.backupmediafamily as set2 WHERE set2.physical_device_name = '" + dbTailLogFullPath + "' AND set1.media_set_id = set2.media_set_id \n"
-            + "IF(EXISTS (SELECT * FROM msdb.dbo.backupset WHERE first_lsn < @first_lsn and database_name = '" + dbName + "')) SELECT 0 ELSE SELECT 1";
-            // 0 = không cần reset, 1 = cần reset
-            using (SqlDataReader myReader = ExecuteSqlDataReader(command, ConnectionString, new List<Para>()))
-            {
-                if (myReader == null) return dbTailLogFullPath;
-
-                myReader.Read();
-                int result = int.Parse(myReader.GetValue(0).ToString());
-                if (result == 0)
-                {
-                    return dbTailLogFullPath;
-                }
-                else
-                {
-                    string newName = dbTailLogFullPath.Replace("_tailLog_", "_tailLog_reset_");
-                    File.Move(dbTailLogFullPath, newName);
-                    return newName;
-                }
-            }
-
-        }
-        protected static string GetLogFullPathByDate(string DBParentLogPath, string dbName, DateTime date)
-        {
-            string[] names = { "_log_", "_tailLog_", "_log_reset_", "_tailLog_reset_" };
-            string path = string.Empty;
-            for (int i = 0; i < names.Length; i++)
-            {
-                path = $"{DBParentLogPath}{dbName}{names[i]}{Utils.ConvertDateTimeToMilisString(date)}.trn";
-                if (File.Exists(path)) break;
-            }
-            return path;
-        }
         protected static bool DeleteSpecifiedFile(string fileFullPath)
         {
             string command = $"EXECUTE master.dbo.xp_delete_file 0, @FileFullPath";
@@ -234,62 +104,15 @@ namespace BaredaProject
             };
             return ExecSqlNonQuery(command, ConnectionString, paraList);
         }
-        protected static string GetFullRestoreLocationCommand(string path, int pos, bool noRecovery)
+        protected static string GetFullRestoreCommand(string dbName, string deviceNameOrFilePath, int pos, bool noRecovery)
         {
             //Path = [Device Name] or [Full File Path]
-            string command = noRecovery ? ", NORECOVERY" : string.Empty;
+            string command = noRecovery ? ", NORECOVERY" : ", RECOVERY";
             if (Main.USE_DEVICE_MODE)
-                return $" FROM {path} WITH FILE = {pos}, REPLACE{command}; ";
+                return $" RESTORE DATABASE {dbName} FROM {deviceNameOrFilePath} WITH FILE = {pos}, REPLACE{command}; ";
             else
-                return $" FROM DISK = {path} WITH REPLACE{command}; ";
+                return $" RESTORE DATABASE {dbName} FROM DISK = {deviceNameOrFilePath} WITH REPLACE{command}; ";
         }
-        protected static object[] GetCoreParametes(Dictionary<int, DateTime> fullBackupDates, DateTime timeInput, List<DateTime> logDates)
-        {
-            bool needTailLog = false;
-            int pos = fullBackupDates.Where(element => element.Value <= timeInput).Max(element => element.Key);
-            fullBackupDates.TryGetValue(pos, out DateTime lowerBound);
-            //DateTime upperBound = logDates.Where(date => date >= timeInput).Min(date => date);
-            List<DateTime> test = logDates.Where(date => date >= timeInput).ToList();
-            DateTime upperBound;
-            if (test.Count == 0)
-            {
-                needTailLog = true;
-                upperBound = DateTime.Now;
-            }
-            else
-            {
-                needTailLog = false;
-                upperBound = test.Min(date => date);
-            }
-            List<DateTime> neededLogDates = logDates.Where(date => date >= lowerBound && date <= upperBound).ToList()
-                .OrderBy(date => date).ToList();
-            return new object[] { pos, needTailLog, neededLogDates };
-        }
-        protected static string GetRestoreCommand(string dbName, DateTime timeInput, int pos, bool needTailLog, List<DateTime> neededLogDates, bool noRecovery, string path)
-        {
-
-            string dbTailLogFullPath = GetDBFullTailLogPath(dbName);
-            BackupTailog(needTailLog, dbName, dbTailLogFullPath, timeInput);
-            dbTailLogFullPath = RenameTailLog(needTailLog, dbName, dbTailLogFullPath);
-            string preCommand = $"ALTER DATABASE {dbName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE; "
-                             + "USE master "
-                             + $" RESTORE DATABASE {dbName} {GetFullRestoreLocationCommand(path, pos, noRecovery)} ";
-            StringBuilder buider = new StringBuilder(preCommand);
-            string DBParentLogPath = Main.GetDBLogPath(dbName);
-            foreach (DateTime date in neededLogDates)
-            {
-                string disk = GetLogFullPathByDate(DBParentLogPath, dbName, date);
-                if (disk.Contains("_reset_")) buider = new StringBuilder(preCommand); // lặp 1
-                buider.AppendLine($"RESTORE LOG {dbName} FROM DISK = '{disk}' WITH STOPAT = '{timeInput.ToString(Utils.SQL_DATE_FORMAT)}', NORECOVERY ");
-            }
-            if (dbTailLogFullPath.Contains("_reset_") && needTailLog == true) buider = new StringBuilder(preCommand); //lặp 2
-            buider.AppendLine(GetRestoreTailLogCommand(needTailLog, dbName, dbTailLogFullPath, timeInput));
-            buider.AppendLine($"RESTORE DATABASE {dbName} ");
-            buider.AppendLine($"ALTER DATABASE {dbName} SET MULTI_USER ");
-            string command = buider.ToString();
-            return command;
-        }
-
 
         /*----CALLERS AND COMMON PROCESSES----*/
         public static bool BackupDB(string dbName, string description, bool init, string defaultPath)
@@ -297,7 +120,6 @@ namespace BaredaProject
             if (init)
             {
                 ClearBackupHistory(dbName);
-                DeleteAllLogs(dbName);
             }
             if (Main.USE_DEVICE_MODE)
                 return DeviceCTL.BackupDB(dbName, init, description);
@@ -329,47 +151,27 @@ namespace BaredaProject
             else
                 return FileCTL.RestoreDB(dbName, pos, backupFilePath);
         }
-        public static bool RestoreDB_Time(string dbName, BindingSource bds, GridColumn colDate, GridColumn colPos, DateTime timeInput, string defaultPath)
+        public static bool RestoreDB_Time(string dbName, DateTime timeInput, int latestPos, bool needNewLog)
         {
-            List<DateTime> logDates = GetDatesFromLogs(dbName);
-            Dictionary<int, DateTime> fullBackupDates = GetDatesFromBDS(bds, colDate, colPos);
-
             if (Main.USE_DEVICE_MODE)
-                return DeviceCTL.RestoreDB_Time(dbName, fullBackupDates, logDates, timeInput);
+                return DeviceCTL.RestoreDB_Time(dbName, timeInput, latestPos, needNewLog);
             else
-                return FileCTL.RestoreDB_Time(dbName, fullBackupDates, logDates, timeInput, defaultPath);
-
+                return FileCTL.RestoreDB_Time(dbName, timeInput, latestPos, needNewLog);
         }
+
+
         public static bool CreateDevice(string dbName, string defaultPath)
         {
             return DeviceCTL.CreateDevice(dbName, defaultPath);
         }
         public static bool DeleteAllDBBackupInstances(string dbName)
         {
-            Main.ClearKV(dbName);
+            //  Main.ClearKV(dbName);
             bool test1 = ClearBackupHistory(dbName);
             bool test2 = DropDevice($"Device_{dbName}");
             DeleteAllFiles(dbName);
-            bool test4 = DeleteAllLogs(dbName);
-            return test1 && test2 && test4;//ko test số 3 vì có thể bị fail, do ko có directory file
+            return test1 && test2;//ko test số 3 vì có thể bị fail, do ko có directory file
         }
-
-
-        public static bool DeleteBackupLogs_Time(string dbName, DateTime cutOffDate)
-        {
-            string folderPath = Main.GetDBLogPath(dbName);
-            string command = $"EXECUTE master.dbo.xp_delete_file 0, '{folderPath}', 'trn', '{cutOffDate.ToString(Utils.SQL_DATE_FORMAT)}', 1";
-            return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
-        }
-
-
-        /*----OTHERS----*/
-        public static bool AddBackupLogJob(string defaultPath)
-        {
-            string command = LongCommands.GetAddBackupJobCommand(defaultPath, "BackupLogDaily");
-            return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
-        }
-
 
         /*----EXECUTE COMMANDS----*/
         protected static bool ExecSqlNonQuery(String command, String connectionString, List<Para> paraList)
@@ -407,6 +209,7 @@ namespace BaredaProject
                 return false;
             }
         }
+
         protected static SqlDataReader ExecuteSqlDataReader(string command, String connectionString, List<Para> paraList)
         {
             SqlDataReader result;

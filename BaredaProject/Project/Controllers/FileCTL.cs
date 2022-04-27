@@ -93,19 +93,13 @@ namespace BaredaProject.Project.Controller
             string command = $"ALTER DATABASE {dbName}"
               + " SET SINGLE_USER WITH ROLLBACK IMMEDIATE; "
               + $" USE tempdb; RESTORE DATABASE {dbName} "
-              + $" {GetFullRestoreLocationCommand(fullFilePath, pos, false)}"
+              + $" {GetFullRestoreCommand(dbName,fullFilePath, pos, false)}"
               + $" ALTER DATABASE {dbName} SET MULTI_USER";
             return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
-        internal static bool RestoreDB_Time(string dbName, Dictionary<int, DateTime> fullBackupDates, List<DateTime> logDates, DateTime timeInput, string defaultPath)
+        internal static bool RestoreDB_Time(string dbName, string logFilePath, DateTime timeInput)
         {
-            object[] coreParameters = MainCTL.GetCoreParametes(fullBackupDates, timeInput, logDates);
-            int pos = (int)coreParameters[0];
-            bool needTailLog = (bool)coreParameters[1];
-            List<DateTime> neededLogDates = (List<DateTime>)coreParameters[2];
-            string fullFilePath = GetFullFilePath(dbName, pos);
-            string command = GetRestoreCommand(dbName, timeInput, pos, needTailLog, neededLogDates, true, fullFilePath);
-            return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
+            return false;
         }
         internal static string GetFullFilePath(string dbName, int pos)
         {
