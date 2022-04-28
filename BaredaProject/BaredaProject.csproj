@@ -122,6 +122,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="Project\Others\TimeConfig.cs" />
     <Compile Include="Project\Others\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Project\Dialogs\ConfirmationForm.resx">

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BaredaProject.Project.Others;
+using System;
 using System.Collections.Generic;
 
 namespace BaredaProject.Project.Controller
@@ -36,6 +37,11 @@ namespace BaredaProject.Project.Controller
 
             return ExecSqlNonQuery(command, ConnectionString, paraList);
         }
+        public static bool DropDevice(string deviceName)
+        {
+            string command = $"EXEC sp_dropdevice '{deviceName}', 'delfile'";
+            return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
+        }
         internal static bool DeleteDevice(string defaultPath, string dbName, int pos)
         {
             //Do không thể xóa 1 phần dữ liệu của device.
@@ -70,8 +76,8 @@ namespace BaredaProject.Project.Controller
             if (needNewLog)
             {
                 backupLogCommand = $"BACKUP LOG {dbName} TO DISK = '{Main.GetDBLogPath(dbName)}' WITH INIT, NORECOVERY\n";
-                Main.WriteConfig(dbName, Main.LOG_START_TIME, Main.ReadConfig(dbName, Main.LOG_END_TIME));
-                Main.WriteConfig(dbName, Main.LOG_END_TIME, DateTime.Now.ToString(Utils.SQL_DATE_FORMAT));
+                TimeConfig.WriteConfig(dbName, TimeConfig.LOG_START_TIME, TimeConfig.ReadConfig(dbName, TimeConfig.LOG_END_TIME));
+                TimeConfig.WriteConfig(dbName, TimeConfig.LOG_END_TIME, DateTime.Now.ToString(Utils.SQL_DATE_FORMAT));
             }
             else
             {

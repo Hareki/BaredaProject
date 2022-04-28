@@ -6,6 +6,7 @@ namespace BaredaProject
     public partial class TimeInput : Form
     {
         public bool Continue = false;
+
         public TimeInput()
         {
             InitializeComponent();
@@ -26,11 +27,6 @@ namespace BaredaProject
         {
             Continue = false;
             this.Close();
-        }
-
-        private void TimeInput_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Continue = false;
         }
     }
 }

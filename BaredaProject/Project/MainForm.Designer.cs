@@ -567,7 +567,7 @@ namespace BaredaProject
             this.colname.AppearanceHeader.Options.UseBackColor = true;
             this.colname.Caption = " Tên";
             this.colname.FieldName = "name";
-            this.colname.MinWidth = 150;
+            this.colname.MinWidth = 130;
             this.colname.Name = "colname";
             this.colname.Visible = true;
             this.colname.VisibleIndex = 1;
@@ -577,16 +577,16 @@ namespace BaredaProject
             // 
             this.coltime_limit.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(164)))), ((int)(((byte)(236)))));
             this.coltime_limit.AppearanceHeader.Options.UseBackColor = true;
-            this.coltime_limit.Caption = " Giới hạn phục hồi";
+            this.coltime_limit.Caption = " Giới hạn phục hồi thời gian";
             this.coltime_limit.FieldName = "time_limit";
-            this.coltime_limit.MinWidth = 250;
+            this.coltime_limit.MinWidth = 270;
             this.coltime_limit.Name = "coltime_limit";
             this.coltime_limit.ToolTip = "Thời điểm phục hồi theo thời gian không thể nhỏ hơn giới hạn này, vì đây là thời " +
-    "điểm sớm nhất mà file nhật ký có dữ liệu để phục hồi, thời điểm này phụ thuộc và" +
-    "o lần phục hồi theo thời gian gần nhất";
+    "điểm sớm nhất mà file log có dữ liệu để phục hồi, thời điểm này phụ thuộc vào lầ" +
+    "n phục hồi theo thời gian gần nhất";
             this.coltime_limit.Visible = true;
             this.coltime_limit.VisibleIndex = 2;
-            this.coltime_limit.Width = 250;
+            this.coltime_limit.Width = 270;
             // 
             // coldatabase_id
             // 

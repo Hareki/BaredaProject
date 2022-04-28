@@ -1,6 +1,7 @@
 ﻿using BaredaProject.Project;
 using BaredaProject.Project.Controller;
 using BaredaProject.Project.Dialogs;
+using BaredaProject.Project.Others;
 using DevExpress.XtraGrid.Columns;
 using System;
 using System.Collections.Generic;
@@ -89,12 +90,6 @@ namespace BaredaProject
             return ExecSqlNonQuery(command, ConnectionString, paraList);
         }
 
-        public static bool DropDevice(string deviceName)
-        {
-            string command = $"EXEC sp_dropdevice '{deviceName}', 'delfile'";
-            return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
-        }
-
         protected static bool DeleteSpecifiedFile(string fileFullPath)
         {
             string command = $"EXECUTE master.dbo.xp_delete_file 0, @FileFullPath";
@@ -114,30 +109,18 @@ namespace BaredaProject
                 return $" RESTORE DATABASE {dbName} FROM DISK = {deviceNameOrFilePath} WITH REPLACE{command}; ";
         }
 
-        protected static void ClearConfig(string dbName)
-        {
-            Main.ClearConfig(dbName, Main.LOG_START_TIME);
-            Main.ClearConfig(dbName, Main.LOG_END_TIME);
-        }
+
         /*----CALLERS AND COMMON PROCESSES----*/
         public static bool BackupDB(string dbName, string description, bool init, string defaultPath)
         {
             if (init)
             {
                 ClearBackupHistory(dbName);
-                ClearConfig(dbName);
             }
             if (Main.USE_DEVICE_MODE)
                 return DeviceCTL.BackupDB(dbName, init, description);
             else
                 return FileCTL.BackupDB(dbName, defaultPath, description, init);
-        }
-        private static bool DeleteBackup(string defaultPath, string dbName, int pos)
-        {
-            if (Main.USE_DEVICE_MODE)
-                return DeviceCTL.DeleteDevice(defaultPath, dbName, pos);
-            else
-                return FileCTL.DeleteFile(defaultPath, dbName, pos);
         }
         private static bool DeleteBackupInfo(string dbName, int pos)
         {
@@ -149,6 +132,22 @@ namespace BaredaProject
         public static bool DeleteBackupInstance(string dbName, int pos, string defaultPath)
         {
             return DeleteBackup(defaultPath, dbName, pos) && DeleteBackupInfo(dbName, pos);
+        }
+        public static bool DeleteAllDBBackupInstances(string dbName)
+        {
+            //  Main.ClearKV(dbName);
+            bool test1 = ClearBackupHistory(dbName);
+            bool test2 = DeviceCTL.DropDevice($"Device_{dbName}");
+            TimeConfig.ClearConfig(dbName);
+            DeleteLogFile(dbName);
+            return test1 && test2;//ko test số 3 vì có thể bị fail, do ko có directory file (không có log file)
+        }
+        private static bool DeleteBackup(string defaultPath, string dbName, int pos)
+        {
+            if (Main.USE_DEVICE_MODE)
+                return DeviceCTL.DeleteDevice(defaultPath, dbName, pos);
+            else
+                return FileCTL.DeleteFile(defaultPath, dbName, pos);
         }
         public static bool RestoreDB(string dbName, int pos)
         {
@@ -168,15 +167,7 @@ namespace BaredaProject
         {
             return DeviceCTL.CreateDevice(dbName, defaultPath);
         }
-        public static bool DeleteAllDBBackupInstances(string dbName)
-        {
-            //  Main.ClearKV(dbName);
-            bool test1 = ClearBackupHistory(dbName);
-            bool test2 = DropDevice($"Device_{dbName}");
-            ClearConfig(dbName);
-            DeleteLogFile(dbName);
-            return test1 && test2;//ko test số 3 vì có thể bị fail, do ko có directory file (không có log file)
-        }
+        
 
         /*----EXECUTE COMMANDS----*/
         protected static bool ExecSqlNonQuery(string command, string connectionString, List<Para> paraList)
@@ -214,7 +205,6 @@ namespace BaredaProject
                 return false;
             }
         }
-
         protected static SqlDataReader ExecuteSqlDataReader(string command, string connectionString, List<Para> paraList)
         {
             SqlDataReader result;
