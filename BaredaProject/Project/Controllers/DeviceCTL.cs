@@ -62,11 +62,11 @@ namespace BaredaProject.Project.Controller
         {
             string deviceName = GetDeviceName(dbName);
 
-            string command = $"ALTER DATABASE {dbName}"
-              + " SET SINGLE_USER WITH ROLLBACK IMMEDIATE;"
-              + $" USE tempdb;"
-              + $" {GetFullRestoreCommand(dbName, deviceName, pos, false)};"
-              + $" ALTER DATABASE {dbName} SET MULTI_USER";
+            string command = $"ALTER DATABASE {dbName}\n"
+              + "SET SINGLE_USER WITH ROLLBACK IMMEDIATE;\n"
+              + $"USE tempdb;\n"
+              + $"{GetFullRestoreCommand(dbName, deviceName, pos, false)};\n"
+              + $"ALTER DATABASE {dbName} SET MULTI_USER";
             return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
         internal static new bool RestoreDB_Time(string dbName, DateTime timeInput, int latestPos, bool needNewLog)

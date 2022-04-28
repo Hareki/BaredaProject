@@ -27,13 +27,18 @@ namespace BaredaProject.Project.Others
             WriteConfig(dbName, LOG_START_TIME, "Không thể phục hồi");
             WriteConfig(dbName, LOG_END_TIME, "Không thể phục hồi");
         }
+        public static void EnableConfig(string dbName)
+        {
+            WriteConfig(dbName, LOG_START_TIME, "Lần full backup mới nhất (1)");
+            WriteConfig(dbName, LOG_END_TIME, "Lần full backup mới nhất (1)");
+        }
         public static void WriteConfig(string dbName, string key, string value)
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(CONFIG_PATH);
             string realKey = GenerateKey(dbName, key);
             config.AppSettings.Settings.Remove(realKey);
             config.AppSettings.Settings.Add(realKey, value);
-            config.Save(ConfigurationSaveMode.Minimal);
+            config.Save(ConfigurationSaveMode.Full);
         }
         public static bool ConfigHasKey(string dbName, string key)
         {
@@ -61,7 +66,7 @@ namespace BaredaProject.Project.Others
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(CONFIG_PATH);
             config.AppSettings.Settings.Remove(GenerateKey(dbName, key));
-            config.Save(ConfigurationSaveMode.Minimal);
+            config.Save(ConfigurationSaveMode.Full);
         }
         private static string GenerateKey(string dbName, string key)
         {

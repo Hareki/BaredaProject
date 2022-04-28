@@ -19,7 +19,7 @@ namespace BaredaProject
         {
             InitializeComponent();
         }
-        public static bool USE_DEVICE_MODE = true;
+        public static bool USE_DEVICE_MODE = false;
 
         /*----GET PATHS----*/
         public static string GetDBFullBackupPath(string dbName)
@@ -49,7 +49,10 @@ namespace BaredaProject
         }
         public static string GetDBLogPath(string dbName)
         {
-            string result = GetGeneralLogPath() + dbName + @"\" + $"{dbName}_log.trn";
+            string parent = GetGeneralLogPath() + dbName + @"\";
+            Directory.CreateDirectory(parent);
+
+            string result = parent + $"{dbName}_log.trn";
             return result;
         }
 
@@ -146,9 +149,8 @@ namespace BaredaProject
         {
             if (!TimeConfig.ConfigHasKey(dbName, TimeConfig.LOG_START_TIME))
             {
-                DateTime initTime = GetMaxBackupTime();
                 TimeConfig.WriteConfig(dbName, TimeConfig.LOG_START_TIME, "Lần full backup mới nhất (2)");
-                TimeConfig.WriteConfig(dbName, TimeConfig.LOG_END_TIME, initTime.AddSeconds(1).ToString(Utils.SQL_DATE_FORMAT));
+                TimeConfig.WriteConfig(dbName, TimeConfig.LOG_END_TIME, "Lần full backup mới nhất (2)");
             }
         }
 
@@ -214,15 +216,19 @@ namespace BaredaProject
         {
             string dbName = GetSelectedDBName();
             if (init)
+            {
                 if (!Utils.ShowConfirmMessage("Xác nhận", $"Bạn có chắc muốn xóa toàn bộ các bản sao lưu cũ của {dbName} và ghi bản mới?"))
                     return;
-
+                
+            }
+            TimeConfig.EnableConfig(dbName);
+            MainCTL.ClearLog(dbName);
             DescriptionInput input = new DescriptionInput();
             input.ShowDialog();
             if (input.Continue)
             {
                 string description = input.Description;
-                if (MainCTL.BackupDB(dbName, description, init, GetDBFullBackupPath(dbName)))
+                if (MainCTL.BackupDB(dbName, description, init))
                 {
                     Utils.ShowInfoMessage("Thông báo", "Tạo bản sao lưu thành công", InformationForm.FormType.Infor);
                 }
@@ -268,10 +274,26 @@ namespace BaredaProject
         //Default Restore
         private void BarBtnDefaultRestore_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            string dbName = GetSelectedDBName();
             int pos = GetSelectedBackupPos();
-            if (Utils.ShowConfirmMessage("Xác nhận", $"Bạn có chắc muốn phục hồi {dbName} về bản sao lưu thứ {pos}?"))
+            string dbName = GetSelectedDBName();
+            string message = $"Bạn có chắc muốn phục hồi {dbName} về bản sao lưu thứ {pos}?";
+            string title = "Xác nhận";
+            bool warning = false;
+            if (pos != GetMaxPosition())
             {
+                warning = true;
+                title = "Cảnh báo";
+                message = $"Bạn đang sao lưu về một bản cũ hơn, điều này sẽ dẫn đến việc chức năng " +
+                    $"phục hồi theo thời gian không thể hoạt động cho đến khi có một bản sao lưu mới.\n\nTiến hành sao lưu?";
+            }
+            if (Utils.ShowConfirmMessage(title, message, warning))
+            {
+                if (warning)
+                {
+                    TimeConfig.DisableConfig(dbName);
+                    MainCTL.ClearLog(dbName);
+                }
+
                 Cursor.Current = Cursors.WaitCursor;
                 if (MainCTL.RestoreDB(dbName, pos))
                 {
@@ -312,6 +334,8 @@ namespace BaredaProject
                         warning = needNewLog = true;
                     }
                 }
+                else
+                    needNewLog = true;
 
                 if (Utils.ShowConfirmMessage(title, message, warning))
                 {
@@ -322,6 +346,7 @@ namespace BaredaProject
                     {
                         Cursor.Current = Cursors.Default;
                         Utils.ShowInfoMessage("Thông báo", $"Phục hồi {dbName} về thời điểm {timeInput.ToString(Utils.SQL_DATE_FORMAT)} hoàn tất", InformationForm.FormType.Infor);
+                        ReloadDBList(bdsDBList.Position);
                     }
                 }
             }
@@ -345,7 +370,11 @@ namespace BaredaProject
             }
             if (Utils.ShowConfirmMessage(title, message, warning))
             {
-                if (warning) TimeConfig.DisableConfig(dbName);
+                if (warning)
+                {
+                    TimeConfig.DisableConfig(dbName);
+                    MainCTL.ClearLog(dbName);
+                }
                 if (MainCTL.DeleteBackupInstance(dbName, pos, GetDBFullBackupPath(dbName)))
                 {
                     Utils.ShowInfoMessage("Thông báo", "Đã xóa bản sao lưu được chọn", InformationForm.FormType.Infor);

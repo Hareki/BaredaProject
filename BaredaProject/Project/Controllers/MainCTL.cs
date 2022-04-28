@@ -77,11 +77,12 @@ namespace BaredaProject
             return ExecSqlNonQuery(command, ConnectionString, paraList);
 
         }
-        private static bool DeleteLogFile(string dbName)
+        public static bool ClearLog(string dbName)
         {
             string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
             var directory = new DirectoryInfo(documentsPath);
-            string folderPath = directory.Parent.FullName + $"\\Backup\\File\\{dbName}";
+            string name = Main.USE_DEVICE_MODE ? "Device" : "File";
+            string folderPath = directory.Parent.FullName + $"\\Log\\{name}\\{dbName}";
             string command = "EXECUTE master.dbo.xp_delete_file 0, @FolderPath";
             List<Para> paraList = new List<Para>
             {
@@ -104,14 +105,14 @@ namespace BaredaProject
             //Path = [Device Name] or [Full File Path]
             string command = noRecovery ? ", NORECOVERY" : ", RECOVERY";
             if (Main.USE_DEVICE_MODE)
-                return $" RESTORE DATABASE {dbName} FROM {deviceNameOrFilePath} WITH FILE = {pos}, REPLACE{command}; ";
+                return $"RESTORE DATABASE {dbName} FROM {deviceNameOrFilePath} WITH FILE = {pos}, REPLACE{command}; ";
             else
-                return $" RESTORE DATABASE {dbName} FROM DISK = {deviceNameOrFilePath} WITH REPLACE{command}; ";
+                return $"RESTORE DATABASE {dbName} FROM DISK = {deviceNameOrFilePath} WITH REPLACE{command}; ";
         }
 
 
         /*----CALLERS AND COMMON PROCESSES----*/
-        public static bool BackupDB(string dbName, string description, bool init, string defaultPath)
+        public static bool BackupDB(string dbName, string description, bool init)
         {
             if (init)
             {
@@ -120,7 +121,7 @@ namespace BaredaProject
             if (Main.USE_DEVICE_MODE)
                 return DeviceCTL.BackupDB(dbName, init, description);
             else
-                return FileCTL.BackupDB(dbName, defaultPath, description, init);
+                return FileCTL.BackupDB(dbName, description, init);
         }
         private static bool DeleteBackupInfo(string dbName, int pos)
         {
@@ -138,8 +139,8 @@ namespace BaredaProject
             //  Main.ClearKV(dbName);
             bool test1 = ClearBackupHistory(dbName);
             bool test2 = DeviceCTL.DropDevice($"Device_{dbName}");
+            ClearLog(dbName);
             TimeConfig.ClearConfig(dbName);
-            DeleteLogFile(dbName);
             return test1 && test2;//ko test số 3 vì có thể bị fail, do ko có directory file (không có log file)
         }
         private static bool DeleteBackup(string defaultPath, string dbName, int pos)
@@ -147,7 +148,7 @@ namespace BaredaProject
             if (Main.USE_DEVICE_MODE)
                 return DeviceCTL.DeleteDevice(defaultPath, dbName, pos);
             else
-                return FileCTL.DeleteFile(defaultPath, dbName, pos);
+                return FileCTL.DeleteFile(dbName, pos);
         }
         public static bool RestoreDB(string dbName, int pos)
         {
