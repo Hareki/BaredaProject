@@ -107,7 +107,7 @@ namespace BaredaProject
             if (Main.USE_DEVICE_MODE)
                 return $"RESTORE DATABASE {dbName} FROM {deviceNameOrFilePath} WITH FILE = {pos}, REPLACE{command}; ";
             else
-                return $"RESTORE DATABASE {dbName} FROM DISK = {deviceNameOrFilePath} WITH REPLACE{command}; ";
+                return $"RESTORE DATABASE {dbName} FROM DISK = '{deviceNameOrFilePath}' WITH REPLACE{command}; ";
         }
 
 
@@ -138,7 +138,7 @@ namespace BaredaProject
         {
             //  Main.ClearKV(dbName);
             bool test1 = ClearBackupHistory(dbName);
-            bool test2 = DeviceCTL.DropDevice($"Device_{dbName}");
+            bool test2 = DeviceCTL.DropDevice(dbName);
             ClearLog(dbName);
             TimeConfig.ClearConfig(dbName);
             return test1 && test2;//ko test số 3 vì có thể bị fail, do ko có directory file (không có log file)

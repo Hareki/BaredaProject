@@ -112,15 +112,19 @@ namespace BaredaProject
             else
                 adapterBackupList.FileFill(this.myDataSet.database_backups, dbName);
         }
+
+        public bool DeviceIsAvailable(string dbName)
+        {
+            string deviceName = $"Device_{dbName}";
+            adapterDeviceList.Connection.ConnectionString = MainCTL.ConnectionString;
+            adapterDeviceList.FillBy(this.myDataSet.backup_devices, deviceName);
+            return bdsDeviceList.Count > 0;
+        }
         private void RefreshDeviceAndBackupState(string dbName)
         {
             if (USE_DEVICE_MODE)
             {
-                String deviceName = $"Device_{dbName}";
-                adapterDeviceList.Connection.ConnectionString = MainCTL.ConnectionString;
-                adapterDeviceList.FillBy(this.myDataSet.backup_devices, deviceName);
-
-                if (bdsDeviceList.Count > 0)
+                if (DeviceIsAvailable(dbName))
                 {
                     btnCreateDevice.Enabled = false;
                     btnBackup.Enabled = true;
@@ -329,7 +333,7 @@ namespace BaredaProject
                 {
                     if (timeInput > timeLimit)
                     {
-                        message = $"Hành động này sẽ xóa file log cũ, khiến khoảng thời gian {timeLimit.ToString(Utils.SQL_DATE_FORMAT)} trở về trước không còn có thể phục hồi.\nBạn có muốn tiếp tục?";
+                        message = $"Hành động này sẽ xóa file log cũ, khiến khoảng thời gian {timeLimit.ToString(Utils.VN_DATE_FORMAT)} trở về trước không còn có thể phục hồi.\nBạn có muốn tiếp tục?";
                         title = "Cảnh báo";
                         warning = needNewLog = true;
                     }
@@ -337,6 +341,11 @@ namespace BaredaProject
                 else
                     needNewLog = true;
 
+                if(needNewLog == false)
+                {
+                    message = $"Bạn đang tiến hành phục hồi về khoảng thời điểm có trong file log, khiến khoảng thời gian {timeLimit.ToString(Utils.VN_DATE_FORMAT)} đến thời điểm hiện tại không còn có thể phục hồi.\nBạn có muốn tiếp tục?";
+                    title = "Cảnh báo";
+                }
                 if (Utils.ShowConfirmMessage(title, message, warning))
                 {
                     InitConfig(dbName);
@@ -345,7 +354,7 @@ namespace BaredaProject
                     if (MainCTL.RestoreDB_Time(dbName, timeInput, latestPos, needNewLog))
                     {
                         Cursor.Current = Cursors.Default;
-                        Utils.ShowInfoMessage("Thông báo", $"Phục hồi {dbName} về thời điểm {timeInput.ToString(Utils.SQL_DATE_FORMAT)} hoàn tất", InformationForm.FormType.Infor);
+                        Utils.ShowInfoMessage("Thông báo", $"Phục hồi {dbName} về thời điểm {timeInput.ToString(Utils.VN_DATE_FORMAT)} hoàn tất", InformationForm.FormType.Infor);
                         ReloadDBList(bdsDBList.Position);
                     }
                 }

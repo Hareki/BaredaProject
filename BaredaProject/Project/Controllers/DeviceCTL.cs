@@ -37,9 +37,14 @@ namespace BaredaProject.Project.Controller
 
             return ExecSqlNonQuery(command, ConnectionString, paraList);
         }
-        public static bool DropDevice(string deviceName)
+        public static bool DropDevice(string dbName)
         {
+            string deviceName = GetDeviceName(dbName);
             string command = $"EXEC sp_dropdevice '{deviceName}', 'delfile'";
+            if (!Main.USE_DEVICE_MODE && Program.MainInstance.DeviceIsAvailable(dbName))
+            {
+                return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
+            }
             return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
         internal static bool DeleteDevice(string defaultPath, string dbName, int pos)
