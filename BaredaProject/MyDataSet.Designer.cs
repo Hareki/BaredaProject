@@ -1861,9 +1861,9 @@ namespace BaredaProject.MyDataSetTableAdapters {
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT name, database_id, N\'Lần full backup mới nhất\' as time_limit\r\nFROM     sys" +
-                ".databases\r\nWHERE  (database_id >= 5) AND (NOT (name LIKE N\'ReportServer%\'))\r\nOR" +
-                "DER BY name";
+            this._commandCollection[0].CommandText = "SELECT name, database_id, N\'Lần full backup mới nhất (1)\' as time_limit\r\nFROM    " +
+                " sys.databases\r\nWHERE  (database_id >= 5) AND (NOT (name LIKE N\'ReportServer%\'))" +
+                "\r\nORDER BY name";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         

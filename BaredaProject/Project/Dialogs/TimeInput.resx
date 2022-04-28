@@ -128,7 +128,9 @@
 Lưu ý:
     - Nếu thời điểm nhập vào lớn hơn thời điểm KẾT THÚC của file,
 thì file log đó sẽ được tiến hành ghi lại, BẮT ĐẦU từ thời điểm lần 
-phục hồi theo thời gian này hoàn tất.</value>
+phục hồi theo thời gian này hoàn tất.
+    - Nếu file log cho database chưa từng được khởi tạo thì lần khởi
+tạo đầu tiên sẽ không làm thay đổi giới hạn phục hồi.</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

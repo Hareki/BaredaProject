@@ -92,7 +92,12 @@ namespace BaredaProject.Project.Controller
                 + restoreLogCommand
                 + $"RESTORE DATABASE {dbName} WITH RECOVERY;\n"
                 + $"ALTER DATABASE {dbName} SET MULTI_USER";
-            return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
+            if (!ExecSqlNonQuery(command, ConnectionString, new List<Para>()))
+            {
+                Utils.ShowInfoMessage("Thông báo", "Xảy ra lỗi trong quá trình phục hồi database theo thời gian, tiến hành phục hồi về bản backup mới nhất...",Dialogs.InformationForm.FormType.Infor);
+                return RestoreDB(dbName, latestPos);
+            }
+            return true;
         }
 
     }
