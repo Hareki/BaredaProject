@@ -46,14 +46,13 @@ namespace BaredaProject.Project.Controller
             string command = "DECLARE @database_name NVARCHAR(100),@Pos INT " +
                                 "SET @Pos = " + pos + " SET @database_name = '" + dbName + "'  " +
                                 "DECLARE @backup_set_id INT DECLARE @media_set_id INT DECLARE @restore_history_id TABLE (restore_history_id INT) SELECT @backup_set_id = MAX(backup_set_id) FROM msdb.dbo.backupset WHERE position = @Pos AND database_name = @database_name AND name = 'Device_' +  @database_name SELECT @media_set_id = media_set_id FROM msdb.dbo.backupset WHERE backup_set_id = @backup_set_id  INSERT INTO @restore_history_id (restore_history_id)  SELECT DISTINCT restore_history_id FROM msdb.dbo.restorehistory WHERE backup_set_id = @backup_set_id  SET XACT_ABORT ON  BEGIN TRANSACTION BEGIN TRY DELETE FROM msdb.dbo.backupfile WHERE backup_set_id = @backup_set_id DELETE FROM msdb.dbo.backupfilegroup WHERE backup_set_id = @backup_set_id DELETE FROM msdb.dbo.restorefile WHERE restore_history_id IN (SELECT restore_history_id FROM @restore_history_id) DELETE FROM msdb.dbo.restorefilegroup WHERE restore_history_id IN (SELECT restore_history_id FROM @restore_history_id) DELETE FROM msdb.dbo.restorehistory WHERE restore_history_id IN (SELECT restore_history_id FROM @restore_history_id) DELETE FROM msdb.dbo.backupset WHERE backup_set_id = @backup_set_id COMMIT TRANSACTION END TRY BEGIN CATCH ROLLBACK DECLARE @ErrMess VARCHAR(1000) SELECT @ErrMess = 'Error: ' + ERROR_MESSAGE() RAISERROR(@ErrMess, 16, 1) END CATCH";
-            List<Para> paraList = new List<Para>();// ghi cho đủ tham số chứ chỗ này ko cần
-            return ExecSqlNonQuery(command, ConnectionString, paraList);
+            return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
         private static string GetDeviceName(string dbName)
         {
             return $"Device_{dbName}";
         }
-        internal static bool RestoreDB(string dbName, int pos)
+        internal static new bool RestoreDB(string dbName, int pos)
         {
             string deviceName = GetDeviceName(dbName);
 
@@ -71,8 +70,8 @@ namespace BaredaProject.Project.Controller
             if (needNewLog)
             {
                 backupLogCommand = $"BACKUP LOG {dbName} TO DISK = '{Main.GetDBLogPath(dbName)}' WITH INIT, NORECOVERY\n";
-                Main.WriteKVToFile(dbName, "LogStartTime", Main.ReadKVFromFile(dbName, "LogEndTime"));
-                Main.WriteKVToFile(dbName, "LogEndTime", DateTime.Now.ToString(Utils.SQL_DATE_FORMAT));
+                Main.WriteConfig(dbName, Main.LOG_START_TIME, Main.ReadConfig(dbName, Main.LOG_END_TIME));
+                Main.WriteConfig(dbName, Main.LOG_END_TIME, DateTime.Now.ToString(Utils.SQL_DATE_FORMAT));
             }
             else
             {

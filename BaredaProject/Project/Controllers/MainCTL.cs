@@ -76,7 +76,7 @@ namespace BaredaProject
             return ExecSqlNonQuery(command, ConnectionString, paraList);
 
         }
-        private static bool DeleteAllFiles(string dbName)
+        private static bool DeleteLogFile(string dbName)
         {
             string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
             var directory = new DirectoryInfo(documentsPath);
@@ -114,12 +114,18 @@ namespace BaredaProject
                 return $" RESTORE DATABASE {dbName} FROM DISK = {deviceNameOrFilePath} WITH REPLACE{command}; ";
         }
 
+        protected static void ClearConfig(string dbName)
+        {
+            Main.ClearConfig(dbName, Main.LOG_START_TIME);
+            Main.ClearConfig(dbName, Main.LOG_END_TIME);
+        }
         /*----CALLERS AND COMMON PROCESSES----*/
         public static bool BackupDB(string dbName, string description, bool init, string defaultPath)
         {
             if (init)
             {
                 ClearBackupHistory(dbName);
+                ClearConfig(dbName);
             }
             if (Main.USE_DEVICE_MODE)
                 return DeviceCTL.BackupDB(dbName, init, description);
@@ -144,12 +150,12 @@ namespace BaredaProject
         {
             return DeleteBackup(defaultPath, dbName, pos) && DeleteBackupInfo(dbName, pos);
         }
-        public static bool RestoreDB(string dbName, int pos, string backupFilePath)
+        public static bool RestoreDB(string dbName, int pos)
         {
             if (Main.USE_DEVICE_MODE)
                 return DeviceCTL.RestoreDB(dbName, pos);
             else
-                return FileCTL.RestoreDB(dbName, pos, backupFilePath);
+                return FileCTL.RestoreDB(dbName, pos);
         }
         public static bool RestoreDB_Time(string dbName, DateTime timeInput, int latestPos, bool needNewLog)
         {
@@ -158,8 +164,6 @@ namespace BaredaProject
             else
                 return FileCTL.RestoreDB_Time(dbName, timeInput, latestPos, needNewLog);
         }
-
-
         public static bool CreateDevice(string dbName, string defaultPath)
         {
             return DeviceCTL.CreateDevice(dbName, defaultPath);
@@ -169,12 +173,13 @@ namespace BaredaProject
             //  Main.ClearKV(dbName);
             bool test1 = ClearBackupHistory(dbName);
             bool test2 = DropDevice($"Device_{dbName}");
-            DeleteAllFiles(dbName);
-            return test1 && test2;//ko test số 3 vì có thể bị fail, do ko có directory file
+            ClearConfig(dbName);
+            DeleteLogFile(dbName);
+            return test1 && test2;//ko test số 3 vì có thể bị fail, do ko có directory file (không có log file)
         }
 
         /*----EXECUTE COMMANDS----*/
-        protected static bool ExecSqlNonQuery(String command, String connectionString, List<Para> paraList)
+        protected static bool ExecSqlNonQuery(string command, string connectionString, List<Para> paraList)
         {
             SqlConnection connection;
             connection = new SqlConnection(connectionString);
@@ -210,7 +215,7 @@ namespace BaredaProject
             }
         }
 
-        protected static SqlDataReader ExecuteSqlDataReader(string command, String connectionString, List<Para> paraList)
+        protected static SqlDataReader ExecuteSqlDataReader(string command, string connectionString, List<Para> paraList)
         {
             SqlDataReader result;
             SqlConnection connection;

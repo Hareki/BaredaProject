@@ -18,8 +18,10 @@ namespace BaredaProject
             InitializeComponent();
         }
         public static bool USE_DEVICE_MODE = true;
-
         public static readonly string CONFIG_PATH = GetGeneralLogPath() + "config";
+        public static readonly string LOG_START_TIME = "LogStartTime";
+        public static readonly string LOG_END_TIME = "LogEndTime";
+
         private static void CheckFileExists()
         {
             if (!File.Exists(CONFIG_PATH))
@@ -164,19 +166,19 @@ namespace BaredaProject
             else return DateTime.MaxValue;
 
         }
-        private bool IsValidTimeInput(DateTime timeInput)
+        private bool IsValidTimeInput(DateTime timeInput, string dbName)
         {
-            DateTime minBackupTime = GetMaxBackupTime();
-            Double minutesLeft = DateTime.Now.Subtract(timeInput).TotalMinutes;
+            double minutesLeft = DateTime.Now.Subtract(timeInput).TotalMinutes;
+            DateTime timeLimit = DateTime.Parse(ReadConfig(dbName, "LogEndTime"));
             if (minutesLeft < 1)
             {
-                Utils.ShowInfoMessage("Lỗi phục hồi", "Thời điểm phục hồi phải nhỏ hơn hiện tại ít nhất 1 phút", InformationForm.FormType.Error);
+                Utils.ShowInfoMessage("Lỗi phục hồi", "Thời điểm nhập vào phải nhỏ hơn hiện tại ít nhất 1 phút", InformationForm.FormType.Error);
                 return false;
             }
 
-            if (timeInput < minBackupTime)
+            if (timeInput < timeLimit)
             {
-                Utils.ShowInfoMessage("Lỗi phục hồi", "Thời điểm phục hồi phải lớn hơn bản sao lưu mới nhất", InformationForm.FormType.Error);
+                Utils.ShowInfoMessage("Lỗi phục hồi", "Thời điểm nhập vào phải lớn hơn giới hạn phục hồi", InformationForm.FormType.Error);
                 return false;
             }
             return true;
@@ -219,7 +221,7 @@ namespace BaredaProject
             if (Utils.ShowConfirmMessage("Xác nhận", $"Bạn có chắc muốn phục hồi {dbName} về bản sao lưu thứ {pos}?"))
             {
                 Cursor.Current = Cursors.WaitCursor;
-                if (MainCTL.RestoreDB(dbName, pos, null))
+                if (MainCTL.RestoreDB(dbName, pos))
                 {
                     Cursor.Current = Cursors.Default;
                     Utils.ShowInfoMessage("Thông báo", $"Phục hồi {dbName} về bản sao lưu thứ {pos} hoàn tất", InformationForm.FormType.Infor);
@@ -235,14 +237,21 @@ namespace BaredaProject
             else return -1;
         }
 
-        private void initConfig(string dbName)
+        private void InitConfig(string dbName)
         {
-            if (!KVHasKey(dbName, "LogStartTime"))
+            if (!ConfigHasKey(dbName, LOG_START_TIME))
             {
                 DateTime initTime = GetMaxBackupTime();
-                WriteKVToFile(dbName, "LogStartTime", initTime.ToString(Utils.SQL_DATE_FORMAT));
-                WriteKVToFile(dbName, "LogEndTime", initTime.ToString(Utils.SQL_DATE_FORMAT));
+                WriteConfig(dbName, LOG_START_TIME, initTime.ToString(Utils.SQL_DATE_FORMAT));
+                WriteConfig(dbName, LOG_END_TIME, initTime.ToString(Utils.SQL_DATE_FORMAT));
             }
+        }
+
+        public static void ClearConfig(string dbName, string key)
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(CONFIG_PATH);
+            config.AppSettings.Settings.Remove(GenerateKey(dbName, key));
+            config.Save(ConfigurationSaveMode.Minimal);
         }
 
         private void BarBtnTimeRestore_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -251,29 +260,25 @@ namespace BaredaProject
             input.ShowDialog();
             if (input.Continue)
             {
+                string dbName = GetSelectedDBName();
+                InitConfig(dbName);
                 DateTime timeInput = input.GetTimeInput();
-                while (input.Continue && (!IsValidTimeInput(timeInput)))
+                while (input.Continue && (!IsValidTimeInput(timeInput, dbName)))
                 {
                     input.ShowDialog();
                     timeInput = input.GetTimeInput();
                 }
                 if (input.Continue == false) return;
-                string dbName = GetSelectedDBName();
+
                 string message = $"Bạn có chắc muốn phục hồi {dbName} về thời điểm {timeInput}?";
                 string title = "Xác nhận";
-                bool warning = false;
                 bool needNewLog = false;
-                initConfig(dbName);
-                
-                DateTime timeLimit = DateTime.Parse(ReadKVFromFile(dbName, "LogEndTime"));
-                if (timeInput > timeLimit)
-                {
-                    message = $"Hành động này sẽ xóa file log cũ, khiến khoảng thời gian {timeLimit.ToString(Utils.SQL_DATE_FORMAT)} trở về trước không còn có thể phục hồi.\nBạn có muốn tiếp tục?";
-                    title = "Cảnh báo";
-                    warning = needNewLog = true;
-                }
 
-                if (Utils.ShowConfirmMessage(title, message, warning))
+
+
+
+
+                if (Utils.ShowConfirmMessage(title, message))
                 {
                     Cursor.Current = Cursors.WaitCursor;
                     int latestPos = GetLatestPos();
@@ -291,7 +296,7 @@ namespace BaredaProject
 
             return $"{dbName}_{key}";
         }
-        public static void WriteKVToFile(string dbName, string key, string value)
+        public static void WriteConfig(string dbName, string key, string value)
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(CONFIG_PATH);
             string realKey = GenerateKey(dbName, key);
@@ -300,7 +305,7 @@ namespace BaredaProject
             config.Save(ConfigurationSaveMode.Minimal);
         }
 
-        public static bool KVHasKey(string dbName, string key)
+        public static bool ConfigHasKey(string dbName, string key)
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(CONFIG_PATH);
             string realKey = GenerateKey(dbName, key);
@@ -311,7 +316,7 @@ namespace BaredaProject
             return false;
         }
 
-        public static string ReadKVFromFile(string dbName, string key)
+        public static string ReadConfig(string dbName, string key)
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(CONFIG_PATH);
             string realKey = GenerateKey(dbName, key);
@@ -362,20 +367,6 @@ namespace BaredaProject
             }
         }
 
-        private DateTime GetMinBackupTime2(string dbName) // tương đương GetMinBackupTime, nhưng hướng xử lý khác, chậm nhưng chắc
-        {
-            List<DateTime> dates = new List<DateTime>();
-            int count = bdsBackupList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                object minDate2 = Utils.GetCellValueBds(bdsBackupList, colbackup_start_date, i);
-                if (minDate2 != null)
-                    dates.Add((DateTime)minDate2);
-                else dates.Add(DateTime.MinValue);
-            }
-            DateTime minDate = dates.Min(date => date);
-            return minDate;
-        }
 
         private void BarBtnDeleteAll_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {

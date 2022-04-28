@@ -86,7 +86,7 @@ namespace BaredaProject.Project.Controller
             List<Para> paraList = new List<Para>();
             return ExecSqlNonQuery(command, ConnectionString, paraList);
         }
-        internal static new bool RestoreDB(string dbName, int pos, string backupFilePath)
+        internal static new bool RestoreDB(string dbName, int pos)
         {
             string fullFilePath = GetFullFilePath(dbName, pos);
 
@@ -97,21 +97,34 @@ namespace BaredaProject.Project.Controller
               + $" ALTER DATABASE {dbName} SET MULTI_USER";
             return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
-        internal static bool RestoreDB_Time(string dbName, string logFilePath, DateTime timeInput)
+        internal static new bool RestoreDB_Time(string dbName, DateTime timeInput, int latestPos, bool needNewLog)
         {
-            return false;
+            string fullFilePath = GetFullFilePath(dbName, latestPos);
+            string backupLogCommand;
+            if (needNewLog)
+            {
+                backupLogCommand = $"BACKUP LOG {dbName} TO DISK = '{Main.GetDBLogPath(dbName)}' WITH INIT, NORECOVERY\n";
+                Main.WriteConfig(dbName, Main.LOG_START_TIME, Main.ReadConfig(dbName, Main.LOG_END_TIME));
+                Main.WriteConfig(dbName, Main.LOG_END_TIME, DateTime.Now.ToString(Utils.SQL_DATE_FORMAT));
+            }
+            else
+            {
+                backupLogCommand = string.Empty;
+            }
+            string restoreLogCommand = $"RESTORE LOG {dbName} FROM DISK  = '{Main.GetDBLogPath(dbName)}' WITH  STOPAT = '{timeInput.ToString(Utils.SQL_DATE_FORMAT)}', NORECOVERY\n";
+            string command = $"ALTER DATABASE {dbName}\n"
+                + "SET SINGLE_USER WITH ROLLBACK IMMEDIATE;\n"
+                + $"USE tempdb;\n"
+                + backupLogCommand
+                + $"{GetFullRestoreCommand(dbName, fullFilePath, latestPos, true)}\n"
+                + restoreLogCommand
+                + $"RESTORE DATABASE {dbName} WITH RECOVERY;\n"
+                + $"ALTER DATABASE {dbName} SET MULTI_USER";
+            return ExecSqlNonQuery(command, ConnectionString, new List<Para>());
         }
         internal static string GetFullFilePath(string dbName, int pos)
         {
-            string result = $"{Main.GetDBFullBackupPath(dbName)}\\{dbName}_Pos{pos}.bak";
-            return result;
-        }
-        internal static bool AddDummyBackupRecord(string dbName, string defaultPath)
-        {
-            //Không dùng được, do pos trên db ko tăng nếu khác file hoặc device, nghĩa là phải cùng media (file hoặc device như nhau)
-            //Cũng như việc BackupFile và GetCurrentDBPos đã dc tinh chỉnh nhiều so với ban đầu
-            string fileFullPath = $"{defaultPath}\\{dbName} - Pos0 - Dummy.bak";
-            return BackupDB(dbName, fileFullPath, "Dummy backup file", false) && DeleteFile(defaultPath, dbName, 0);
+            return $"{Main.GetDBFullBackupPath(dbName)}\\{dbName}_Pos{pos}.bak";
         }
     }
 }
