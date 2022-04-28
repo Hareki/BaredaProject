@@ -9,6 +9,7 @@ namespace BaredaProject.Project
     class Utils
     {
         public static readonly string SQL_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+        public static readonly string VN_DATE_FORMAT = "dd-MM-yyyy hh:mm:ss tt";
 
 
         /*----MESSAGE DIALOG----*/

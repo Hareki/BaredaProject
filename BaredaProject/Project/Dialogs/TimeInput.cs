@@ -27,5 +27,10 @@ namespace BaredaProject
             Continue = false;
             this.Close();
         }
+
+        private void TimeInput_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Continue = false;
+        }
     }
 }

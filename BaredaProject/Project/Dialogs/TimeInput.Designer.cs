@@ -146,6 +146,7 @@ namespace BaredaProject
             this.Name = "TimeInput";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Phục hồi theo thời gian";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TimeInput_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties)).EndInit();

@@ -4,6 +4,7 @@ using DevExpress.XtraEditors.Repository;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -61,6 +62,20 @@ namespace BaredaProject
             return result;
         }
 
+        private void FillTimeLimitCells()
+        {
+            for (int i = 0; i < bdsDBList.Count; i++)
+            {
+                string dbName = Utils.GetCellStringBds(bdsDBList, colname, i);
+                if (ConfigHasKey(dbName, LOG_START_TIME))
+                {
+                    string cofigText = ReadConfig(dbName, LOG_START_TIME);
+                    string dateText = DateTime.Parse(cofigText).ToString(Utils.VN_DATE_FORMAT);
+                    (bdsDBList[i] as DataRowView)["time_limit"] = dateText;
+                }
+            }
+            gvDBList.RefreshData();
+        }
 
         /*----VIEW----*/
         private void CustomCellPadding()
@@ -68,14 +83,22 @@ namespace BaredaProject
             RepositoryItemTextEdit edit = new RepositoryItemTextEdit();
             edit.Padding = new Padding(5, 2, 2, 2);
             gvDBList.Columns[1].ColumnEdit =
+            //gvDBList.Columns[2].ColumnEdit =
             gvBackups.Columns[1].ColumnEdit =
             gvBackups.Columns[2].ColumnEdit =
             gvBackups.Columns[3].ColumnEdit = edit;
         }
-        private void ReloadDBList()
+        private void ReloadDBList(int index = -1)
         {
             this.adapterDBList.Connection.ConnectionString = MainCTL.ConnectionString;
             this.adapterDBList.Fill(this.myDataSet.databases_list);
+            FillTimeLimitCells();
+            if (index >= 0)
+            {
+                bdsDBList.Position = index;
+                gvDBList.FocusedRowHandle = index;
+            }
+
         }
         private void LoadBackups(string dbName)
         {
@@ -155,6 +178,7 @@ namespace BaredaProject
                 {
                     Utils.ShowInfoMessage("Thông báo", "Tạo bản sao lưu thành công", InformationForm.FormType.Infor);
                 }
+                ReloadDBList(bdsDBList.Position);
                 ReloadGvBackups(dbName);
             }
         }
@@ -341,9 +365,15 @@ namespace BaredaProject
 
         }
 
+        private void ConfigTimeLimitColumn()
+        {
+            myDataSet.databases_list.Columns[2].ReadOnly = false;
+            myDataSet.databases_list.Columns[2].MaxLength = 30;
+        }
         private void Main_Load(object sender, EventArgs e)
         {
             CustomCellPadding();
+            ConfigTimeLimitColumn();
             ReloadDBList();
             CheckFileExists();
             //  MainCTL.AddBackupLogJob(GetGeneralLogPath());
@@ -375,7 +405,7 @@ namespace BaredaProject
                 if (MainCTL.DeleteAllDBBackupInstances(dbName))
                 {
                     Utils.ShowInfoMessage("Thông báo", $"Xóa toàn bộ bản sao lưu của {dbName} hoàn tất", InformationForm.FormType.Infor);
-                    ReloadDBList();
+                    ReloadDBList(bdsBackupList.Position);
                 }
         }
         private void BtnRefresh_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)

@@ -75,6 +75,7 @@ namespace BaredaProject
             this.gcDBList = new DevExpress.XtraGrid.GridControl();
             this.gvDBList = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.colname = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.coltime_limit = new DevExpress.XtraGrid.Columns.GridColumn();
             this.coldatabase_id = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gcBackups = new DevExpress.XtraGrid.GridControl();
             this.gvBackups = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -498,7 +499,7 @@ namespace BaredaProject
             this.gcDBList.MainView = this.gvDBList;
             this.gcDBList.Margin = new System.Windows.Forms.Padding(50, 50, 25, 50);
             this.gcDBList.Name = "gcDBList";
-            this.gcDBList.Size = new System.Drawing.Size(547, 418);
+            this.gcDBList.Size = new System.Drawing.Size(582, 418);
             this.gcDBList.TabIndex = 13;
             this.gcDBList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvDBList});
@@ -539,6 +540,7 @@ namespace BaredaProject
             this.gvDBList.AppearancePrint.OddRow.Options.UseBackColor = true;
             this.gvDBList.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.colname,
+            this.coltime_limit,
             this.coldatabase_id});
             this.gvDBList.DetailHeight = 1664;
             this.gvDBList.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
@@ -565,11 +567,26 @@ namespace BaredaProject
             this.colname.AppearanceHeader.Options.UseBackColor = true;
             this.colname.Caption = " Tên";
             this.colname.FieldName = "name";
-            this.colname.MinWidth = 250;
+            this.colname.MinWidth = 150;
             this.colname.Name = "colname";
             this.colname.Visible = true;
             this.colname.VisibleIndex = 1;
-            this.colname.Width = 250;
+            this.colname.Width = 330;
+            // 
+            // coltime_limit
+            // 
+            this.coltime_limit.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(164)))), ((int)(((byte)(236)))));
+            this.coltime_limit.AppearanceHeader.Options.UseBackColor = true;
+            this.coltime_limit.Caption = " Giới hạn phục hồi";
+            this.coltime_limit.FieldName = "time_limit";
+            this.coltime_limit.MinWidth = 250;
+            this.coltime_limit.Name = "coltime_limit";
+            this.coltime_limit.ToolTip = "Thời điểm phục hồi theo thời gian không thể nhỏ hơn giới hạn này, vì đây là thời " +
+    "điểm sớm nhất mà file nhật ký có dữ liệu để phục hồi, thời điểm này phụ thuộc và" +
+    "o lần phục hồi theo thời gian gần nhất";
+            this.coltime_limit.Visible = true;
+            this.coltime_limit.VisibleIndex = 2;
+            this.coltime_limit.Width = 250;
             // 
             // coldatabase_id
             // 
@@ -581,13 +598,13 @@ namespace BaredaProject
             this.coldatabase_id.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.coldatabase_id.Caption = "Mã";
             this.coldatabase_id.FieldName = "database_id";
-            this.coldatabase_id.MaxWidth = 187;
-            this.coldatabase_id.MinWidth = 187;
+            this.coldatabase_id.MaxWidth = 100;
+            this.coldatabase_id.MinWidth = 100;
             this.coldatabase_id.Name = "coldatabase_id";
             this.coldatabase_id.OptionsColumn.FixedWidth = true;
             this.coldatabase_id.Visible = true;
             this.coldatabase_id.VisibleIndex = 0;
-            this.coldatabase_id.Width = 187;
+            this.coldatabase_id.Width = 100;
             // 
             // gcBackups
             // 
@@ -597,11 +614,11 @@ namespace BaredaProject
             this.gcBackups.DataSource = this.bdsBackupList;
             this.gcBackups.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(15);
             this.gcBackups.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gcBackups.Location = new System.Drawing.Point(656, 133);
+            this.gcBackups.Location = new System.Drawing.Point(691, 133);
             this.gcBackups.MainView = this.gvBackups;
             this.gcBackups.Margin = new System.Windows.Forms.Padding(25, 50, 50, 50);
             this.gcBackups.Name = "gcBackups";
-            this.gcBackups.Size = new System.Drawing.Size(839, 418);
+            this.gcBackups.Size = new System.Drawing.Size(804, 418);
             this.gcBackups.TabIndex = 14;
             this.gcBackups.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvBackups});
@@ -877,6 +894,7 @@ namespace BaredaProject
         private DevExpress.XtraBars.PopupMenu deleteMenu;
         private DevExpress.XtraBars.BarButtonItem barBtnDeleteSelected;
         private DevExpress.XtraBars.BarButtonItem barBtnDeleteAll;
+        private DevExpress.XtraGrid.Columns.GridColumn coltime_limit;
     }
 }
 
